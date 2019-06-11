@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-Webnovel-74EF9EEF-52D4-47BF-B5AD-872CC63C97A9</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.cs" />
+    <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190602214637_initialDb.cs" />
+    <Compile Remove="Data\Migrations\20190602214637_initialDb.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\Base64\base64.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\beaver-logger\client\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\bowser\bowser.min.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\cross-domain-safe-weakmap\src\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\cross-domain-utils\src\constants.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\cross-domain-utils\src\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\cross-domain-utils\src\types.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\cross-domain-utils\src\utils.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\hi-base32\src\base32.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\post-robot\src\bridge\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\post-robot\src\bridge\interface.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\post-robot\src\compat\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\post-robot\src\conf\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\post-robot\src\global.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\post-robot\src\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\post-robot\src\lib\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\process\browser.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\webpack\buildin\amd-define.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\webpack\buildin\amd-options.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\webpack\buildin\global.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\webpack\buildin\module.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zalgo-promise\src\global.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zalgo-promise\src\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\component\base.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\component\child\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\component\component\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\component\parent\drivers.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\component\parent\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\component\window.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\constants.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\drivers\angular.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\drivers\angular2.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\drivers\ember.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\drivers\glimmer.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\drivers\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\drivers\react.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\drivers\script.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\drivers\vue.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\error.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\lib\index.html" />
+    <Content Include="wwwroot\admin\assets\libs\jsgrid\node_modules\zoid\src\types.html" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+    <Folder Include="wwwroot\NewFolder\" />
+  </ItemGroup>
+
+</Project>
