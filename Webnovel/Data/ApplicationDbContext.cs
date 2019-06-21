@@ -23,6 +23,14 @@ namespace Webnovel.Data
         public DbSet<Novel> Novels { get; set; }
         public DbSet<NovelSection> NovelSections { get; set; }
 
+        public DbSet<Comic> Comics{  get; set; }
+        public DbSet<ComicScene> ComicScenes { get; set; }
+        public DbSet<Episode> Episodes { get; set; }
+
+        public DbSet<Animation> Animations { get; set; }
+        public DbSet<AnimationEpisode> AnimationEpisodes { get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -37,7 +45,18 @@ namespace Webnovel.Data
             builder.Entity<Novel>().HasMany(a => a.NovelSections).WithOne(a => a.Novel);
             builder.Entity<Novel>().HasOne(a => a.Category);
             builder.Entity<Chapter>().HasOne(a => a.NovelSection);
-            builder.Entity<NovelSection>().HasMany(a => a.NovelSections);
+            builder.Entity<NovelSection>().HasMany(a => a.Chapters).WithOne(a =>a.NovelSection);
+            builder.Entity<Comic>().HasOne(a => a.Category);
+            builder.Entity<Comic>().HasOne(a => a.Author).WithMany(a=>a.Comics);
+            builder.Entity<Comic>().HasMany(a => a.ComicScenes).WithOne(a => a.Comic);
+            builder.Entity<Comic>().HasMany(a => a.Episodes).WithOne(a => a.Comic);
+            builder.Entity<ComicScene>().HasMany(a => a.Episodes).WithOne(a => a.ComicScene);
+            builder.Entity<Episode>().HasOne(a => a.Comic);
+            builder.Entity<Episode>().HasOne(a => a.ComicScene);
+
+            builder.Entity<Animation>().HasMany(a => a.AnimationEpisodes).WithOne(a => a.Animation);
+            builder.Entity<Animation>().HasOne(a => a.Author);
+            builder.Entity<Animation>().HasOne(a => a.Category); 
 
         }
     }

@@ -20,7 +20,8 @@ namespace Webnovel.Entities
         [ForeignKey("NovelId")]
         public Novel Novel { get; set; }
    
-        public ICollection<NovelSection> NovelSections { get; set; }
+        public ICollection<Chapter> Chapters { get; set; }
+       
 
     }
 }

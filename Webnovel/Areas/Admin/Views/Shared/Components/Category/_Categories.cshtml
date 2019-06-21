@@ -1,0 +1,39 @@
+﻿@model System.Collections.Generic.ICollection<Webnovel.Entities.Category>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{ var count = 0;}
+        @foreach (var item in Model)
+        {
+
+
+            <tr>
+                <th scope="row"> @{ count++;} @count</th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-action="EditCategory"><i class="fa fa-edit"></i> Edit</a>
+                </td>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

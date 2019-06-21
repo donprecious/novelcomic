@@ -13,7 +13,7 @@ namespace Webnovel.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
-        
+        public  string CoverPageImageUrl { get; set; }
         public int AuthorId { get; set; }
 
         [ForeignKey("AuthorId")]

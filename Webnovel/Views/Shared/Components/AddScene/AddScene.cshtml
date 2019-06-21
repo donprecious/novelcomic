@@ -1,0 +1,27 @@
+﻿@model Webnovel.Models.ComicSceneVm
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Add Comic Scene</h4>
+
+        <form class="m-t-25" asp-controller="Comic" asp-action="AddSceneAsync">
+            @Html.AntiForgeryToken()
+            <div class="alert alert-warning hide" ></div>
+            <input asp-for="ComicId" type="hidden" />
+            <div class="form-group">
+                <label class="control-label">Scene Title</label>
+                <input asp-for="Title" type="text" class="form-control">
+                <span asp-validation-for="Title" class="text text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <img src="~/images/loading.gif" class="hide formLoading"  id="addSectionLoading" />
+                <br/>
+                <button class="btn btn-primary" id="btnCreateSection" type="submit">
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

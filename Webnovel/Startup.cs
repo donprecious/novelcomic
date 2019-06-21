@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Webnovel.Data;
 using Webnovel.Models;
+using Webnovel.Repository;
 using Webnovel.Services;
 
 namespace Webnovel
@@ -29,12 +30,26 @@ namespace Webnovel
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(o =>
+                {
+                    o.Password.RequireDigit = false;
+                    o.Password.RequireLowercase = false;
+                    o.Password.RequireUppercase = true;
+                    o.Password.RequireNonAlphanumeric = false;
+                    o.Password.RequiredLength = 6;
+                    o.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<ICategory, Category>();
+            services.AddScoped<INovel, Novel>();
+            services.AddScoped<IAuthor, Author>();
+            services.AddScoped<IComic, Comic>();
+            services.AddScoped<IAnimation, Animation>();
+
 
             services.AddMvc();
         }
@@ -71,6 +86,28 @@ namespace Webnovel
                 map.CreateMap<Entities.NovelSection, Models.NovelSectionVm>();
                 map.CreateMap<Models.NovelSectionVm, Entities.NovelSection>();
 
+                map.CreateMap<Entities.Comic, Models.ComicVm>();
+                map.CreateMap<Models.ComicVm, Entities.Comic>();
+
+                map.CreateMap<Models.CoverPageVm, Entities.Comic>();
+                map.CreateMap<Entities.Comic, Models.CoverPageVm>();
+
+
+
+                map.CreateMap<Entities.ComicScene, Models.ComicSceneVm>();
+                map.CreateMap<Models.ComicSceneVm, Entities.ComicScene>();
+
+                map.CreateMap<Entities.Episode, Models.EpisodeVm>();
+                map.CreateMap<Models.EpisodeVm, Entities.Episode>();
+
+                map.CreateMap<Entities.Animation, Models.AnimationVm>();
+                map.CreateMap< Models.AnimationVm, Entities.Animation>();
+
+                map.CreateMap<Models.AnimationCoverPageVm, Entities.Animation>();
+                map.CreateMap<Entities.Animation, Models.AnimationCoverPageVm>();
+
+                map.CreateMap<Entities.AnimationEpisode, Models.AnimationEpisodeVm>();
+                map.CreateMap<Models.AnimationEpisodeVm, Entities.AnimationEpisode>();
 
 
             });
@@ -79,8 +116,15 @@ namespace Webnovel
 
             app.UseAuthentication();
 
+      
+
             app.UseMvc(routes =>
             {
+                routes.MapAreaRoute(
+                    name: "MyAreaAdmin",
+                    areaName: "Admin",
+                    template: "Admin/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

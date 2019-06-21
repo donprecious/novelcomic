@@ -1,0 +1,231 @@
+﻿@using Webnovel.Repository
+@model Webnovel.Models.NovelVm
+
+@inject ICategory category
+@{
+    var categories = await category.List();
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="col-md-12 ">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Start creating your novel</h4>
+            <form class="m-t-20" asp-action="Create" id="novelForm" method="post">
+                @Html.AntiForgeryToken()
+                <div class="alert alert-warning hide" id="alertNovelError">
+
+                </div>
+                <input type="hidden" asp-for="AuthorId" class="form-control" id="authorId">
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">Novel Title</label>
+                    <input type="text" asp-for="Name" class="form-control" placeholder="Novel Title">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label"> Select category</label>
+                    <select class="form-control" asp-for="CategoryId">
+
+                        @foreach (var i in categories)
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+                    </select>
+
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"> Give a description of your novel</label>
+                    <textarea  asp-for="Title" class="form-control"  placeholder="Novel Description"> </textarea>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+             
+                <div>
+                    <button class="btn btn-primary" id="btnCreateNovel" type="submit">
+                        Next
+                        <img src="~/images/loading.gif" width="40" height="20" class="hide" id="novelLoading" />
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*<h4>NovelVm</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Id" class="control-label"></label>
+                    <input asp-for="Id" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AuthorId" class="control-label"></label>
+                    <input asp-for="AuthorId" class="form-control" />
+                    <span asp-validation-for="AuthorId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label"></label>
+                    <input asp-for="CategoryId" class="form-control" />
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>*@
+
+<div class="modal fade __web-inspector-hide-shortcut__" id="createAuthorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-megna">
+                <h4 class="modal-title" id="exampleModalLabel1">Become an author</h4>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>*@
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateAuthor" id="authorForm">
+                    <div class="alert alert-warning hide" id="alertError">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Enter your Title</label>
+                        <input type="text" class="form-control" required id="txtAuthorTitle">
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="btnCreateAuthor">
+                            Ok
+                            <img src="~/images/loading.gif" width="40" height="20" class="hide" id="authorLoading" />
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                @*<button type="button" class="btn btn-primary">Ok</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section css{
+    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+}
+
+@section Scripts{
+    <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        $(function() {
+            var hasAuthor = '@ViewBag.Author';
+            if (hasAuthor != 'true') {
+                $("#createAuthorModal").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
+
+            $("#authorForm").submit(function(event) {
+                event.preventDefault();
+                var formData = {
+                    Id: "",
+                    Title: $("#txtAuthorTitle").val(),
+                    UserId: ""
+                }
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#btnCreateAuthor").attr('disable', 'disable');
+                        $("#authorLoading").show();
+                    },
+                    complete: function(){
+                        $("#btnCreateAuthor").removeAttr('disable');
+                        $("#authorLoading").hide();
+
+                    },
+                    success: function (response) {
+                        if (response.status == 200) {
+                            $("#createAuthorModal").modal('hide');
+                            $('#alertError').addClass('hide');
+                            $('#authorId').val(response.data.id);
+                        } else {
+                            $("#alertError").text(response.message);
+                            $('#alertError').removeClass('hide');
+                        }
+                        console.log(response);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+
+            });
+            });
+
+
+            $("#novelForm").submit(function(event) {
+                event.preventDefault();
+                var data = $(this).serialize();
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#btnCreateNovel").attr('disable', 'disable');
+                        $("#novelLoading").show();
+                    },
+                    complete: function(){
+                        $("#btnCreateNovel").removeAttr('disable');
+                        $("#novelLoading").hide();
+
+                    },
+                    success: function (response) {
+                        if (response.status == 200) {
+                            //$("#createAuthorModal").modal('hide');
+                            //$('#alertError').addClass('hide');
+                            //$('#authorId').val(response.data.id);
+                            
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'Continue adding chapters and content',
+                                type: 'success',
+                                confirmButtonText: 'Cool'
+                            });
+                            console.log(response);
+
+                            location.href = "/Novel/ManageChapters/" + response.data.id;
+                        } else {
+                            $("#alertNovelError").text(response.message);
+                            $('#alertNovelError').removeClass('hide');
+
+                        }
+                        console.log(response);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+
+                });
+            });
+        });
+    </script>
+}

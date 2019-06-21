@@ -4,13 +4,106 @@
 @using Microsoft.AspNetCore.Http.Authentication
 @model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
-
+ 
 @{
     ViewData["Title"] = "Log in";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
+<div class="auth-box">
+    <div id="loginform">
+        <div class="logo">
+            <span class="db"><img src="~/admin/assets/images/logo-icon.png" alt="logo" /></span>
+            <h4 class="font-medium m-b-20">Login to your Account</h4>
 
-<h2>@ViewData["Title"]</h2>
-<div class="row">
+        </div>
+        <!-- Form -->
+        <div class="row">
+            <div class="col-12">
+                <form class="form-horizontal m-t-20" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" id="loginform">
+                    <div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        @*<span asp-validation-for="Password" class="text-danger"></span>
+                        <span asp-validation-for="Email" class="text-danger"></span>*@
+
+                    </div>
+                    <span   asp-validation-for="Email"  class="form-text text-danger"></span>
+                    <div class="input-group mb-3">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" asp-for="Email" id="basic-addon1"><i class="ti-user"></i></span>
+
+                        </div>
+
+                        <input type="text" class="form-control form-control-lg" asp-for="Email" placeholder="email" aria-label="email" aria-describedby="basic-addon1">
+                    </div>
+                    
+                    <span   asp-validation-for="Password"  class="form-text text-danger"></span>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2"><i class="ti-pencil"></i></span>
+                        </div>
+
+                        <input type="text" class="form-control form-control-lg" asp-for="Password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="RememberMe" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" asp-for="RememberMe" for="customCheck1">Remember me</label>
+                                <a asp-action="ForgotPassword" class="text-dark float-right"><i class="fa fa-lock m-r-5"></i> Forgot password?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-xs-12 p-b-20">
+                            <button class="btn btn-block btn-lg btn-info" type="submit">Log In</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
+                            <div class="social">
+                                <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip" title="" data-original-title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> </a>
+                                <a href="javascript:void(0)" class="btn btn-googleplus" data-toggle="tooltip" title="" data-original-title="Login with Google"> <i aria-hidden="true" class="fab fa-google"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-b-0 m-t-10">
+                        <div class="col-sm-12 text-center">
+                            Don't have an account? <a asp-action="Register" class="text-info m-l-5"><b>Sign Up</b></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @*<div id="recoverform">
+        <div class="logo">
+            <span class="db"><img src="assets/images/logo-icon.png" alt="logo" /></span>
+            <h5 class="font-medium m-b-20">Recover Password</h5>
+            <span>Enter your Email and instructions will be sent to you!</span>
+        </div>
+        <div class="row m-t-20">
+            <!-- Form -->
+            <form class="col-12" action="#">
+                <!-- email -->
+                <div class="form-group row">
+                    <div class="col-12">
+                        <input class="form-control form-control-lg" type="email" required="" placeholder="Username">
+                    </div>
+                </div>
+                <!-- pwd -->
+                <div class="row m-t-20">
+                    <div class="col-12">
+                        <button class="btn btn-block btn-lg btn-danger" type="submit" name="action">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>*@
+</div>
+
+@*<div class="row">
     <div class="col-md-4">
         <section>
             <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
@@ -80,7 +173,7 @@
             }
         </section>
     </div>
-</div>
+</div>*@
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")

@@ -1,0 +1,41 @@
+﻿@model System.Collections.Generic.ICollection<Webnovel.Entities.NovelSection>
+
+<div class="p-15">
+   @if (Model.Count() == 0)
+   {
+       <h4 class="text-primary card-title"> No Section Yet </h4>
+       <button class="btn btn-outline-orange" onclick="showCreateSection()" >Add Section</button>
+   }
+    @foreach (var i in Model)
+    {
+        <h4 class="text-primary card-title m-2">@i.Title</h4>
+        <ul class="list-group">
+           
+            @if (i.Chapters != null)
+            {
+                foreach (var a in i.Chapters)
+                {
+                    <li class="list-group-item"> <a class="text-cyan" onclick="showDisplayChapter(@a.Id)"> @a.Name </a>   </li>
+                }
+
+            }
+            else
+            {
+                <h4 class="text-primary card-title"> No Chapters Yet </h4>
+            }
+            @*<li class="list-group-item"> <a href="#">Chapter 1</a> </li>
+            <li class="list-group-item">Chapter 2</li>
+            <li class="list-group-item">Chapter 2</li>
+            <li class="list-group-item">Chapter 2</li>
+            <li class="list-group-item">Chapter 2</li>*@
+        </ul>
+    }
+    @*<h4 class="text-primary card-title">Section 1</h4>
+    <ul class="list-group">
+        <li class="list-group-item"> <a href="#">Chapter 1</a> </li>
+        <li class="list-group-item">Chapter 2</li>
+        <li class="list-group-item">Chapter 2</li>
+        <li class="list-group-item">Chapter 2</li>
+        <li class="list-group-item">Chapter 2</li>
+    </ul>*@
+</div>

@@ -1,0 +1,107 @@
+﻿@model Webnovel.Entities.Novel
+@{
+    ViewData["Title"] = "Manage Novel";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+  
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-breadcrumb">
+            <h4 class="page-title">Manage Chapters and Section Here</h4>
+            <div class="row m-t-5">
+                <div class="col-6">
+                    <button onclick="showAddChapter()" class="btn btn-outline-orange"><i class="ti ti-plus"></i> Create Chapter</button>
+
+                </div>
+                <div class="col-6">
+                    <button onclick="showCreateSection()" style="float: right" class="btn btn-outline-primary"><i class="ti ti-plus"></i> Create Section</button>
+
+                </div>
+
+            </div>
+          
+            </div>
+        </div>
+    </div>
+
+
+<div class="left-part bg-white p-b-40">
+    <!-- Mobile toggle button -->
+    <a class="ti-menu ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
+    <!-- Mobile toggle button -->
+    <div class="scrollable position-relative ps-container ps-theme-default" style="height:100%;" data-ps-id="bfdfe7c7-2f7f-9f54-d173-ff3f0606991b">
+        <div class="p-15" id="sections">
+            @await Component.InvokeAsync("SectionChapter", new { novelId = Model.Id })
+
+        </div>
+        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+
+            <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
+    </div>
+</div>
+
+<div class="right-part">
+    <div class="p-20" id="displayChapter"> 
+
+
+</div>
+
+</div>
+
+<div class="modal fade" id="createSectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-megna">
+                <h4 class="modal-title" id="exampleModalLabel1">Add Section to @Model.Name</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                @await Component.InvokeAsync("AddSection", new{novelId = Model.Id })
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div class="modal fade" id="createChapterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-megna">
+                <h4 class="modal-title" id="exampleModalLabel1">Add Chapter to @Model.Name</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                @await Component.InvokeAsync("AddChapter", new{novelId = Model.Id })
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section css{
+    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+}
+
+@section Scripts
+    {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+
+    <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="~/js/functions.js"></script>
+    <script src="~/js/addsection.js"></script>
+    <script src="~/js/addchapter.js"></script>
+    <script>
+     
+    </script> 
+    
+    <script>
+     
+    </script>
+}

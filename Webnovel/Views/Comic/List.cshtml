@@ -1,0 +1,136 @@
+﻿@using CloudinaryDotNet
+@using Webnovel.Services
+@model System.Collections.Generic.List<Webnovel.Entities.Comic>
+
+@{
+    ViewBag.Title = "My Comics";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    var cloudinary = new Cloudinary(new Account()
+    {
+        ApiKey = CloudinaryUpload.apiKey,
+        ApiSecret = CloudinaryUpload.apiSecret,
+        Cloud = CloudinaryUpload.cloud
+    });
+}
+<div class="row">
+    <div class="col-12">
+        <h4 class="d-inline">My Comics</h4>
+        <!-- Row -->
+        <div class="row">
+            @if (Model.Any())
+            {
+                foreach (var i in Model)
+                {
+                    <div class="col-lg-3 col-md-3" id="noveList_@i.Id">
+                        <!-- Card -->
+                        <div class="card">
+                            @{ var img = cloudinary.Api.UrlImgUp.
+                                   Transform(new Transformation().Width(300).Height(200).Crop("crop"))
+                                   .BuildImageTag(i.CoverPageImageUrl);}
+                                                      @*<img class="card-img-top img-fluid"src="@i.CoverPageImageUrl" alt="Card image cap">*@  
+                            @*<img class="card-img-top img-fluid"src="@img" alt="Card image cap">*@  
+                            @Html.Raw(img)
+                         
+                            <div class="card-body">
+                                <div class="d-flex no-block align-items-center m-b-15">
+                                    <span><i class="ti-eye"></i> 0 Views</span>
+                                    <div class="ml-auto">
+                                        <a href="javascript:void(0)" class="link"><i class="ti-comments"></i> 3 Comments</a>
+                                    </div>
+                                </div>
+                                <h4 class="card-title">@i.Title</h4>
+                                <p class="card-text novel-list-des">@i.Description</p>
+                                <a class="btn btn-primary waves-effect btn-xs waves-light" href="@Url.Action("Manage", "Comic", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-settings"></i></span> Manage Contents</a>
+                                <button type="button" data-id="@i.Id" data-href="@Url.Action("DeleteComicAsync", new {id = i.Id})" class="btn btn-danger btn-xs waves-effect waves-light deleteNovel"><span class="btn-label"><i class="mdi mdi-delete"></i></span> Delete</button>
+
+                            </div>
+                        </div>
+                        <!-- Card -->
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h1>No Comic Yet</h1>
+                        <a asp-action="Create" class="btn btn-info"> Create one </a>
+                    </div>
+                </div>
+            }<!-- column -->
+            <!-- column -->
+
+        </div>
+        <!-- Row -->
+
+    </div>
+</div>
+@section css{
+    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+}
+
+@section Scripts
+    {
+    <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        $(function () {
+            $(".novel-list-des").text().substring(0, 100);
+
+            $(".deleteNovel").click(function(event) {
+                event.preventDefault();
+                var $btn = $(this);
+                var url = $(this).attr("data-href");
+                var nId = $(this).attr("data-id");
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax(url,
+                            {
+                                type: "get",
+                                beforeSend: function() {
+                                    $(this).attr("disabled", "disabled");
+                                },
+                                complete: function() {
+                                    $(this).removeAttr("disabled");
+
+                                },
+                                success: function(response) {
+                                    if (response.status == 200) {
+                                        Swal.fire(
+                                            'Deleted!',
+                                            'Your Comic has been deleted.',
+                                            'success'
+                                        );
+                                        $("#noveList_" + nId).remove();
+
+                                    } else {
+                                        Swal.fire(
+                                            'Error!',
+                                            'Something went wrong',
+                                            'success'
+                                        );
+                                    }
+                                    console.log(response);
+                                },
+                                error: function(err) {
+                                    console.log(err);
+                                }
+                            });
+
+                    }
+                });
+
+            });
+
+        });
+    </script>
+
+}

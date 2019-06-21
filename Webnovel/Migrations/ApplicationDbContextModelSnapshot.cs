@@ -128,6 +128,48 @@ namespace Webnovel.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.Animation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AuthorId");
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("CoverPageImageUrl");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Animations");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.AnimationEpisode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnimationId");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("VideoUrl");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimationId");
+
+                    b.ToTable("AnimationEpisodes");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Author", b =>
                 {
                     b.Property<int>("Id")
@@ -163,6 +205,9 @@ namespace Webnovel.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Content")
+                        .HasColumnType("varchar(MAX)");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("Name");
@@ -180,6 +225,73 @@ namespace Webnovel.Migrations
                     b.ToTable("Chapters");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.Comic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AuthorId");
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("CoverPageImageUrl");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Comics");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.ComicScene", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ComicId");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComicId");
+
+                    b.ToTable("ComicScenes");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.Episode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ComicId");
+
+                    b.Property<int>("ComicSceneId");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("ImageUrl");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComicId");
+
+                    b.HasIndex("ComicSceneId");
+
+                    b.ToTable("Episodes");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Novel", b =>
                 {
                     b.Property<int>("Id")
@@ -188,6 +300,8 @@ namespace Webnovel.Migrations
                     b.Property<int>("AuthorId");
 
                     b.Property<int>("CategoryId");
+
+                    b.Property<string>("CoverPageImageUrl");
 
                     b.Property<string>("Name");
 
@@ -209,15 +323,11 @@ namespace Webnovel.Migrations
 
                     b.Property<int>("NovelId");
 
-                    b.Property<int?>("NovelSectionId");
-
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NovelId");
-
-                    b.HasIndex("NovelSectionId");
 
                     b.ToTable("NovelSections");
                 });
@@ -322,6 +432,27 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.Animation", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Author", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.AnimationEpisode", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Animation", "Animation")
+                        .WithMany("AnimationEpisodes")
+                        .HasForeignKey("AnimationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Author", b =>
                 {
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
@@ -337,8 +468,42 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Webnovel.Entities.NovelSection", "NovelSection")
-                        .WithMany()
+                        .WithMany("Chapters")
                         .HasForeignKey("NovelSectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.Comic", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Author", "Author")
+                        .WithMany("Comics")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.ComicScene", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Comic", "Comic")
+                        .WithMany("ComicScenes")
+                        .HasForeignKey("ComicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.Episode", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Comic", "Comic")
+                        .WithMany("Episodes")
+                        .HasForeignKey("ComicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Entities.ComicScene", "ComicScene")
+                        .WithMany("Episodes")
+                        .HasForeignKey("ComicSceneId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -361,10 +526,6 @@ namespace Webnovel.Migrations
                         .WithMany("NovelSections")
                         .HasForeignKey("NovelId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Entities.NovelSection")
-                        .WithMany("NovelSections")
-                        .HasForeignKey("NovelSectionId");
                 });
 #pragma warning restore 612, 618
         }

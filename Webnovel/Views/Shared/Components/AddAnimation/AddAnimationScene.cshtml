@@ -1,0 +1,55 @@
+﻿@using Webnovel.Repository
+@using Webnovel.Models
+@using Microsoft.AspNetCore.Identity
+
+
+@model Webnovel.Models.AnimationEpisodeVm
+
+@inject UserManager<ApplicationUser> UserManager;
+
+@inject IAnimation animation
+@inject IAuthor anuthor
+@{
+
+    var userId = UserManager.GetUserId(User);
+    var author = await anuthor.Get(userId);
+     var epics = await animation.GetAuthorAnimations(author.Id);
+    
+
+}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Add Episode</h4>
+
+        <form class="m-t-25" asp-controller="Animation" id="addAnimeEpic" asp-action="AddEpisodeAsync">
+            @Html.AntiForgeryToken()
+            <div class="alert alert-warning hide" id="alertError"></div>
+            <input asp-for="AnimationId" type="hidden" />
+            <div class="form-group">
+                <label class="control-label">Select An Animation</label>
+
+                <select class="form-control" asp-for="AnimationId">
+                    @foreach (var i in epics)
+                    {
+                        <option value="@i.Id">@i.Title</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Episode Title</label>
+                <input asp-for="Title" type="text" placeholder="Title" class="form-control">
+
+            </div>
+            <div class="form-group">
+                <label class="control-label">Add A Picture</label>
+                <textarea  rows="5" placeholder="Description" class="form-control"> </textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" id="btnCreateChapter" type="submit">
+                    Add
+                    <img src="~/images/loading.gif" class="hide formLoading" id="addChapterLoading" />
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

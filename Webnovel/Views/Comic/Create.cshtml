@@ -1,0 +1,168 @@
+﻿@model Webnovel.Models.ComicVm
+@using Webnovel.Repository
+
+@inject ICategory category
+@{
+    var categories = await category.List();
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+
+<div class="col-md-12 ">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Start creating your Comic</h4>
+            <form class="m-t-20" asp-action="Create" id="novelForm" method="post">
+                @Html.AntiForgeryToken()
+                <div class="alert alert-warning hide" id="alertNovelError">
+
+                </div>
+                <input type="hidden" asp-for="AuthorId" class="form-control" id="authorId">
+
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label">Comic Title</label>
+                    <input type="text" asp-for="Title" class="form-control" placeholder="Comic Title">
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label"> Select category</label>
+                    <select class="form-control" asp-for="CategoryId">
+
+                        @foreach (var i in categories)
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+                    </select>
+
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+              
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"> Give a description of your comic</label>
+                    <textarea asp-for="Description" class="form-control" rows="5" placeholder="comic Description"> </textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <button class="btn btn-primary" id="btnCreateNovel" type="submit">
+                        Next
+                        <img src="~/images/loading.gif" width="40" height="20" class="hide" id="novelLoading" />
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section css{
+    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+}
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        $(function() {
+            var hasAuthor = '@ViewBag.Author';
+            if (hasAuthor != 'true') {
+                $("#createAuthorModal").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
+
+            $("#authorForm").submit(function(event) {
+                event.preventDefault();
+                var formData = {
+                    Id: "",
+                    Title: $("#txtAuthorTitle").val(),
+                    UserId: ""
+                }
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#btnCreateAuthor").attr('disable', 'disable');
+                        $("#authorLoading").show();
+                    },
+                    complete: function(){
+                        $("#btnCreateAuthor").removeAttr('disable');
+                        $("#authorLoading").hide();
+
+                    },
+                    success: function (response) {
+                        if (response.status == 200) {
+                            $("#createAuthorModal").modal('hide');
+                            $('#alertError').addClass('hide');
+                            $('#authorId').val(response.data.id);
+                        } else {
+                            $("#alertError").text(response.message);
+                            $('#alertError').removeClass('hide');
+                        }
+                        console.log(response);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+
+            });
+            });
+
+
+            $("#novelForm").submit(function(event) {
+                event.preventDefault();
+                var data = $(this).serialize();
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#btnCreateNovel").attr('disable', 'disable');
+                        $("#novelLoading").show();
+                    },
+                    complete: function(){
+                        $("#btnCreateNovel").removeAttr('disable');
+                        $("#novelLoading").hide();
+
+                    },
+                    success: function (response) {
+                        if (response.status == 200) {
+                            //$("#createAuthorModal").modal('hide');
+                            //$('#alertError').addClass('hide');
+                            //$('#authorId').val(response.data.id);
+
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'Continue adding chapters and content',
+                                type: 'success',
+                                confirmButtonText: 'Cool'
+                            });
+                            console.log(response);
+
+                            location.href = "/Comic/CoverPage/" + response.data.id;
+                        } else {
+                            $("#alertNovelError").text(response.message);
+                            $('#alertNovelError').removeClass('hide');
+
+                        }
+                        console.log(response);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+
+                });
+            });
+        });
+    </script>
+}
+
+

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,9 +10,14 @@ namespace Webnovel.Models
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Chapter Title or Name Required")]
         public string Name { get; set; }
 
+   
         public string Description { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        public string Content { get; set; }
 
         public int NovelId { get; set; }
         //[ForeignKey("NovelId")]

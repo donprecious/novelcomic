@@ -1,0 +1,30 @@
+﻿@model Webnovel.Entities.Episode
+
+<div class="card">
+    <div class="card-body">
+        <div class="mb-3">
+            @if (Model.ImageUrl == null)
+            {
+                <button onclick="beginUpload(@Model.Id)" class="btn btn-primary"><i class="ti ti-edit"></i> Add Picture </button>
+            }
+            else
+            {
+                <button onclick="beginUpload(@Model.Id)" class="btn btn-primary"><i class="ti ti-edit"></i> Change Picture </button>
+            }
+            <p class="text text-info">Recommended Size are 994 x 1528, or 1988 x 3056 </p>
+            <h4 class="card-title text-center"> @Model.Name</h4>
+            <p class="text-center">
+                <img src="~/images/loading.gif" style="display: none" id="loadingImg" />
+                <input type="hidden" id="uploadedFileData" />
+            </p>
+            <input class="hidden" type="file" id="UploadFileControl" />
+            <div class="border-left border-orange p-l-5">
+
+                <img src="@Model.ImageUrl" id="myImage" class="img-fluid" />
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

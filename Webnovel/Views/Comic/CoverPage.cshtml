@@ -1,0 +1,160 @@
+﻿@model Webnovel.Models.CoverPageVm
+
+@{
+    ViewData["Title"] = "CoverPage";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Upload Cover Page</h3>
+                <div class="row">
+                  
+                    <div class="col-sm-4">
+                        <a href="#">Manage Comic</a>
+                        <div>
+                            <label>Select Picture</label> <br/>
+                            <input type="file" id="uploadFile" class="form-control"/>
+                        </div>
+                      
+
+                       
+                    </div>
+                    <div class="col-sm-8">
+                        
+                        <form asp-action="CoverPage" id="coverPageForm">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="ImageData" id="imgData" />
+                            <div class="alert alert-warning hide" id="alertNovelError">
+
+                            </div>
+                            <div id="show-image" style="width: 200px; display: none">
+                                <img class="img-upload img-fluid" id="item-img-output" src="" />
+                            </div>
+                                <img src="~/images/loading.gif" width="40" class="hide img-fluid" id="novelLoading" />
+
+                                <button type="submit" id="submitButton" class="btn btn-primary"> upload picture </button>
+                        </form>
+
+                       
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section css{
+    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="~/css/croppie.css" rel="stylesheet" />
+    <style>
+        .img-1 {
+            /*width: 994px;
+            height: 1528px;
+            padding-bottom: 25px;*/
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="~/js/croppie.min.js"></script>
+    <script>
+        var $uploadCrop,
+            tempFilename,
+            rawImg,
+            imageId;
+        function readFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    //$('.upload-demo').addClass('ready');
+                    //$('#cropImagePop').modal('show');
+                    rawImg = e.target.result;
+                    $('#item-img-output').attr('src', rawImg);
+                    $('#imgData').val(rawImg);
+                    $('#show-image').show();
+
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                swal("Sorry - you're browser doesn't support the FileReader API");
+            }
+        }
+
+       
+        $('#uploadFile').on('change', function () {
+            imageId = $(this).data('id');
+            tempFilename = $(this).val();
+            //$('#cancelCropBtn').data('id', imageId);
+            readFile(this);
+        });
+
+            //$('#cropImageBtn').on('click', function (ev) {
+            //    $uploadCrop.croppie('result', {
+            //        //type: 'base64',
+            //        type: 'rawcanvas',
+
+            //        format: 'jpeg',
+            //        //size: {width: 150, height: 200}
+            //    }).then(function (resp) {
+            //        $('#item-img-output').attr('src', resp.toDataURL());
+            //        //$('#cropImagePop').modal('hide');
+            //        console.log(resp);
+            //    });
+            //});
+
+        $("#coverPageForm").submit(function(event) {
+            event.preventDefault();
+            var data = $(this).serialize();
+
+            $.ajax({
+                url: $(this).attr("action"),
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                beforeSend: function () {
+                    $("#submitButton").attr('disabled', 'disabled');
+                    $("#novelLoading").show();
+                },
+                complete: function(){
+                    $("#submitButton").removeAttr('disabled');
+                    $("#novelLoading").hide();
+
+                },
+                success: function (response) {
+                    if (response.status == 200) {
+                        //$("#createAuthorModal").modal('hide');
+                        //$('#alertError').addClass('hide');
+                        //$('#authorId').val(response.data.id);
+
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Upload was Successful',
+                            type: 'success',
+                            confirmButtonText: 'Cool'
+                        });
+                        console.log(response);
+
+                       
+                    } else {
+                        $("#alertNovelError").text(response.message);
+                        $('#alertNovelError').removeClass('hide');
+
+                    }
+                    console.log(response);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+
+            });
+        });
+
+    </script>
+}
+

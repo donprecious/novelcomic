@@ -21,6 +21,6 @@ namespace Webnovel.Entities
         public ApplicationUser User { get; set; }
    
         public ICollection<Novel> Novels { get; set; }
-
+        public ICollection<Comic> Comics { get; set; }
     }
 }

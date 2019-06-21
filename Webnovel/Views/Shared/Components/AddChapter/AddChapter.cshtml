@@ -1,0 +1,49 @@
+﻿@using Webnovel.Repository
+@model Webnovel.Models.ChapterVm
+@inject INovel _novel 
+
+@{
+    var sections = await _novel.GetNovelSections(Model.NovelId);
+
+}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Add Chapter</h4>
+
+        <form class="m-t-25" asp-controller="Novel" id="addChapterForm" asp-action="CreateChapter">
+            @Html.AntiForgeryToken()
+            <div class="alert alert-warning hide" id="alertChapterError"></div>
+            <input asp-for="NovelId" type="hidden" />
+            <div class="form-group">
+                <label class="control-label">Select Section</label>
+                @*<input asp-for="Name" type="text" placeholder="Chapter Title or name" class="form-control">*@
+                <select class="form-control" asp-for="NovelSectionId">
+                    @foreach (var i in sections)
+                    {
+                        <option value="@i.Id">@i.Title</option>
+                    }
+                </select>            
+            </div>
+            <div class="form-group">
+                <label class="control-label">Chapter Title</label>
+                <input asp-for="Name" type="text" placeholder="Chapter Title or name" class="form-control">
+          
+            </div>
+            <div class="form-group">
+                <label class="control-label">Chapter Description</label>
+                <textarea asp-for="Description" placeholder="Description" class="form-control"> </textarea>
+            
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" id="btnCreateChapter" type="submit">
+                    Create Section
+                    <img src="~/images/loading.gif" class="hide" id="addChapterLoading" />
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+   
+</script>

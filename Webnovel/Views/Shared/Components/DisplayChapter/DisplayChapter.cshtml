@@ -1,0 +1,17 @@
+﻿@model Webnovel.Entities.Chapter
+
+<div class="card">
+    <div class="card-body">
+        <div class="mb-3">
+            <button onclick="showEditChapter(@Model.Id)"  class="btn btn-primary"><i class="ti ti-edit"></i> Edit</button>
+            <h4 class="card-title text-center"> @Model.Name</h4>
+            <h6 class="card-title text-center"> @Model.NovelSection.Title</h6>
+            <div class="border-left border-orange p-l-5">
+                @Html.Raw(Model.Content)
+            </div>
+      
+        </div>
+    </div>
+
+
+</div>

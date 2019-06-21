@@ -1,0 +1,46 @@
+﻿@using Webnovel.Repository
+@model Webnovel.Models.EpisodeVm
+
+@inject IComic comic
+
+@{
+    var sections = await comic.GetComicScenes(Model.ComicId);
+
+}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Add Episode</h4>
+
+        <form class="m-t-25" asp-controller="Comic" id="addChapterForm" asp-action="AddEpisodeAsync">
+            @Html.AntiForgeryToken()
+            <div class="alert alert-warning hide" id="alertError"></div>
+            <input asp-for="ComicId" type="hidden" />
+            <div class="form-group">
+                <label class="control-label">Select Scene</label>
+               
+                <select class="form-control" asp-for="ComicSceneId">
+                    @foreach (var i in sections)
+                    {
+                        <option value="@i.Id">@i.Title</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Comic Title</label>
+                <input asp-for="Name" type="text" placeholder="Title" class="form-control">
+
+            </div>
+           
+            <div class="form-group">
+                <label class="control-label">Comic Description</label>
+                <textarea asp-for="Description" rows="5" placeholder="Description" class="form-control"> </textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" id="btnCreateChapter" type="submit">
+                    Add
+                    <img src="~/images/loading.gif" class="hide formLoading" id="addChapterLoading" />
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
