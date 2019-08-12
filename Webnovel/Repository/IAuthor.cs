@@ -7,9 +7,11 @@ using Webnovel.Entities;
 
 namespace Webnovel.Repository
 {
+  
+
     public interface IAuthor
     {
-         Task Create(Entities.Author category);
+        Task Create(Entities.Author category);
         Task Delete(int Id);
         Task<ICollection<Entities.Author>> List();
         Task<Entities.Author> Get(int authorId);

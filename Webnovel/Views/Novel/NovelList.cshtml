@@ -1,9 +1,18 @@
-﻿@model System.Collections.Generic.List<Webnovel.Entities.Novel>
+﻿@using CloudinaryDotNet
+@using Webnovel.Services
+@model System.Collections.Generic.List<Webnovel.Entities.Novel>
 
 @{
     ViewBag.Title = "My Novels";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 
+    var cloudinary = new Cloudinary(new Account()
+    {
+        ApiKey = CloudinaryUpload.apiKey,
+        ApiSecret = CloudinaryUpload.apiSecret,
+        Cloud = CloudinaryUpload.cloud,
+
+    });
 }
 <div class="row">
     <div class="col-12">
@@ -13,28 +22,61 @@
             @if (Model.Any())
             {
                 foreach (var i in Model)
-                 {
-                     <div class="col-lg-3 col-md-3" id="noveList_@i.Id">
-                         <!-- Card -->
-                         <div class="card">
-                             <img class="card-img-top img-responsive" src="~/admin/assets/images/big/img1.jpg" alt="Card image cap">
-                             <div class="card-body">
-                                 <div class="d-flex no-block align-items-center m-b-15">
-                                     <span><i class="ti-eye"></i> 0 Views</span>
-                                     <div class="ml-auto">
-                                         <a href="javascript:void(0)" class="link"><i class="ti-comments"></i> 3 Comments</a>
-                                     </div>
-                                 </div>
-                                 <h4 class="card-title">@i.Name</h4>
-                                 <p class="card-text novel-list-des">@i.Title</p>
-                                 <a class="btn btn-primary waves-effect waves-light" href="@Url.Action("ManageChapters", "Novel", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-settings"></i></span> Manage Contents</a>
-                                 <button type="button" data-id="@i.Id" data-href="@Url.Action("DeleteNovel", new{id=i.Id})" class="btn btn-danger waves-effect waves-light deleteNovel"><span class="btn-label"><i class="mdi mdi-delete"></i></span> Delete</button>
+                {
+                    <div class="col-lg-3 col-md-3" id="noveList_@i.Id">
+                        <!-- Card -->
+                        @{
+                            var img = i.CoverPageImageUrl;
+                            if (img != null)
+                            {
+                                img = cloudinary.Api.UrlImgFetch.
+                                        Transform(new Transformation()
+                                            .Height(300).Width(300).Crop("fill")).BuildUrl(i.CoverPageImageUrl);
 
-                             </div>
-                         </div>
-                         <!-- Card -->
-                     </div>
-                 }
+                            }
+                            else
+                            {
+                                img = cloudinary.Api.UrlImgFetch.
+                                    Transform(new Transformation()
+                                        .Height(300).Width(300).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
+
+                            }
+
+                            /*cloudinary.Api.UrlImgUp.Secure(true).
+                                   Transform(new Transformation().Width(150).Height(150).Crop("fit")).Format("Jpg").Type("fetch")
+                                   .BuildUrl(i.CoverPageImageUrl);*/ }
+                        <div class="card">
+                            <a data-fancybox="gallery" href="@i.CoverPageImageUrl">
+                                <img class="card-img-top img-responsive" src="@img" alt="Card image cap">
+
+                            </a>
+                                <div class="card-body">
+                                    <div class="d-flex no-block align-items-center m-b-15">
+                                        <span><i class="ti-eye"></i> 0 Views</span>
+                                        <div class="ml-auto">
+                                            <a href="javascript:void(0)" class="link"><i class="ti-comments"></i> 3 Comments</a>
+                                        </div>
+                                    </div>
+                                    <h4 class="card-title">@i.Name</h4>
+                                    @{
+                                        var des =
+                                            !String.IsNullOrWhiteSpace(i.Title) && i.Title.Length >= 50
+                                                ? i.Title.Substring(0, 50)
+                                                : i.Title;
+                                        des += " ...";
+                                    }
+                                    <p class="card-text novel-list-des">@des</p>
+                                    <a class="btn btn-primary btn-sm waves-effect waves-light" href="@Url.Action("ManageChapters", "Novel", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-settings"></i></span> Manage Contents</a>
+
+                                    <button type="button" data-id="@i.Id" data-href="@Url.Action("DeleteNovel", new {id = i.Id})" class="btn btn-danger btn-sm waves-effect waves-light deleteNovel"><span class="btn-label"><i class="mdi mdi-delete"></i></span> Delete</button>
+                                    <br />
+                                    <a class="waves-effect waves-light" href="@Url.Action("CoverPage", "Novel", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-image"></i></span> Change Cover Picture</a>
+
+                                </div>
+                        </div>
+                        <!-- Card -->
+                    </div>
+                }
             }
             else
             {
@@ -55,17 +97,20 @@
 </div>
 @section css{
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
 }
 
 @section Scripts
     {
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
     <script>
         $(function () {
             $(".novel-list-des").text().substring(0, 100);
 
-            $(".deleteNovel").click(function(event) {
+            $(".deleteNovel").click(function (event) {
                 event.preventDefault();
                 var $btn = $(this);
                 var url = $(this).attr("data-href");
@@ -83,14 +128,14 @@
                         $.ajax(url,
                             {
                                 type: "get",
-                                beforeSend: function() {
+                                beforeSend: function () {
                                     $(this).attr("disabled", "disabled");
                                 },
-                                complete: function() {
+                                complete: function () {
                                     $(this).removeAttr("disabled");
 
                                 },
-                                success: function(response) {
+                                success: function (response) {
                                     if (response.status == 200) {
                                         Swal.fire(
                                             'Deleted!',
@@ -108,8 +153,8 @@
                                     }
                                     console.log(response);
                                 },
-                                error: function(err) {
-                                    console.log(err)
+                                error: function (err) {
+                                    console.log(err);
                                 }
                             });
 

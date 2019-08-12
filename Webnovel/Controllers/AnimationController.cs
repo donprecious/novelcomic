@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Webnovel.Components;
 using Webnovel.Entities;
 using Webnovel.Models;
 using Webnovel.Repository;
@@ -32,10 +33,25 @@ namespace Webnovel.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //userId = _userManager.GetUserId(User);
+            //var currentauthor = await _author.Get(userId);
+            //if (currentauthor != null)
+            //{
+            //    var list = await _author.Get(userId);
+            //    return View(list);
+            //}
+            //var nolist = await _comic.GetAuthorComics(0);
+            //return View(nolist); 
+
             userId = _userManager.GetUserId(User);
             var author = await _author.Get(userId);
-            var list = await _animation.GetAuthorAnimations(author.Id);
-            return View(list);
+            if (author != null)
+            {
+                var list = await _animation.GetAuthorAnimations(author.Id);
+                return View(list);
+            }
+            var nolist = await _animation.GetAuthorAnimations(0);
+            return View(nolist);
         }
 
         public async Task<IActionResult> Create()
@@ -116,7 +132,7 @@ namespace Webnovel.Controllers
                 var upload = await CloudinaryUpload.UploadToCloud(m.ImageData);
                 if (upload)
                 {
-                    var mr = new ComicVm
+                    var mr = new AnimationVm()
                     {
                         Id = comic.Id,
                         CategoryId = comic.CategoryId,
@@ -155,7 +171,7 @@ namespace Webnovel.Controllers
                 await _animation.CreateAnimationEpisode(mapped);
                 if (await _animation.Save())
                 {
-                    var savedData = Mapper.Map<EpisodeVm>(mapped);
+                    var savedData = Mapper.Map<AnimationEpisodeVm>(mapped);
                     return Json(new { status = 200, message = "Created Successfully", data = savedData });
                 }
 
@@ -187,6 +203,11 @@ namespace Webnovel.Controllers
             return Json(new { status = 400, message = "Animation not found" });
         }
 
+        public IActionResult DisplayEpisode(int id)
+        {
+            //var episode = _animation.GetAnimationEpisodes(animationEpisodeId);
+            return ViewComponent("DisplayAnimationEpisode", new { animationEpisodeId  = id});
+        }
        
         
     }

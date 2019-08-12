@@ -108,6 +108,11 @@ namespace Webnovel.Controllers
                 var upload = await CloudinaryUpload.UploadToCloud(m.ImageData);
                 if (upload)
                 {
+                    if (comic.CoverPageImageUrl != null)
+                    {
+                        await CloudinaryUpload.DeleteFromCloud(comic.CoverPageImageUrl);
+                    }
+
                     var mr = new ComicVm
                     {
                         Id = comic.Id,

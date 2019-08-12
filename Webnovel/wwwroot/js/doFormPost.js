@@ -9,11 +9,11 @@
             data: data,
             dataType: 'json',
             beforeSend: function () {
-                $form.find("button[type='submit']").attr('disabled', 'disabled');
+                $form.find("button[type=submit]").attr('disabled', 'disabled');
                 $form.find(".formLoading").show();
             },
             complete: function () {
-                $form.find("button[type='submit']").removeAttr('disabled');
+                $form.find("button[type=submit]").removeAttr('disabled');
                 $form.find(".formLoading").hide();
 
             },

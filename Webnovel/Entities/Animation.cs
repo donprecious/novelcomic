@@ -24,10 +24,9 @@ namespace Webnovel.Entities
         
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
-
-
+       
         public ICollection<AnimationEpisode> AnimationEpisodes { get; set; }
      
-
+        public ICollection<AnimationRating> AnimationRatings { get; set; }
      }
 }

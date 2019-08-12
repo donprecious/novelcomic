@@ -47,5 +47,28 @@ namespace Webnovel.Services
            
             return false;
         }
+        public static async Task<bool> DeleteFromCloud(string file, string folder = "webnovel")
+        {
+
+            Cloudinary cloud = new Cloudinary(account);
+
+          
+            try
+            {
+              
+                var uploadResult = cloud.DeleteResources(file);
+                if (uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+
+            return false;
+        }
     }
 }

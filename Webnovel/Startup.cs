@@ -109,7 +109,11 @@ namespace Webnovel
                 map.CreateMap<Entities.AnimationEpisode, Models.AnimationEpisodeVm>();
                 map.CreateMap<Models.AnimationEpisodeVm, Entities.AnimationEpisode>();
 
+                map.CreateMap<Entities.AnimationComment, Models.AnimationCommentVm>();
+                map.CreateMap<Models.AnimationCommentVm, Entities.AnimationComment>();
 
+                map.CreateMap<Entities.NovelComment, Models.NovelCommentVm>();
+                map.CreateMap<Models.NovelCommentVm, Entities.NovelComment>();
             });
 
                 app.UseStaticFiles();

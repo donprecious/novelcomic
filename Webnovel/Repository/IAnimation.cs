@@ -24,7 +24,7 @@ namespace Webnovel.Repository
 
       Task CreateAnimationEpisode(AnimationEpisode animationEpisode);
       Task<bool> FindAnimationEpisode(int animationEpisodeId);
-        Task GetAnimationEpisodes(int animationId);
+        Task< ICollection<Entities.AnimationEpisode>> GetAnimationEpisodes(int animationId);
       Task<Entities.AnimationEpisode> GetAnimationEpisode(int animationEpisodeId);
    
       Task DeleteAnimationEpisode(AnimationEpisode animationEpisode);

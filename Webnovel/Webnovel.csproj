@@ -81,7 +81,7 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Data\Migrations\" />
-    <Folder Include="Pages\Components\" />
+    <Folder Include="Pages\" />
     <Folder Include="wwwroot\main\video-category\games\page\2\" />
     <Folder Include="wwwroot\main\video-category\hockey\" />
     <Folder Include="wwwroot\main\video\1-0n-1-it-is-a-tough-group\" />
