@@ -1,0 +1,65 @@
+body {
+  overflow: scroll;
+}
+
+.shadow-light {
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.shadow-light:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+h4 {
+  font-size: 16px;
+}
+
+.demo-link {
+  position: relative;
+  width: 100%;
+  background-color: transparent;
+}
+
+.demo-link a {
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  color: #333;
+  font-size: 15px;
+  font-weight: 200;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.demo-link a:hover,
+.demo-link a:active,
+.demo-link a:focus {
+  color: #333;
+  text-decoration: none;
+}
+
+.bg-light {
+  background-color: #ccc;
+}
+
+.linkDiv {
+  cursor: pointer;
+}
+
+.new-seal:before {
+  content: 'NEW';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  border-radius: 50%;
+  background-color: #0097A7;
+  color: #fff;
+  z-index: 100;
+}

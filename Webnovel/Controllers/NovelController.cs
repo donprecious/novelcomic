@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Webnovel.Components;
 using Webnovel.Entities;
 using Webnovel.Models;
 using Webnovel.Repository;
@@ -252,11 +253,71 @@ namespace Webnovel.Controllers
             return Json(new { status = 400, errors = errors, message = "Check your entries" });
         }
 
+
+
         public async Task<IActionResult> AddSectionView(int id)
         {
             return ViewComponent("SectionChapter", new {novelId = id});
         }
+        public async Task<IActionResult> SavedNovels()
+        {
+            userId = _userManager.GetUserId(User);
+            var comics = await _novel.SavedNovel(userId);
+            return View(comics);
+        }
 
+        public IActionResult DeleteSaveNovel(int id)
+        {
+            userId = _userManager.GetUserId(User);
+            var del = _novel.DeleteSavedNovel(id, userId);
+            return RedirectToAction("SavedNovels");
+        }
+        public async Task<IActionResult> ReadNovel(int id)
+        {
+            userId = _userManager.GetUserId(User);
+            int lastViewId = 0;
+
+
+            var comic = await _novel.GetNovel(id);
+            if (comic == null) return View("Error404");
+            // check if libary has value ;  
+            var lib = await _novel.GetLibrary(userId);
+            var comicLib = lib.Where(a => a.NovelId == id).FirstOrDefault();
+            if (comicLib != null)
+            {
+
+                // get first chapter  
+                //var chap = comic.Episodes.FirstOrDefault();
+                //if (chap != null)
+                //{
+                lastViewId = comicLib.LastViewedChapterId;
+                ViewBag.EpisodeId = lastViewId;
+                //}
+            }
+            else
+            {
+
+
+                var epic = comic.Chapters.FirstOrDefault();
+                if (epic != null)
+                {
+                    lastViewId = epic.Id;
+                    ViewBag.EpisodeId = lastViewId;
+                }
+
+            }
+
+
+            return View(comic);
+        }
+        public IActionResult Library()
+        {
+            return View();
+        }
+        public async Task<IActionResult> ReadChapter(int id)
+        {
+            return ViewComponent(typeof(ReadChapterViewComponent), new { novelId = id });
+        }
         public async Task<IActionResult> EditChapterView(int id)
         {
             return ViewComponent("EditChapter", new { chapterId = id });
@@ -266,5 +327,6 @@ namespace Webnovel.Controllers
             return ViewComponent("DisplayChapter", new { chapterId = id });
         }
 
+      
     }
 }

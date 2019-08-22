@@ -32,6 +32,11 @@ namespace Webnovel.Repository
       Task<Entities.Chapter> GetNovelChapter(int chapterId);
       Task EditNovelChapter(ChapterVm chapter );
       Task DeleteNovelChapter(Chapter chapter);
+      Task AddToSave(NovelSaved comicLibrary);
+    Task  DeleteSavedNovel(int comicId, string userId);
+    Task<IEnumerable<NovelSaved>> SavedNovel(string userId);
+    Task AddUpdateToLibrary(NovelLibrary comicLibrary);
       Task<bool> Save();
-  }
+      Task<IEnumerable<Entities.NovelLibrary>> GetLibrary(string userId);
+    }
 }

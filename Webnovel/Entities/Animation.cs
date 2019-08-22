@@ -19,7 +19,7 @@ namespace Webnovel.Entities
 
         [ForeignKey("AuthorId")]
         public Author Author { get; set; }
-
+        public DateTime DateCreated { get; set; }
         public int CategoryId { get; set; }
         
         [ForeignKey("CategoryId")]

@@ -18,6 +18,7 @@ namespace Webnovel.Entities
         public ApplicationUser User { get; set; }
         [Required(ErrorMessage = "Comment Required")]
         public string Comment{ get; set; }
+        public DateTime DateCreated { get; set; }
         public int ComicId { get; set; }
 
         [ForeignKey("ComicId")]

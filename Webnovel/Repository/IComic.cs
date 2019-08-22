@@ -31,7 +31,12 @@ namespace Webnovel.Repository
         Task GetEpisodes(int novelId);
       Task<Entities.Episode> GetEpisode(int episodeId);
       Task EditEpisode(EpisodeVm episode );
+Task DeleteSavedComic(int comicId, string userId);
       Task DeleteEpisode(Episode episode);
+      Task AddToSave(ComicSaved comicSaved);
+      Task<IEnumerable<ComicSaved>> SavedComic(string userId);
+      Task<IEnumerable<Entities.ComicLibrary>> GetLibrary(string userId);
+      Task AddUpdateToLibrary(ComicLibrary comicLibrary);
       Task<bool> Save();
   }
 }

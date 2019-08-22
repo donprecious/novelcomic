@@ -321,14 +321,11 @@
                                 <li class="sidebar-item"><a asp-action="Create" asp-controller="Novel"  class="sidebar-link"><i class="mdi mdi-book-plus"></i><span class="hide-menu"> Create Novel </span></a></li>
                         <li class="sidebar-item"><a asp-action="NovelList" asp-controller="Novel"  class="sidebar-link"><i class="mdi mdi-book-plus"></i><span class="hide-menu"> My Novels </span></a></li>
 
-                                <li class="sidebar-item"><a href="~/admin/index3.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 03 </span></a></li>
-                                <li class="sidebar-item"><a href="~/admin/index4.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 04 </span></a></li>
-                                <li class="sidebar-item"><a href="~/admin/index5.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 05 </span></a></li>
-                                <li class="sidebar-item"><a href="~/admin/index6.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 06 </span></a></li>
-                                <li class="sidebar-item"><a href="~/admin/index7.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 07 </span></a></li>
-                                <li class="sidebar-item"><a href="~/admin/index8.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 08 </span></a></li>
-                                <li class="sidebar-item"><a href="~/admin/index9.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 09 </span></a></li>
-                                <li class="sidebar-item"><a href="~/admin/index10.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 10 </span></a></li>
+                        <li class="sidebar-item"><a asp-controller="Novel" asp-action="Library" class="sidebar-link"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> My Library </span></a></li>
+
+                        <li class="sidebar-item"><a asp-controller="Novel" asp-action="SavedNovels" class="sidebar-link"><i class="mdi mdi-heart"></i><span class="hide-menu"> Saved Novels </span></a></li>
+
+
                             </ul>
                 </li> 
 
@@ -337,9 +334,9 @@
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"><a asp-controller="Comic" asp-action="Create" class="sidebar-link"><i class="mdi mdi-plus"></i><span class="hide-menu"> Create Comic </span></a></li>
                         <li class="sidebar-item"><a asp-controller="Comic" asp-action="List" class="sidebar-link"><i class="mdi mdi-view-list"></i><span class="hide-menu"> My Comics </span></a></li>
+                        <li class="sidebar-item"><a asp-controller="Comic" asp-action="Library" class="sidebar-link"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> My Library </span></a></li>
 
-                        <li class="sidebar-item"><a href="~/admin/sidebar-type-overlaysidebar.html" class="sidebar-link"><i class="mdi mdi-view-day"></i><span class="hide-menu"> Overlay Sidebar </span></a></li>
-                        <li class="sidebar-item"><a href="~/admin/sidebar-type-fullsidebar.html" class="sidebar-link"><i class="mdi mdi-view-array"></i><span class="hide-menu"> Full Sidebar </span></a></li>
+                        <li class="sidebar-item"><a asp-controller="Comic" asp-action="SavedComics" class="sidebar-link"><i class="mdi mdi-heart"></i><span class="hide-menu"> Saved Comics </span></a></li>
 
                     </ul>
                 </li>

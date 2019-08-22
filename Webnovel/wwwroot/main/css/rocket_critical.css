@@ -2292,15 +2292,15 @@ a {
     font-style: normal;
     font-weight: 400;
     src: url(wp-content/themes/vodi/assets/webfonts/fa-regular-400.eot);
-    src: url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"), url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.woff2) format("woff2"), url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.woff) format("woff"), url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.ttf) format("truetype"), url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.svg#fontawesome) format("svg")
+    src: url(/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"), url(/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.woff2) format("woff2"), url(/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.woff) format("woff"), url(/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.ttf) format("truetype"), url(/main/wp-content/themes/vodi/assets/webfonts/fa-regular-400.svg#fontawesome) format("svg")
 }
 
 @font-face {
     font-family: "Font Awesome 5 Free";
     font-style: normal;
     font-weight: 900;
-    src: url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.eot);
-    src: url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"), url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.woff2) format("woff2"), url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.woff) format("woff"), url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.ttf) format("truetype"), url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.svg#fontawesome) format("svg")
+    src: url(/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.eot);
+    src: url(/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"), url(/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.woff2) format("woff2"), url(/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.woff) format("woff"), url(/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.ttf) format("truetype"), url(/main/wp-content/themes/vodi/assets/webfonts/fa-solid-900.svg#fontawesome) format("svg")
 }
 
 .fas {
@@ -2386,7 +2386,7 @@ a {
     }
 
     .site-header.light .site-header__logo .vodi-gr {
-        fill: url(https://demo2.madrasthemes.com/vodi-demos/main/wp-content/themes/vodi/assets/css/#vodi-gr-hh)
+        fill: url(/main/wp-content/themes/vodi/assets/css/#vodi-gr-hh)
     }
 
 @media (min-width:1200px) {
