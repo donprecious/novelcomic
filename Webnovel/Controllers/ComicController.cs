@@ -234,10 +234,68 @@ namespace Webnovel.Controllers
 
         }
 
+        public async Task<IActionResult> SavedComics()
+        {
+            userId = _userManager.GetUserId(User);
+            var comics = await _comic.SavedComic(userId);
+            return View( comics);
+        }
+
+        public IActionResult DeleteSaveComic(int id)
+        {
+            userId = _userManager.GetUserId(User);
+            var del = _comic.DeleteSavedComic(id, userId);
+            return RedirectToAction("SavedComics");
+        }
+        public IActionResult Library()
+        {
+            return View();
+        }
+        public async Task<IActionResult> ReadComic(int id)
+        {
+            userId = _userManager.GetUserId(User);
+            int lastViewId = 0;
+
+
+            var comic = await _comic.GetComic(id);
+            if (comic == null) return View("NotFound");
+            // check if libary has value ;  
+            var lib = await _comic.GetLibrary(userId);
+            var comicLib = lib.Where(a => a.ComicId == id).FirstOrDefault();
+            if (comicLib != null)
+            {
+
+                // get first chapter  
+                //var chap = comic.Episodes.FirstOrDefault();
+                //if (chap != null)
+                //{
+                lastViewId = comicLib.LastViewedId;
+                ViewBag.EpisodeId = lastViewId;
+                //}
+            }
+            else
+            {
+               
+       
+                var epic = comic.Episodes.FirstOrDefault();
+                if (epic != null)
+                {
+                    lastViewId = epic.Id;
+                    ViewBag.EpisodeId = lastViewId;
+                }
+
+            }
+
+
+            return View(comic);
+        } 
         public async Task<IActionResult> DisplayEpisode(int id)
         {
             return ViewComponent(typeof(DisplayEpisodeViewComponent), new { epicId = id});
         }
-
+        public async Task<IActionResult> ReadEpisode(int id)
+        {
+            return ViewComponent(typeof(ReadEpisodeViewComponent), new { episodeId = id });
+        }
     }
 }

@@ -65,10 +65,13 @@ namespace Webnovel
             }
             else
             {
+
                 app.UseExceptionHandler("/Home/Error");
             }
-
-
+            app.UseBrowserLink();
+            app.UseDeveloperExceptionPage();
+            app.UseDatabaseErrorPage();
+          
             AutoMapper.Mapper.Initialize(map =>
             {
                 map.CreateMap<Entities.Novel, Models.NovelVm>();
@@ -93,7 +96,7 @@ namespace Webnovel
                 map.CreateMap<Entities.Comic, Models.CoverPageVm>();
 
 
-
+                
                 map.CreateMap<Entities.ComicScene, Models.ComicSceneVm>();
                 map.CreateMap<Models.ComicSceneVm, Entities.ComicScene>();
 

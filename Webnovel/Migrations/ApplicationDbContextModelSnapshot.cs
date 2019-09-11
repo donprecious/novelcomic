@@ -139,6 +139,8 @@ namespace Webnovel.Migrations
 
                     b.Property<string>("CoverPageImageUrl");
 
+                    b.Property<DateTime>("DateCreated");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("Title");
@@ -337,6 +339,8 @@ namespace Webnovel.Migrations
 
                     b.Property<string>("CoverPageImageUrl");
 
+                    b.Property<DateTime>("DateCreated");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("Title");
@@ -359,6 +363,8 @@ namespace Webnovel.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired();
+
+                    b.Property<DateTime>("DateCreated");
 
                     b.Property<string>("UserId");
 
@@ -504,6 +510,8 @@ namespace Webnovel.Migrations
                     b.Property<int>("CategoryId");
 
                     b.Property<string>("CoverPageImageUrl");
+
+                    b.Property<DateTime>("DateCreated");
 
                     b.Property<string>("Name");
 

@@ -86,6 +86,7 @@
                                 <p class="card-text novel-list-des">@des</p>
                                 <a class="btn btn-primary waves-effect btn-xs waves-light" href="@Url.Action("Manage", "Comic", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-settings"></i></span> Manage Contents</a>
                                 <button type="button" data-id="@i.Id" data-href="@Url.Action("DeleteComicAsync", new {id = i.Id})" class="btn btn-danger btn-xs waves-effect waves-light deleteNovel"><span class="btn-label"><i class="mdi mdi-delete"></i></span> Delete</button>
+                                <a class="waves-effect waves-light" href="@Url.Action("CoverPage", "Comic", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-image"></i></span> Change Cover Picture</a>
 
                             </div>
                         </div>

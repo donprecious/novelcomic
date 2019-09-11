@@ -19,6 +19,7 @@ namespace Webnovel.Repository
 
         public async Task CreateAnimation(Entities.Animation animation)
         {
+            animation.DateCreated = DateTime.UtcNow;
             await _context.Animations.AddAsync(animation);
         }
 

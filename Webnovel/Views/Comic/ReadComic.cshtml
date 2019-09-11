@@ -1,0 +1,120 @@
+﻿
+@using Webnovel.Repository
+@model Webnovel.Entities.Comic
+@inject IComic _Comic
+@{
+    ViewData["Title"] = "Read Comic";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+
+    var comicScene = await _Comic.GetComicScenes(Model.Id);
+
+    var episodeId = ViewBag.EpisodeId;
+}
+<div class="left-part bg-white p-b-40">
+    <!-- Mobile toggle button -->
+    <a class="ti-menu ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
+    <!-- Mobile toggle button -->
+    <div class="scrollable position-relative ps-container ps-theme-default" style="height:100%;" data-ps-id="bfdfe7c7-2f7f-9f54-d173-ff3f0606991b">
+        <div class="p-15" id="sections">
+            @* comic scences *@ 
+            <div class="p-15">
+               
+                @foreach (var i in comicScene)
+                {
+                    <h4 class="text-primary card-title m-2">@i.Title</h4>
+                    <ul class="list-group">
+           
+                        @if (i.Episodes.Any())
+                        {
+                            foreach (var a in i.Episodes)
+                            {
+                                <li class="list-group-item"> <a class="text-cyan" onclick="displayEpisode(@a.Id)"> @a.Name </a>   </li>
+                            }
+
+                        }
+
+                        @*<li class="list-group-item"> <a href="#">Chapter 1</a> </li>
+            <li class="list-group-item">Chapter 2</li>
+            <li class="list-group-item">Chapter 2</li>
+            <li class="list-group-item">Chapter 2</li>
+            <li class="list-group-item">Chapter 2</li>*@
+                    </ul>
+                }
+                @*<h4 class="text-primary card-title">Section 1</h4>
+    <ul class="list-group">
+        <li class="list-group-item"> <a href="#">Chapter 1</a> </li>
+        <li class="list-group-item">Chapter 2</li>
+        <li class="list-group-item">Chapter 2</li>
+        <li class="list-group-item">Chapter 2</li>
+        <li class="list-group-item">Chapter 2</li>
+    </ul>*@
+            </div>
+          
+        </div>
+        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+
+            <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
+    </div>
+</div>
+ 
+<input type="hidden" value=""/>
+<div class="right-part">
+    <div class="">
+ 
+        <!-- Row -->
+        <div class="">
+            <div class="card p-3">
+                <h2 class="d-inline">My Comics</h2>
+                <h4 class="card-title text-center"> @Model.Title</h4>
+                <div class="tolbar">
+                    <button class="btn btn-outline-cyan "> <i class="fa fa-backward"></i> Back</button>
+                    <button class="btn btn-outline-cyan "> <i class="fa fa-tv"></i> Full Screen</button>
+
+                    <button class="btn btn-outline-cyan "> <i class="fa fa-forward"></i> Next</button>
+
+                </div>
+                <div class="card-body">
+                    <div id="loader" style="width: 40%; margin: auto; display: none; " >
+                        <img src="~/images/loading.gif" />
+                    </div>
+                    <div class="showEpisode">
+                        @await Component.InvokeAsync("ReadEpisode", new {episodeId = episodeId})
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- Row -->
+
+    </div>
+</div>
+@section css{
+    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+}
+
+@section Scripts
+    {
+     
+    <script>
+        function displayEpisode(epicId) {
+            $.ajax("/Comic/ReadEpisode/" + epicId,
+                {
+                    type: "get",
+                    beforeSend: function() {
+                        $("#loader").show();
+                    },
+                    complete: function() {
+                        $("#loader").hide();
+
+                    },
+                    success: function(response) {
+                        $(".showEpisode").html(response);
+                    }
+                });
+            //$(".showEpisode").load("/Comic/ReadEpisode/"+epicId);
+        }
+    </script>
+}

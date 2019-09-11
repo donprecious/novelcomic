@@ -39,4 +39,19 @@ namespace Webnovel.Models
         //public  ICollection<ComicScene> ComicScenes { get; set; }
 
      }
+
+    public class ComicSavedDto
+    {
+        public int Id { get; set; }
+
+        public int ComicId { get; set; }
+
+        public string UserId { get; set; }
+        public DateTime DateTime { get; set; }
+
+
+
+
+    }
+
 }

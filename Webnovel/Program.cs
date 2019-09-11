@@ -7,7 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-
+using Sentry;
 namespace Webnovel
 {
     public class Program
@@ -20,6 +20,7 @@ namespace Webnovel
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseSentry("https://4e998488c0c640f0909ec970523e1bbb@sentry.io/1530136")
                 .Build();
     }
 }

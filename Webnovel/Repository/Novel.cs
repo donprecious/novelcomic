@@ -20,17 +20,22 @@ namespace Webnovel.Repository
         }
         public async Task CreateNovel(Entities.Novel novel)
         {
+            novel.DateCreated = DateTime.UtcNow;
            await _context.Novels.AddAsync(novel);
         }
 
         public async Task<List<Entities.Novel>> GetAllNovels()
         {
-            throw new NotImplementedException();
+            return await _context.Novels.ToListAsync();
         }
 
         public async Task<Entities.Novel> GetNovel(int novelId)
         {
-            var novel = await _context.Novels.FindAsync(novelId);
+            var novel = await _context.Novels.Include(a => a.Author).
+                Include(a => a.Category)
+                .Include(a => a.NovelSections)
+                .Include(a => a.Chapters).
+                Where(a => a.Id == novelId).SingleOrDefaultAsync();
             return novel;
         }
 
@@ -121,6 +126,51 @@ namespace Webnovel.Repository
         {
             throw new NotImplementedException();
         }
+        public async Task AddUpdateToLibrary(NovelLibrary comicLibrary)
+        {
+            // check if comic is in user Libary 
+
+            var lib = await _context.NovelLibraries
+                .Where(a => a.NovelId == comicLibrary.NovelId && a.UserId == comicLibrary.UserId).FirstOrDefaultAsync();
+            if (lib == null)
+            {
+                _context.NovelLibraries.Add(comicLibrary);
+            }
+            else
+            {
+                //update last views 
+                lib.LastViewedChapterId = comicLibrary.LastViewedChapterId;
+            }
+
+        }
+
+        public async Task<IEnumerable<Entities.NovelLibrary>> GetLibrary(string userId)
+        {
+            var lib = await _context.NovelLibraries.Where(a => a.UserId == userId)
+                .Include(a => a.Novel)
+                .Include(a => a.Novel.Chapters)
+
+                .ToListAsync();
+            return lib;
+        }
+        public async Task AddToSave(NovelSaved comicLibrary)
+        {
+            await _context.NovelSaveds.AddAsync(comicLibrary);
+        }
+        public async Task DeleteSavedNovel(int comicId, string userId)
+        {
+            var find = await _context.NovelSaveds.Where(a => a.NovelId == comicId && a.UserId == userId).ToListAsync();
+            _context.NovelSaveds.RemoveRange(find);
+        }
+        public async Task<IEnumerable<NovelSaved>> SavedNovel(string userId)
+        {
+            return await _context.NovelSaveds.Where(a => a.UserId == userId)
+                .Include(a => a.Novel)
+                .Include(a => a.User)
+
+                .ToListAsync();
+        }
+
 
         public async Task<bool> Save()
         {

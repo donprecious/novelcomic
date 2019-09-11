@@ -22,6 +22,7 @@ namespace Webnovel.Entities
 
         public int CategoryId { get; set; }
         
+        public DateTime DateCreated { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
