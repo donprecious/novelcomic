@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Webnovel.Entities;
 using Webnovel.Models;
 using Webnovel.Repository;
+using Webnovel.Services;
 using Novel = Webnovel.Entities.Novel;
 
 namespace Webnovel.Controllers
@@ -122,6 +123,49 @@ namespace Webnovel.Controllers
 
         }
 
+        public async Task<IActionResult> CoverPage(int id)
+        {
+            var comic = await _novel.GetNovel(id);
+            if (comic != null)
+            {
+                var m = new CoverPageVm()
+                {
+                    Id = comic.Id
+                };
+
+                return View(m);
+            }
+
+            return View("Error404");
+        } 
+
+
+        [HttpPost]
+        public async Task<IActionResult> CoverPage(CoverPageVm m)
+        {
+            if (!await _novel.FindNovel(m.Id)) return Json(new { status = 401, message = "novel not found" });
+            if (m.ImageData == null) return Json(new { status = 401, message = "No Image Found" });
+
+            var episode = await _novel.GetNovel(m.Id);
+            var upload = await CloudinaryUpload.UploadToCloud(m.ImageData);
+            if (upload)
+            {
+                if (episode.CoverPageImageUrl != null)
+                {
+                    await CloudinaryUpload.DeleteFromCloud(episode.CoverPageImageUrl);
+                }
+             
+                episode.CoverPageImageUrl = CloudinaryUpload.uploadedPath;
+                if (!await _novel.Save())
+                    return Json(new { status = 400, message = "Something Went Wrong While Updating" });
+                return Json(new { status = 200, message = "Changes was Successful", data = episode });
+            }
+
+            return Json(new { status = 400, message = "Something Went wrong" });
+
+        }
+
+
         public async Task<IActionResult> NovelList()
         {
             userId = _userManager.GetUserId(User);
@@ -135,6 +179,7 @@ namespace Webnovel.Controllers
             ;
             return View(nolist);
         }
+     
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateChapter(ChapterVm m)
         {

@@ -28,6 +28,8 @@ namespace Webnovel.Entities
 
         public ICollection<Episode> Episodes { get; set; }
         public  ICollection<ComicScene> ComicScenes { get; set; }
+        public ICollection<ComicRating> ComicRatings { get; set; }
 
-     }
+
+    }
 }

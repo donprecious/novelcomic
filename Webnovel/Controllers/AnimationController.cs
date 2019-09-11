@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Webnovel.Components;
 using Webnovel.Entities;
 using Webnovel.Models;
 using Webnovel.Repository;
@@ -155,7 +156,7 @@ namespace Webnovel.Controllers
                 await _animation.CreateAnimationEpisode(mapped);
                 if (await _animation.Save())
                 {
-                    var savedData = Mapper.Map<EpisodeVm>(mapped);
+                    var savedData = Mapper.Map<AnimationEpisodeVm>(mapped);
                     return Json(new { status = 200, message = "Created Successfully", data = savedData });
                 }
 
@@ -187,6 +188,11 @@ namespace Webnovel.Controllers
             return Json(new { status = 400, message = "Animation not found" });
         }
 
+        public IActionResult DisplayEpisode(int id)
+        {
+            //var episode = _animation.GetAnimationEpisodes(animationEpisodeId);
+            return ViewComponent("DisplayAnimationEpisode", new { animationEpisodeId  = id});
+        }
        
         
     }

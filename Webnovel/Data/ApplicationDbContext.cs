@@ -31,6 +31,26 @@ namespace Webnovel.Data
         public DbSet<AnimationEpisode> AnimationEpisodes { get; set; }
 
 
+        public DbSet<AnimationComment> AnimationComments { get; set; }
+        public DbSet<NovelComment> NovelComments { get; set; }
+        public DbSet<ComicComment> ComicComments{ get; set; }
+
+        public DbSet<ComicLibrary> ComicLibraries { get; set; }
+        public DbSet<NovelLibrary> NovelLibraries { get; set; }
+        public DbSet<AnimationLibrary> AnimationLibraries { get; set; }
+
+
+        public DbSet<ComicSaved> ComicSaveds { get; set; }
+        public DbSet<AnimationSaved> AnimationSaveds { get; set; }
+        public DbSet<NovelSaved> NovelSaveds { get; set; }
+
+        public DbSet<ComicReport> ComicReports { get; set; }
+        public DbSet<AnimationReport> AnimationReports { get; set; }
+        public DbSet<NovelReport> NovelReports { get; set; }
+
+        public DbSet<AnimationRating> AnimationRatings{ get; set; }
+        public DbSet<NovelRating> NovelRatings { get; set; }
+        public DbSet<ComicRating> ComicRatings { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -56,8 +76,52 @@ namespace Webnovel.Data
 
             builder.Entity<Animation>().HasMany(a => a.AnimationEpisodes).WithOne(a => a.Animation);
             builder.Entity<Animation>().HasOne(a => a.Author);
-            builder.Entity<Animation>().HasOne(a => a.Category); 
+            builder.Entity<Animation>().HasOne(a => a.Category);
 
+            builder.Entity<NovelComment>().HasOne(a => a.User);
+            builder.Entity<NovelComment>().HasOne(a => a.Novel);
+
+            builder.Entity<ComicComment>().HasOne(a => a.User);
+            builder.Entity<ComicComment>().HasOne(a => a.Comic);
+
+            builder.Entity<AnimationComment>().HasOne(a => a.User);
+            builder.Entity<AnimationComment>().HasOne(a => a.Animation);
+
+
+            builder.Entity<NovelLibrary>().HasOne(a => a.User);
+            builder.Entity<NovelLibrary>().HasOne(a => a.Novel);
+
+            builder.Entity<ComicLibrary>().HasOne(a => a.User);
+            builder.Entity<ComicLibrary>().HasOne(a => a.Comic);
+
+            builder.Entity<AnimationLibrary>().HasOne(a => a.User);
+            builder.Entity<AnimationLibrary>().HasOne(a => a.Animation);
+
+            builder.Entity<NovelSaved>().HasOne(a => a.User);
+            builder.Entity<NovelSaved>().HasOne(a => a.Novel);
+
+            builder.Entity<ComicSaved>().HasOne(a => a.User);
+            builder.Entity<ComicSaved>().HasOne(a => a.Comic);
+
+            builder.Entity<AnimationReport>().HasOne(a => a.User);
+            builder.Entity<AnimationReport>().HasOne(a => a.Animation);
+
+            builder.Entity<NovelReport>().HasOne(a => a.User);
+            builder.Entity<NovelReport>().HasOne(a => a.Novel);
+
+            builder.Entity<ComicReport>().HasOne(a => a.User);
+            builder.Entity<ComicReport>().HasOne(a => a.Comic);
+
+            builder.Entity<AnimationRating>().HasOne(a => a.User);
+            builder.Entity<AnimationRating>().HasOne(a => a.Animation).WithMany(a=>a.AnimationRatings);
+
+
+            builder.Entity<ComicRating>().HasOne(a => a.User);
+            builder.Entity<ComicRating>().HasOne(a => a.Comic).WithMany(a => a.ComicRatings);
+
+
+            builder.Entity<NovelRating>().HasOne(a => a.User);
+            builder.Entity<NovelRating>().HasOne(a => a.Novel).WithMany(a => a.NovelRatings);
         }
     }
 }

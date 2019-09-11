@@ -28,5 +28,7 @@ namespace Webnovel.Entities
         public ICollection<Chapter> Chapters { get; set; }
         public  ICollection<NovelSection> NovelSections { get; set; }
 
+        public ICollection<NovelRating> NovelRatings { get; set; }
+
      }
 }

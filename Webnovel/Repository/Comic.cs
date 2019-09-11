@@ -36,25 +36,21 @@ namespace Webnovel.Repository
         public async Task<List<Entities.Comic>> GetAuthorComics(int id)
         {
          return   await _context.Comics.Where(a=>a.AuthorId == id).ToListAsync();
-        }
+        } 
 
         public async Task DeleteComic(int id)
         {
-            throw new NotImplementedException();
+            _context.Comics.Remove(await _context.Comics.FindAsync(id));
         }
 
         public async Task EditComic(Entities.Comic comic)
         {
-            //_context.Comics.Update(comic);
-            //_context.Entry(comic).State = EntityState.Modified;
-
+         
         }
 
         public async Task<bool> FindComic(int comicId)
         {
             return await _context.Comics.AnyAsync(a => a.Id == comicId);
-
-
         }
 
         public async Task CreateComicScene(ComicScene comicScene)
@@ -66,7 +62,6 @@ namespace Webnovel.Repository
         {
             return await _context.ComicScenes.Where(a => a.ComicId == comicId)
                 .Include(a=>a.Episodes)
-                
                 .ToListAsync();
         }
 

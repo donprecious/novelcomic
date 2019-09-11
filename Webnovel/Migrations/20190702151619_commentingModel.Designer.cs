@@ -11,9 +11,10 @@ using Webnovel.Data;
 namespace Webnovel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190702151619_commentingModel")]
+    partial class commentingModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,86 +192,6 @@ namespace Webnovel.Migrations
                     b.ToTable("AnimationEpisodes");
                 });
 
-            modelBuilder.Entity("Webnovel.Entities.AnimationLibrary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AnimationId");
-
-                    b.Property<int>("LastViewedId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AnimationLibraries");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.AnimationRating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AnimationId");
-
-                    b.Property<string>("UserId");
-
-                    b.Property<double>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AnimationRatings");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.AnimationReport", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AnimationId");
-
-                    b.Property<string>("Message");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AnimationReports");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.AnimationSaved", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AnimationId");
-
-                    b.Property<DateTime>("DateTime");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AnimationSaveds");
-                });
-
             modelBuilder.Entity("Webnovel.Entities.Author", b =>
                 {
                     b.Property<int>("Id")
@@ -371,86 +292,6 @@ namespace Webnovel.Migrations
                     b.ToTable("ComicComments");
                 });
 
-            modelBuilder.Entity("Webnovel.Entities.ComicLibrary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ComicId");
-
-                    b.Property<int>("LastViewedId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComicId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ComicLibraries");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.ComicRating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ComicId");
-
-                    b.Property<string>("UserId");
-
-                    b.Property<double>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComicId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ComicRatings");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.ComicReport", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ComicId");
-
-                    b.Property<string>("Message");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComicId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ComicReports");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.ComicSaved", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ComicId");
-
-                    b.Property<DateTime>("DateTime");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComicId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ComicSaveds");
-                });
-
             modelBuilder.Entity("Webnovel.Entities.ComicScene", b =>
                 {
                     b.Property<int>("Id")
@@ -537,86 +378,6 @@ namespace Webnovel.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("NovelComments");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelLibrary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LastViewedChapterId");
-
-                    b.Property<int>("NovelId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NovelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("NovelLibraries");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelRating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("NovelId");
-
-                    b.Property<string>("UserId");
-
-                    b.Property<double>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NovelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("NovelRatings");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelReport", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Message");
-
-                    b.Property<int>("NovelId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NovelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("NovelReports");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelSaved", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DateTime");
-
-                    b.Property<int>("NovelId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NovelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("NovelSaveds");
                 });
 
             modelBuilder.Entity("Webnovel.Entities.NovelSection", b =>
@@ -768,54 +529,6 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Webnovel.Entities.AnimationLibrary", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Animation", "Animation")
-                        .WithMany()
-                        .HasForeignKey("AnimationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.AnimationRating", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Animation", "Animation")
-                        .WithMany("AnimationRatings")
-                        .HasForeignKey("AnimationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.AnimationReport", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Animation", "Animation")
-                        .WithMany()
-                        .HasForeignKey("AnimationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.AnimationSaved", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Animation", "Animation")
-                        .WithMany()
-                        .HasForeignKey("AnimationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("Webnovel.Entities.Author", b =>
                 {
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
@@ -850,54 +563,6 @@ namespace Webnovel.Migrations
                 });
 
             modelBuilder.Entity("Webnovel.Entities.ComicComment", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Comic", "Comic")
-                        .WithMany()
-                        .HasForeignKey("ComicId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.ComicLibrary", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Comic", "Comic")
-                        .WithMany()
-                        .HasForeignKey("ComicId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.ComicRating", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Comic", "Comic")
-                        .WithMany("ComicRatings")
-                        .HasForeignKey("ComicId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.ComicReport", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Comic", "Comic")
-                        .WithMany()
-                        .HasForeignKey("ComicId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.ComicSaved", b =>
                 {
                     b.HasOne("Webnovel.Entities.Comic", "Comic")
                         .WithMany()
@@ -944,54 +609,6 @@ namespace Webnovel.Migrations
                 });
 
             modelBuilder.Entity("Webnovel.Entities.NovelComment", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Novel", "Novel")
-                        .WithMany()
-                        .HasForeignKey("NovelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelLibrary", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Novel", "Novel")
-                        .WithMany()
-                        .HasForeignKey("NovelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelRating", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Novel", "Novel")
-                        .WithMany("NovelRatings")
-                        .HasForeignKey("NovelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelReport", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Novel", "Novel")
-                        .WithMany()
-                        .HasForeignKey("NovelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelSaved", b =>
                 {
                     b.HasOne("Webnovel.Entities.Novel", "Novel")
                         .WithMany()

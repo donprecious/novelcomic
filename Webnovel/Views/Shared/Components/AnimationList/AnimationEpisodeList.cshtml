@@ -1,0 +1,29 @@
+﻿@model System.Collections.Generic.ICollection<Webnovel.Entities.AnimationEpisode>
+
+
+@{
+    var playlist = Model.Select(a => a.VideoUrl).ToList();
+} 
+<script>
+    var list = [];
+    @foreach (var i in playlist)
+    {
+        @: list.push("@i");      
+    }
+</script>
+<div class="p-15">
+    @if (Model.Count() == 0)
+    {
+      
+        <h4 class="text-primary card-title"> No Scene Yet </h4> 
+        <button class="btn btn-outline-orange" onclick=" showAddEpisode()">Add Episode</button>
+    }
+    @foreach (var i in Model)
+    {
+      
+        <ul class="list-group">
+                    <li class="list-group-item"> <a class="text-cyan" onclick="showEpisode(@i.Id, list )"> @i.Title  </a>   </li>
+        </ul>
+    }
+ 
+</div>

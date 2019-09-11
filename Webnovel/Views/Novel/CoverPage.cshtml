@@ -1,9 +1,10 @@
-﻿@model Webnovel.Models.CoverPageVm
+﻿@model CoverPageVm
 
 @{
-    ViewData["Title"] = "Comic Cover Page";
+    ViewData["Title"] = "Novel Cover Page";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
+
 
 <div class="row">
     <div class="col-md-12">
@@ -11,20 +12,20 @@
             <div class="card-body">
                 <h3 class="card-title">Upload Cover Page</h3>
                 <div class="row">
-                  
-                    <div class="col-sm-4">
-                        <a href="@Url.Action("Manage", "Comic", new {id = Model.Id} )">Manage Comic</a>
-                        <div>
-                            <label>Select Picture</label> <br/>
-                            <input type="file" id="uploadFile" class="form-control"/>
-                        </div>
-                      
 
-                       
+                    <div class="col-sm-4">
+                        <a href="@Url.Action("ManageChapters", "Novel", new {id = Model.Id} )">Manage Novel</a>
+                        <div>
+                            <label>Select Picture</label> <br />
+                            <input type="file" id="uploadFile" class="form-control" />
+                        </div>
+
+
+
                     </div>
                     <div class="col-sm-8">
-                        
-                        <form asp-action="CoverPage" id="coverPageForm">
+
+                        <form asp-action="CoverPage"  id="coverPageForm">
                             <input type="hidden" asp-for="Id" />
                             <input type="hidden" asp-for="ImageData" id="imgData" />
                             <div class="alert alert-warning hide" id="alertNovelError">
@@ -33,12 +34,12 @@
                             <div id="show-image" style="width: 200px; display: none">
                                 <img class="img-upload img-fluid" id="item-img-output" src="" />
                             </div>
-                                <img src="~/images/loading.gif" width="40" class="hide img-fluid" id="novelLoading" />
+                            <img src="~/images/loading.gif" width="40" class="hide img-fluid" id="novelLoading" />
 
-                                <button type="submit" id="submitButton" class="btn btn-primary"> upload picture </button>
+                            <button type="submit" id="submitButton" class="btn btn-primary"> upload picture </button>
                         </form>
 
-                       
+
                     </div>
 
                 </div>
@@ -86,7 +87,7 @@
             }
         }
 
-       
+
         $('#uploadFile').on('change', function () {
             imageId = $(this).data('id');
             tempFilename = $(this).val();
@@ -157,4 +158,5 @@
 
     </script>
 }
+
 

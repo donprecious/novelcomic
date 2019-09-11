@@ -57,14 +57,15 @@ namespace Webnovel.Repository
             throw new NotImplementedException();
         }
 
-        public async Task GetAnimationEpisodes(int animationId)
+        public async Task<ICollection<Entities.AnimationEpisode>> GetAnimationEpisodes(int animationId)
         {
-            throw new NotImplementedException();
+            return await _context.AnimationEpisodes.Where(a => a.AnimationId == animationId).ToListAsync();
         }
 
         public async Task<AnimationEpisode> GetAnimationEpisode(int animationEpisodeId)
         {
-            throw new NotImplementedException();
+            return await _context.AnimationEpisodes.Where(a => a.Id== animationEpisodeId)
+                .SingleOrDefaultAsync();
         }
 
         public async Task DeleteAnimationEpisode(AnimationEpisode animationEpisode)

@@ -9,9 +9,29 @@
     {
         ApiKey = CloudinaryUpload.apiKey,
         ApiSecret = CloudinaryUpload.apiSecret,
-        Cloud = CloudinaryUpload.cloud
+        Cloud = CloudinaryUpload.cloud,
+
     });
+
 }
+
+@*@section TopScripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-core/2.6.3/cloudinary-core-shrinkwrap.min.js" type="text/javascript">
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-core/2.6.3/cloudinary-core-shrinkwrap.min.js" type="text/javascript">
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-core/2.6.3/cloudinary-core.min.js" type="text/javascript">
+    </script>
+
+    <script>
+        var cloudName = "@CloudinaryUpload.cloud";
+        var apiKey = "@CloudinaryUpload.apiKey";
+        var cl = new cloudinary.Cloudinary({ cloud_name: cloudName, secure: true });
+    </script>
+}*@
 <div class="row">
     <div class="col-12">
         <h4 class="d-inline">My Comics</h4>
@@ -23,14 +43,31 @@
                 {
                     <div class="col-lg-3 col-md-3" id="noveList_@i.Id">
                         <!-- Card -->
-                        <div class="card">
-                            @{ var img = cloudinary.Api.UrlImgUp.
-                                   Transform(new Transformation().Width(300).Height(200).Crop("crop"))
-                                   .BuildImageTag(i.CoverPageImageUrl);}
-                                                      @*<img class="card-img-top img-fluid"src="@i.CoverPageImageUrl" alt="Card image cap">*@  
-                            @*<img class="card-img-top img-fluid"src="@img" alt="Card image cap">*@  
-                            @Html.Raw(img)
-                         
+                        <div class="card"> 
+                            @{ 
+
+                                var img = i.CoverPageImageUrl;
+                                if (img != null)
+                                {
+                                    img = cloudinary.Api.UrlImgFetch.
+                                        Transform(new Transformation()
+                                            .Height(300).Width(300).Crop("fill")).BuildUrl(i.CoverPageImageUrl);
+                                    var s = i.CoverPageImageUrl.Insert(45, "w_300,h_200,c_fit/");
+                                }
+                                else
+                                {
+                                    
+                                    img = "https://comicbookrealm.com/cover-scan/d3459cbd5aaffcd225612beed968dc25/xl/comics-conspiracy-generic-comic-issue-7.jpg";
+                                }
+
+
+                                /*cloudinary.Api.UrlImgUp.Secure(true).
+                                    Transform(new Transformation().Width(150).Height(150).Crop("fit")).Format("Jpg").Type("fetch")
+                                    .BuildUrl(i.CoverPageImageUrl);*/ }
+                            @*<img class="card-img-top img-fluid"src="@i.CoverPageImageUrl" alt="Card image cap">*@
+                            <img class="card-img-top img-fluid" src="@img" alt="Card image cap">
+                            @*@Html.Raw(img)*@
+                       
                             <div class="card-body">
                                 <div class="d-flex no-block align-items-center m-b-15">
                                     <span><i class="ti-eye"></i> 0 Views</span>
@@ -38,8 +75,15 @@
                                         <a href="javascript:void(0)" class="link"><i class="ti-comments"></i> 3 Comments</a>
                                     </div>
                                 </div>
-                                <h4 class="card-title">@i.Title</h4>
-                                <p class="card-text novel-list-des">@i.Description</p>
+                                <h4 class="card-title">@i.Title</h4> 
+                                @{
+                                    var des = 
+                                        !String.IsNullOrWhiteSpace(i.Description) && i.Description.Length >= 50
+                                            ? i.Description.Substring(0, 50)
+                                            : i.Description;
+                                    des += " ...";
+                                }
+                                <p class="card-text novel-list-des">@des</p>
                                 <a class="btn btn-primary waves-effect btn-xs waves-light" href="@Url.Action("Manage", "Comic", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-settings"></i></span> Manage Contents</a>
                                 <button type="button" data-id="@i.Id" data-href="@Url.Action("DeleteComicAsync", new {id = i.Id})" class="btn btn-danger btn-xs waves-effect waves-light deleteNovel"><span class="btn-label"><i class="mdi mdi-delete"></i></span> Delete</button>
 
@@ -77,7 +121,7 @@
         $(function () {
             $(".novel-list-des").text().substring(0, 100);
 
-            $(".deleteNovel").click(function(event) {
+            $(".deleteNovel").click(function (event) {
                 event.preventDefault();
                 var $btn = $(this);
                 var url = $(this).attr("data-href");
@@ -95,14 +139,14 @@
                         $.ajax(url,
                             {
                                 type: "get",
-                                beforeSend: function() {
+                                beforeSend: function () {
                                     $(this).attr("disabled", "disabled");
                                 },
-                                complete: function() {
+                                complete: function () {
                                     $(this).removeAttr("disabled");
 
                                 },
-                                success: function(response) {
+                                success: function (response) {
                                     if (response.status == 200) {
                                         Swal.fire(
                                             'Deleted!',
@@ -120,7 +164,7 @@
                                     }
                                     console.log(response);
                                 },
-                                error: function(err) {
+                                error: function (err) {
                                     console.log(err);
                                 }
                             });
