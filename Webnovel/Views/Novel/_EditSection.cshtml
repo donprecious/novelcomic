@@ -1,0 +1,26 @@
+﻿@model Webnovel.Entities.NovelSection
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Edit Section</h4>
+
+        <form class="m-t-25" asp-controller="Novel" id="editSectionForm" asp-action="EditSection">
+            @Html.AntiForgeryToken()
+            <div class="alert alert-warning hide" id="alertNovelError"></div>
+            <input asp-for="NovelId" type="hidden" />
+            <input asp-for="Id" type="hidden" />
+
+            <div class="form-group">
+                <label class="control-label">Section Title</label>
+                <input asp-for="Title" type="text" class="form-control">
+                <span asp-validation-for="Title" class="text text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" id="btnEditSection" type="submit">
+                    Edit Section
+                    <img src="~/images/loading.gif" class="hide" id="editSectionLoading" />
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

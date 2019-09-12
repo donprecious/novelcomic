@@ -25,13 +25,12 @@
                         type: 'success',
                         confirmButtonText: 'Cool'
                     });
-                    $("#sections").load('/Novel/AddSectionView/' + response.data.novelId);
+                    $("#sections").load('/Novel/AddSectionView/' + response.data.novelId); 
+                    showEditChapter(response.data.id);
+                    $("#createChapterModal").modal('close');
                 } else if (response.status == 400) {
-                    var html = "<ul> ";
-                    response.errors.forEach(a => {
-                        html += `<li> ${a.errorMessage} </li>`;
-
-                    });
+                    var html = "<ul>";
+                    response.errors.forEach(a=>{html += `<li>${a.errorMessage}</li>`; });
                     $("#alertNovelError").html(html + '</ul>');
                     $('#alertNovelError').removeClass('hide');
 

@@ -1,0 +1,194 @@
+﻿
+@{
+    ViewData["Title"] = "FundWallet";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="card">
+    <div class="card-body">
+        <h4>Fund my wallet</h4>
+        <p class="text-info font-weight-bold">
+            Buy Cowries (Cr) token to get access to premium content
+            <br />
+            <b>1 cr = 0.05 usd</b>
+            <br />
+
+        </p>
+    </div>
+
+
+</div>
+<h2>Fund Wallet</h2>
+<div class="row">
+    <div class="col-lg-3 col-md-3  col-sm-4">
+        <div class="card">
+            <a >
+                <div class="card-body ">
+                    <div class="d-flex flex-row">
+                        <div class="round align-self-center round-warning">
+                            <i class="ti-money"></i>
+                        </div>
+                        <div class="m-l-10 align-self-center">
+                            <h3 class="font-medium">Fund with 1 USD </h3>
+                            <p class="text-warning" style="font-size: 1.5rem">20 CR</p>
+                            <p class="text-info">10,000 word access</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-4">
+        <div class="card">
+            <a href="#">
+                <div class="card-body ">
+                    <div class="d-flex flex-row">
+                        <div class="round align-self-center round-warning">
+                            <i class="ti-money"></i>
+                        </div>
+                        <div class="m-l-10 align-self-center">
+                            <h3 class="font-medium">Fund with 5 USD </h3>
+                            <p class="text-warning" style="font-size: 1.5rem">100 CR</p>
+                            <p class="text-info">50,000 word access</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3  col-sm-4">
+        <div class="card">
+            <a href="#">
+                <div class="card-body ">
+                    <div class="d-flex flex-row">
+                        <div class="round align-self-center round-warning">
+                            <i class="ti-money"></i>
+                        </div>
+                        <div class="m-l-10 align-self-center">
+                            <h3 class="font-medium"> 10 USD </h3>
+                            <p class="text-warning" style="font-size: 1.5rem">200 CR</p>
+                            <p class="text-info">100,000 word access</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3  col-sm-4">
+        <div class="card">
+            <a href="#">
+                <div class="card-body ">
+                    <div class="d-flex flex-row">
+                        <div class="round align-self-center round-warning">
+                            <i class="ti-money"></i>
+                        </div>
+                        <div class="m-l-10 align-self-center">
+                            <h3 class="font-medium"> 20 USD </h3>
+                            <p class="text-warning" style="font-size: 1.5rem">400 CR</p>
+                            <p class="text-info">200k word access</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3  col-sm-4">
+        <div class="card">
+            <a href="#">
+                <div class="card-body ">
+                    <div class="d-flex flex-row">
+                        <div class="round align-self-center round-warning">
+                            <i class="ti-money"></i>
+                        </div>
+                        <div class="m-l-10 align-self-center">
+                            <h3 class="font-medium">50 USD </h3>
+                            <p class="text-warning" style="font-size: 1.5rem">1000 CR</p>
+                            <p class="text-info">500k word access</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3  col-sm-4">
+        <div class="card">
+            <a href="#">
+                <div class="card-body ">
+                    <div class="d-flex flex-row">
+                        <div class="round align-self-center round-warning">
+                            <i class="ti-money"></i>
+                        </div>
+                        <div class="m-l-10 align-self-center">
+                            <h3 class="font-medium"> 100 USD </h3>
+                            <p class="text-warning" style="font-size: 1.5rem">2000 CR</p>
+                            <p class="text-info">1M+ word access</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3  col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Custom Fund</h4>
+                <div class="m-t-20">
+                    <p class="text-warning" id="customCr" style="font-size: 1.5rem"></p>
+                    <p class="text-info" id="customWord"></p>
+                    <input id="customFund" type="text" value="0.5" name="demo2" class="col-md-8 form-control">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+    <script src="~/admin/assets/libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <script>
+
+        $("input[name='demo2']").TouchSpin({
+            min: 0.5,
+            max: 100000000000000000,
+            step: 0.5,
+            decimals: 2,
+            boostat: 5,
+            maxboostedstep: 10,
+            prefix: '$'
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#customFund").change(function () {
+                var usd = parseFloat($(this).val());
+                var cowries = usd / 0.05;
+                var words = cowries * 500;
+                $("#customCr").text(cowries + " CR");
+                $("#customWord").text(words + " words access");
+            });
+
+        })
+    </script>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <div id="paystackEmbedContainer"></div>
+    <script> 
+        function pay() {
+            var handler = PaystackPop.setup({
+                key: 'pk_test_8e75de0f0e2bba17ee0b37ed227e176b92b52d0b',
+                email: 'customer@email.com',
+                amount: 10000,
+                container: 'paystackEmbedContainer',
+                currency: 'usd',
+                callback: function (response) {
+                    alert('successfully subscribed. transaction ref is ' + response.reference);
+                },
+            });
+        }
+    </script>
+}

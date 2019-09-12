@@ -10,8 +10,9 @@
             <h6 class="card-title text-center"> @Model.NovelSection.Title </h6>
 
             <div class="mt-3 p-l-5 editor">
-
-                @Html.Raw(Model.Content)
+                <textarea name="editor1" class="editor1">
+    
+            </textarea>
 
             </div>
 
@@ -19,3 +20,5 @@
     </div>
 </div>
 
+
+<div id="hiddenValue" style="display:none"> @Html.Raw(Model.Content)</div>

@@ -1,98 +1,102 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Webnovel.Controllers
 {
-    public class UserController : Controller
-    {
-        // GET: User
-        public ActionResult Dashboard()
-        {
-            return View();
-        }
+    [Authorize]
+	public class UserController : Controller
+	{
+		public ActionResult Dashboard()
+		{
+			return View();
+		}
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+		public ActionResult Index()
+		{
+			return (ActionResult)(object)((ControllerBase)this).RedirectToAction("Dashboard");
+		}
 
-        // GET: User/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+		public ActionResult CreateContent()
+		{
+			return View();
+		}
 
-        // POST: User/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
+		public ActionResult Details(int id)
+		{
+			return View();
+		}
 
-                return RedirectToAction(nameof(Dashboard));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+		public ActionResult Create()
+		{
+			return View();
+		}
 
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Create(IFormCollection collection)
+		{
+			try
+			{
+				return (ActionResult)(object)((ControllerBase)this).RedirectToAction("Dashboard");
+			}
+			catch
+			{
+				return View();
+			}
+		}
 
-        // POST: User/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
+		public ActionResult Edit(int id)
+		{
+			return View();
+		}
 
-                return RedirectToAction(nameof(Dashboard));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Edit(int id, IFormCollection collection)
+		{
+			try
+			{
+				return (ActionResult)(object)((ControllerBase)this).RedirectToAction("Dashboard");
+			}
+			catch
+			{
+				return View();
+			}
+		}
 
-        // GET: User/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+		public ActionResult Delete(int id)
+		{
+			return View();
+		}
 
-        // POST: User/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Delete(int id, IFormCollection collection)
+		{
+			try
+			{
+				return (ActionResult)(object)((ControllerBase)this).RedirectToAction("Dashboard");
+			}
+			catch
+			{
+				return View();
+			}
+		}
 
-                return RedirectToAction(nameof(Dashboard));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+		public ActionResult Switch()
+		{
+			return View();
+		}
 
-        public IActionResult UnderConstructionPage()
-        {
-            return View();
-        }
-    }
+		public IActionResult UnderConstructionPage()
+		{
+			return (IActionResult)(object)((Controller)this).View();
+		}
+
+		public UserController()
+			
+		{
+		}
+	}
 }

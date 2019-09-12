@@ -1,32 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using Webnovel.Data;
+using Webnovel.Entities;
 using Webnovel.Models;
 using Webnovel.Repository;
 using Webnovel.Services;
 
 namespace Webnovel
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public IConfiguration Configuration
+		{
+			get;
+		}
 
-        public IConfiguration Configuration { get; }
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+		public void ConfigureServices(IServiceCollection services)
+		{
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -41,21 +44,19 @@ namespace Webnovel
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            
-            // Add application services.
+   // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddScoped<ICategory, Category>();
-            services.AddScoped<INovel, Novel>();
-            services.AddScoped<IAuthor, Author>();
-            services.AddScoped<IComic, Comic>();
-            services.AddScoped<IAnimation, Animation>();
+            services.AddScoped<ICategory, Repository.Category>();
+            services.AddScoped<INovel, Repository.Novel>();
+            services.AddScoped<IAuthor, Repository.Author>();
+            services.AddScoped<IComic, Repository.Comic>();
+            services.AddScoped<IAnimation, Repository.Animation>();
 
 
             services.AddMvc();
-        }
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -71,7 +72,7 @@ namespace Webnovel
             app.UseBrowserLink();
             app.UseDeveloperExceptionPage();
             app.UseDatabaseErrorPage();
-          
+
             AutoMapper.Mapper.Initialize(map =>
             {
                 map.CreateMap<Entities.Novel, Models.NovelVm>();
@@ -96,7 +97,7 @@ namespace Webnovel
                 map.CreateMap<Entities.Comic, Models.CoverPageVm>();
 
 
-                
+
                 map.CreateMap<Entities.ComicScene, Models.ComicSceneVm>();
                 map.CreateMap<Models.ComicSceneVm, Entities.ComicScene>();
 
@@ -104,7 +105,7 @@ namespace Webnovel
                 map.CreateMap<Models.EpisodeVm, Entities.Episode>();
 
                 map.CreateMap<Entities.Animation, Models.AnimationVm>();
-                map.CreateMap< Models.AnimationVm, Entities.Animation>();
+                map.CreateMap<Models.AnimationVm, Entities.Animation>();
 
                 map.CreateMap<Models.AnimationCoverPageVm, Entities.Animation>();
                 map.CreateMap<Entities.Animation, Models.AnimationCoverPageVm>();
@@ -119,11 +120,11 @@ namespace Webnovel
                 map.CreateMap<Models.NovelCommentVm, Entities.NovelComment>();
             });
 
-                app.UseStaticFiles();
+            app.UseStaticFiles();
 
             app.UseAuthentication();
 
-      
+
 
             app.UseMvc(routes =>
             {

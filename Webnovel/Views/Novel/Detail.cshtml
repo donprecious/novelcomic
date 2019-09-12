@@ -1,0 +1,21 @@
+﻿@model Webnovel.Entities.Novel
+
+@{
+    ViewBag.Title = Model.Name +" - " + "Detail" ;
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-breadcrumb">
+            <h4 class="page-title">Dashboard</h4>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="Reader" asp-action="Index" > Overview</a></li>
+                        <li class="breadcrumb-item active"><a asp-controller="Reader" asp-action="Index"> Overview</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

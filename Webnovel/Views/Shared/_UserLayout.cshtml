@@ -25,7 +25,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="~/admin/assets/images/favicon.png">
-    <title>Bebert - Multipurpose Admin Template</title>
+    <title>Lkebulania</title>
     <!-- Custom CSS -->
     <link href="~/admin/assets/libs/morris.js/morris.css" rel="stylesheet">
     <link href="~/admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
@@ -69,22 +69,24 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="~/admin/index-2.html">
+                    <a class="navbar-brand" href="@Url.Action("home","Home")">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="~/admin/assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo icon -->
-                            <img src="~/admin/assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
+
+                            @*<img src="~/images/logo_black.png"  width="140" height="40" alt="homepage" class="dark-logo" />
+                           
+                            <img src="~/images/logo_white.png"   width="140" height="40" alt="homepage" class="light-logo" />*@
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
                         <span class="logo-text">
-                            <!-- dark Logo text -->
-                            <img src="~/admin/assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo text -->
-                            <img src="~/admin/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+                            @*<img src="~/admin/assets/images/logo-icon.png" alt="homepage" class="dark-logo" />*@
+                            <img src="~/images/logo_black.png"  width="140" height="40" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo icon -->
+                            @*<img src="~/admin/assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />*@
+                            <img src="~/images/logo_white.png"  width="140" height="40"  alt="homepage" class="light-logo" />
                         </span>
                     </a>
                     <!-- ============================================================== -->
@@ -103,12 +105,12 @@
                     <!-- toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav float-left mr-auto">
-                        <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
+                        @*<li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>*@
 
                         <!-- ============================================================== -->
                         <!-- create new -->
                         <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
+                        @*<li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="d-none d-md-block">Drop down <i class="fa fa-angle-down"></i></span>
                                 <span class="d-block d-md-none"><i class="fa fa-plus"></i></span>
@@ -119,7 +121,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
-                        </li>
+                        </li>*@
 
                     </ul>
                     <!-- ============================================================== -->
@@ -314,19 +316,19 @@
                         <i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-
-               <li class="sidebar-item">
+              
+                <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"><i class="mdi mdi-book-multiple"></i>Novel</a>
                     <ul aria-expanded="false" class="collapse  first-level">
                                 <li class="sidebar-item"><a asp-action="Create" asp-controller="Novel"  class="sidebar-link"><i class="mdi mdi-book-plus"></i><span class="hide-menu"> Create Novel </span></a></li>
                         <li class="sidebar-item"><a asp-action="NovelList" asp-controller="Novel"  class="sidebar-link"><i class="mdi mdi-book-plus"></i><span class="hide-menu"> My Novels </span></a></li>
 
-                        <li class="sidebar-item"><a asp-controller="Novel" asp-action="Library" class="sidebar-link"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> My Library </span></a></li>
+                        @*<li class="sidebar-item"><a asp-controller="Novel" asp-action="Library" class="sidebar-link"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> My Library </span></a></li>
 
-                        <li class="sidebar-item"><a asp-controller="Novel" asp-action="SavedNovels" class="sidebar-link"><i class="mdi mdi-heart"></i><span class="hide-menu"> Saved Novels </span></a></li>
+                        <li class="sidebar-item"><a asp-controller="Novel" asp-action="SavedNovels" class="sidebar-link"><i class="mdi mdi-heart"></i><span class="hide-menu"> Saved Novels </span></a></li>*@
 
 
-                            </ul>
+ </ul>
                 </li> 
 
                 <li class="sidebar-item">
@@ -334,9 +336,9 @@
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"><a asp-controller="Comic" asp-action="Create" class="sidebar-link"><i class="mdi mdi-plus"></i><span class="hide-menu"> Create Comic </span></a></li>
                         <li class="sidebar-item"><a asp-controller="Comic" asp-action="List" class="sidebar-link"><i class="mdi mdi-view-list"></i><span class="hide-menu"> My Comics </span></a></li>
-                        <li class="sidebar-item"><a asp-controller="Comic" asp-action="Library" class="sidebar-link"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> My Library </span></a></li>
+                        @*<li class="sidebar-item"><a asp-controller="Comic" asp-action="Library" class="sidebar-link"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> My Library </span></a></li>
 
-                        <li class="sidebar-item"><a asp-controller="Comic" asp-action="SavedComics" class="sidebar-link"><i class="mdi mdi-heart"></i><span class="hide-menu"> Saved Comics </span></a></li>
+                        <li class="sidebar-item"><a asp-controller="Comic" asp-action="SavedComics" class="sidebar-link"><i class="mdi mdi-heart"></i><span class="hide-menu"> Saved Comics </span></a></li>*@
 
                     </ul>
                 </li>
@@ -346,12 +348,33 @@
                         <li class="sidebar-item"><a asp-controller="Animation" asp-action="" class="sidebar-link"><i class="mdi mdi-plus"></i><span class="hide-menu"> Create Animations </span></a></li>
                         <li class="sidebar-item"><a asp-controller="Animation" asp-action="Index" class="sidebar-link"><i class="mdi mdi-video"></i><span class="hide-menu"> My Animations </span></a></li>
 
-                        <li class="sidebar-item"><a href="~/admin/sidebar-type-overlaysidebar.html" class="sidebar-link"><i class="mdi mdi-view-day"></i><span class="hide-menu"> Overlay Sidebar </span></a></li>
-                        <li class="sidebar-item"><a href="~/admin/sidebar-type-fullsidebar.html" class="sidebar-link"><i class="mdi mdi-view-array"></i><span class="hide-menu"> Full Sidebar </span></a></li>
-
+                
                     </ul>
+                </li> 
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" asp-controller="Wallet" asp-action="FundWallet" aria-expanded="false">
+                        <i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Fund</span>
+                    </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">My Account </span></a>
+                    <ul aria-expanded="false" class="collapse  first-level">
+                        <li class="sidebar-item"><a  class="sidebar-link"><i class="mdi mdi-wallet"></i><span class="hide-menu"> My Wallet </span></a></li>
+                        <li class="sidebar-item"><a  class="sidebar-link"><i class="mdi mdi-settings"></i><span class="hide-menu"> Profile </span></a></li>
+
+                    </ul>
+                </li> 
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" asp-controller="Reader" asp-action="Index" aria-expanded="false">
+                        <i class="mdi mdi-switch"></i><span class="hide-menu">Switch as View</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" asp-controller="Account" asp-action="SignOut" aria-expanded="false">
+                        <i class="mdi mdi-logout"></i><span class="hide-menu">Logout</span>
+                    </a>
+                </li>
+                @*<li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-content-copy"></i><span class="hide-menu">Page Layouts </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"><a href="~/admin/layout-inner-fixed-left-sidebar.html" class="sidebar-link"><i class="mdi mdi-format-align-left"></i><span class="hide-menu"> Inner Fixed Left Sidebar </span></a></li>
@@ -593,7 +616,7 @@
                         <li class="sidebar-item"><a href="javascript:void(0)" class="sidebar-link"><i class="mdi mdi-playlist-check"></i><span class="hide-menu"> item 1.4</span></a></li>
                     </ul>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="authentication-login1.html" aria-expanded="false"><i class="mdi mdi-directions"></i><span class="hide-menu">Log Out</span></a></li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="authentication-login1.html" aria-expanded="false"><i class="mdi mdi-directions"></i><span class="hide-menu">Log Out</span></a></li>*@
                 </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -631,7 +654,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-left">
-                All Rights Reserved by Bebert admin. Designed and Developed by <a href="https://themeforest.net/user/expandtheme/portfolio">ExpandTheme</a>.
+                @DateTime.Now.Year, Alkebulania
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

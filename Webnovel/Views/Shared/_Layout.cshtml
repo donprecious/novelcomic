@@ -1,6 +1,12 @@
-﻿<!doctype html>
+﻿@using Webnovel.Repository
+<!doctype html>
 <html lang="en-US">
+@inject ICategory Category
 
+
+@{
+    var categories = await Category.List();
+}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
@@ -71,24 +77,35 @@
             }
         </style>
     </noscript>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147438434-1"></script>
     <script>
-    /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
-    (function (w) {
-        "use strict"; if (!w.loadCSS) { w.loadCSS = function () { } }
-        var rp = loadCSS.relpreload = {}; rp.support = (function () {
-            var ret; try { ret = w.document.createElement("link").relList.supports("preload") } catch (e) { ret = !1 }
-            return function () { return ret }
-        })(); rp.bindMediaToggle = function (link) {
-            var finalMedia = link.media || "all"; function enableStylesheet() { link.media = finalMedia }
-            if (link.addEventListener) { link.addEventListener("load", enableStylesheet) } else if (link.attachEvent) { link.attachEvent("onload", enableStylesheet) }
-            setTimeout(function () { link.rel = "stylesheet"; link.media = "only x" }); setTimeout(enableStylesheet, 3000)
-        }; rp.poly = function () {
-            if (rp.support()) { return }
-            var links = w.document.getElementsByTagName("link"); for (var i = 0; i < links.length; i++) { var link = links[i]; if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) { link.setAttribute("data-loadcss", !0); rp.bindMediaToggle(link) } }
-        }; if (!rp.support()) { rp.poly(); var run = w.setInterval(rp.poly, 500); if (w.addEventListener) { w.addEventListener("load", function () { rp.poly(); w.clearInterval(run) }) } else if (w.attachEvent) { w.attachEvent("onload", function () { rp.poly(); w.clearInterval(run) }) } }
-        if (typeof exports !== "undefined") { exports.loadCSS = loadCSS }
-        else { w.loadCSS = loadCSS }
-    }(typeof global !== "undefined" ? global : this))</script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-147438434-1');
+    </script>
+
+    <script>
+
+        /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+        (function (w) {
+            "use strict"; if (!w.loadCSS) { w.loadCSS = function () { } }
+            var rp = loadCSS.relpreload = {}; rp.support = (function () {
+                var ret; try { ret = w.document.createElement("link").relList.supports("preload") } catch (e) { ret = !1 }
+                return function () { return ret }
+            })(); rp.bindMediaToggle = function (link) {
+                var finalMedia = link.media || "all"; function enableStylesheet() { link.media = finalMedia }
+                if (link.addEventListener) { link.addEventListener("load", enableStylesheet) } else if (link.attachEvent) { link.attachEvent("onload", enableStylesheet) }
+                setTimeout(function () { link.rel = "stylesheet"; link.media = "only x" }); setTimeout(enableStylesheet, 3000)
+            }; rp.poly = function () {
+                if (rp.support()) { return }
+                var links = w.document.getElementsByTagName("link"); for (var i = 0; i < links.length; i++) { var link = links[i]; if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) { link.setAttribute("data-loadcss", !0); rp.bindMediaToggle(link) } }
+            }; if (!rp.support()) { rp.poly(); var run = w.setInterval(rp.poly, 500); if (w.addEventListener) { w.addEventListener("load", function () { rp.poly(); w.clearInterval(run) }) } else if (w.attachEvent) { w.attachEvent("onload", function () { rp.poly(); w.clearInterval(run) }) } }
+            if (typeof exports !== "undefined") { exports.loadCSS = loadCSS }
+            else { w.loadCSS = loadCSS }
+        }(typeof global !== "undefined" ? global : this))</script>
 
 
     @RenderSection("Css", required: false)
@@ -102,33 +119,33 @@
         <footer id="colophon" class="site-footer site__footer--v1 desktop-footer dark" role="contentinfo">
             <div class="container">
                 <div class="footer-top-bar">
-                    <div class="site-footer__logo footer-logo">
-                        <a href="~/main/index.html" rel="home">
-                            <svg version="1.1"
-                                 width="103" height="40px">
-                                <linearGradient id="vodi-gr-f" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0" style="stop-color:#2A4999" />
-                                    <stop offset="1" style="stop-color:#2C9CD4" />
-                                </linearGradient>
-                                <g class="vodi-gr">
-                                    <path class="vodi-svg0" d="M72.8,12.7c0-2.7,0-1.8,0-4.4c0-0.9,0-1.8,0-2.8C73,3,74.7,1.4,77,1.4c2.3,0,4.1,1.8,4.2,4.2c0,1,0,2.1,0,3.1
-c0,6.5,0,9.4,0,15.9c0,4.7-1.7,8.8-5.6,11.5c-4.5,3.1-9.3,3.5-14.1,0.9c-4.7-2.5-7.1-6.7-7-12.1c0.1-7.8,6.3-13.6,14.1-13.2
-c0.7,0,1.4,0.2,2.1,0.3C71.3,12.2,72,12.4,72.8,12.7z M67.8,19.8c-2.9,0-5.2,2.2-5.2,5c0,2.9,2.3,5.3,5.2,5.3
-c2.8,0,5.2-2.4,5.2-5.2C73,22.2,70.6,19.8,67.8,19.8z
-M39.9,38.6c-7.3,0-13.3-6.1-13.3-13.5c0-7.5,5.9-13.4,13.4-13.4c7.5,0,13.4,6,13.4,13.5
-C53.4,32.6,47.4,38.6,39.9,38.6z M39.9,30.6c3.2,0,5.6-2.3,5.6-5.6c0-3.2-2.3-5.5-5.5-5.5c-3.2,0-5.6,2.2-5.6,5.4
-C34.4,28.2,36.7,30.6,39.9,30.6z
-M14.6,27c0.6-1.4,1.1-2.6,1.6-3.8c1.2-2.9,2.5-5.8,3.7-8.8c0.7-1.7,2-2.8,4-2.7c3,0,4.9,2.6,3.8,5.4
-c-0.5,1.3-1.2,2.6-1.8,3.9c-2.4,5-4.9,10-7.3,15c-0.8,1.6-2,2.6-3.9,2.6c-2,0-3.3-0.8-4.2-2.6c-2.7-5.6-5.3-11.1-8-16.7
-c-0.3-0.7-0.6-1.3-0.9-2c-0.8-1.8-0.3-3.7,1.1-4.8c1.5-1.2,4-1.3,5.3,0c0.7,0.6,1.2,1.5,1.6,2.3C11.3,18.8,12.9,22.7,14.6,27z
-M90.9,25.1c0,3.1,0,6.2,0,9.4c0,1.9-1.2,3.4-2.9,4c-1.7,0.5-3.5,0-4.5-1.6c-0.5-0.8-0.8-1.8-0.8-2.6
-c-0.1-6.1-0.1-11.3,0-17.5c0-2.2,1.5-3.9,3.5-4.2c2.1-0.3,4.1,0.9,4.7,2.9c0.1,0.5,0.2,1.1,0.2,1.6C90.9,20,90.9,22.1,90.9,25.1
-C90.9,25.1,90.9,25.1,90.9,25.1z
-M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,91.5,5.5,90.2,4.7z" />
-                                </g>
-                            </svg>
-                        </a>
-                    </div>
+                    @*<div class="site-footer__logo footer-logo">
+                                                <a href="~/main/index.html" rel="home">
+                                                    <svg version="1.1"
+                                                         width="103" height="40px">
+                                                        <linearGradient id="vodi-gr-f" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                            <stop offset="0" style="stop-color:#2A4999" />
+                                                            <stop offset="1" style="stop-color:#2C9CD4" />
+                                                        </linearGradient>
+                                                        <g class="vodi-gr">
+                                                            <path class="vodi-svg0" d="M72.8,12.7c0-2.7,0-1.8,0-4.4c0-0.9,0-1.8,0-2.8C73,3,74.7,1.4,77,1.4c2.3,0,4.1,1.8,4.2,4.2c0,1,0,2.1,0,3.1
+                        c0,6.5,0,9.4,0,15.9c0,4.7-1.7,8.8-5.6,11.5c-4.5,3.1-9.3,3.5-14.1,0.9c-4.7-2.5-7.1-6.7-7-12.1c0.1-7.8,6.3-13.6,14.1-13.2
+                        c0.7,0,1.4,0.2,2.1,0.3C71.3,12.2,72,12.4,72.8,12.7z M67.8,19.8c-2.9,0-5.2,2.2-5.2,5c0,2.9,2.3,5.3,5.2,5.3
+                        c2.8,0,5.2-2.4,5.2-5.2C73,22.2,70.6,19.8,67.8,19.8z
+                        M39.9,38.6c-7.3,0-13.3-6.1-13.3-13.5c0-7.5,5.9-13.4,13.4-13.4c7.5,0,13.4,6,13.4,13.5
+                        C53.4,32.6,47.4,38.6,39.9,38.6z M39.9,30.6c3.2,0,5.6-2.3,5.6-5.6c0-3.2-2.3-5.5-5.5-5.5c-3.2,0-5.6,2.2-5.6,5.4
+                        C34.4,28.2,36.7,30.6,39.9,30.6z
+                        M14.6,27c0.6-1.4,1.1-2.6,1.6-3.8c1.2-2.9,2.5-5.8,3.7-8.8c0.7-1.7,2-2.8,4-2.7c3,0,4.9,2.6,3.8,5.4
+                        c-0.5,1.3-1.2,2.6-1.8,3.9c-2.4,5-4.9,10-7.3,15c-0.8,1.6-2,2.6-3.9,2.6c-2,0-3.3-0.8-4.2-2.6c-2.7-5.6-5.3-11.1-8-16.7
+                        c-0.3-0.7-0.6-1.3-0.9-2c-0.8-1.8-0.3-3.7,1.1-4.8c1.5-1.2,4-1.3,5.3,0c0.7,0.6,1.2,1.5,1.6,2.3C11.3,18.8,12.9,22.7,14.6,27z
+                        M90.9,25.1c0,3.1,0,6.2,0,9.4c0,1.9-1.2,3.4-2.9,4c-1.7,0.5-3.5,0-4.5-1.6c-0.5-0.8-0.8-1.8-0.8-2.6
+                        c-0.1-6.1-0.1-11.3,0-17.5c0-2.2,1.5-3.9,3.5-4.2c2.1-0.3,4.1,0.9,4.7,2.9c0.1,0.5,0.2,1.1,0.2,1.6C90.9,20,90.9,22.1,90.9,25.1
+                        C90.9,25.1,90.9,25.1,90.9,25.1z
+                        M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,91.5,5.5,90.2,4.7z" />
+                                                        </g>
+                                                    </svg>
+                                                </a>
+                                            </div>*@
                     <div class="footer-social-icons social-label">
                         <ul id="menu-footer-social-menu" class="social-icons">
                             <li class="menu-item menu-item-type-custom menu-item-object-custom social-media-item social-media-item-5164">
@@ -180,155 +197,179 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                     </div>
                 </div>
                 <div class="footer-widgets">
-                    <div class="footer-widgets-inner row-1 col-3 fix">
-                        <div class="block footer-widget-1">
-                            <div id="nav_menu-1" class="widget widget_nav_menu">
-                                <div class="widget-header"><span class="widget-title">Novel Categories</span></div>
-                                <div class="menu-footer-movie-genres-container">
-                                    <ul id="menu-footer-movie-genres" class="menu">
-                                        <li id="menu-item-5169"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5169">
-                                            <a title="						" href="~/main/movie-genre/action/index.html">Action</a>
-                                        </li>
-                                        <li id="menu-item-5170"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5170">
-                                            <a title="						" href="~/main/movie-genre/adventure/index.html">Adventure</a>
-                                        </li>
-                                        <li id="menu-item-5171"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5171">
-                                            <a title="						" href="~/main/movie-genre/animation/index.html">Animation</a>
-                                        </li>
-                                        <li id="menu-item-5172"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5172">
-                                            <a title="						" href="~/main/movie-genre/comedy/index.html">Comedy</a>
-                                        </li>
-                                        <li id="menu-item-5173"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5173">
-                                            <a title="						" href="~/main/movie-genre/crime/index.html">Crime</a>
-                                        </li>
-                                        <li id="menu-item-5174"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5174">
-                                            <a title="						" href="~/main/movie-genre/drama/index.html">Drama</a>
-                                        </li>
-                                        <li id="menu-item-5175"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5175">
-                                            <a title="						" href="~/main/movie-genre/fantacy/index.html">Fantacy</a>
-                                        </li>
-                                        <li id="menu-item-5176"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5176">
-                                            <a title="						" href="~/main/movie-genre/horror/index.html">Horror</a>
-                                        </li>
-                                        <li id="menu-item-5177"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5177">
-                                            <a title="						" href="~/main/movie-genre/mystrey/index.html">Mystrey</a>
-                                        </li>
-                                        <li id="menu-item-5178"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5178">
-                                            <a title="						" href="~/main/movie-genre/romance/index.html">Romance</a>
-                                        </li>
-                                    </ul>
+                    <div class="footer-widgets-inner row-1 fix">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="block footer-widget-1">
+                                    <div id="nav_menu-1" class="widget widget_nav_menu">
+                                        <div class="widget-header"><span class="widget-title">Novel Categories</span></div>
+                                        <div class="menu-footer-movie-genres-container">
+                                            <ul id="menu-footer-movie-genres" class="menu">
+                                                @foreach (var i in categories)
+                                                {
+                                                    <li id="menu-item-5179"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5179">
+                                                        <a title="@i.Name" href="#">@i.Name</a>
+                                                    </li>
+                                                }
+                                                @*<li id="menu-item-5169"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5169">
+                                                        <a title="						" href="~/main/movie-genre/action/index.html">Action</a>
+                                                    </li>
+                                                    <li id="menu-item-5170"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5170">
+                                                        <a title="						" href="~/main/movie-genre/adventure/index.html">Adventure</a>
+                                                    </li>
+                                                    <li id="menu-item-5171"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5171">
+                                                        <a title="						" href="~/main/movie-genre/animation/index.html">Animation</a>
+                                                    </li>
+                                                    <li id="menu-item-5172"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5172">
+                                                        <a title="						" href="~/main/movie-genre/comedy/index.html">Comedy</a>
+                                                    </li>
+                                                    <li id="menu-item-5173"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5173">
+                                                        <a title="						" href="~/main/movie-genre/crime/index.html">Crime</a>
+                                                    </li>
+                                                    <li id="menu-item-5174"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5174">
+                                                        <a title="						" href="~/main/movie-genre/drama/index.html">Drama</a>
+                                                    </li>
+                                                    <li id="menu-item-5175"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5175">
+                                                        <a title="						" href="~/main/movie-genre/fantacy/index.html">Fantacy</a>
+                                                    </li>
+                                                    <li id="menu-item-5176"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5176">
+                                                        <a title="						" href="~/main/movie-genre/horror/index.html">Horror</a>
+                                                    </li>
+                                                    <li id="menu-item-5177"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5177">
+                                                        <a title="						" href="~/main/movie-genre/mystrey/index.html">Mystrey</a>
+                                                    </li>
+                                                    <li id="menu-item-5178"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5178">
+                                                        <a title="						" href="~/main/movie-genre/romance/index.html">Romance</a>
+                                                    </li>*@
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="block footer-widget-2">
-                            <div id="nav_menu-2" class="widget widget_nav_menu">
-                                <div class="widget-header"><span class="widget-title">Animation Series</span></div>
-                                <div class="menu-footer-tv-show-genres-container">
-                                    <ul id="menu-footer-tv-show-genres" class="menu">
-                                        <li id="menu-item-5179"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5179">
-                                            <a title="						" href="~/main/tv-show-genre/action/index.html">Valentine Day</a>
-                                        </li>
-                                        <li id="menu-item-5180"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5180">
-                                            <a title="						" href="~/main/tv-show-genre/adventure/index.html">
-                                                Underrated
-                                                Comedies
-                                            </a>
-                                        </li>
-                                        <li id="menu-item-5181"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5181">
-                                            <a title="						" href="~/main/tv-show-genre/animation/index.html">
-                                                Scary TV
-                                                Series
-                                            </a>
-                                        </li>
-                                        <li id="menu-item-5183"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5183">
-                                            <a title="						" href="~/main/tv-show-genre/comedy/index.html">
-                                                Best 2018
-                                                Documentaries
-                                            </a>
-                                        </li>
-                                        <li id="menu-item-5182"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5182">
-                                            <a title="						" href="~/main/tv-show-genre/biography/index.html">
-                                                Classic
-                                                Shows
-                                            </a>
-                                        </li>
-                                        <li id="menu-item-5184"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5184">
-                                            <a title="						" href="~/main/tv-show-genre/crime/index.html">Big TV Premieres</a>
-                                        </li>
-                                        <li id="menu-item-5185"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5185">
-                                            <a title="						" href="~/main/tv-show-genre/crime-drama/index.html">
-                                                Reality TV
-                                                Shows
-                                            </a>
-                                        </li>
-                                        <li id="menu-item-5186"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5186">
-                                            <a title="						" href="~/main/tv-show-genre/drama/index.html">Original Shows</a>
-                                        </li>
-                                        <li id="menu-item-5187"
-                                            class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5187">
-                                            <a title="						" href="~/main/tv-show-genre/fantacy/index.html">
-                                                Suprise of the
-                                                Year Shows
-                                            </a>
-                                        </li>
-                                    </ul>
+                            <div class="col-md-4">
+                                <div class="block footer-widget-2">
+                                    <div id="nav_menu-2" class="widget widget_nav_menu">
+                                        <div class="widget-header"><span class="widget-title">Animation Series</span></div>
+                                        <div class="menu-footer-tv-show-genres-container">
+                                            <ul id="menu-footer-tv-show-genres" class="menu">
+                                                @foreach (var i in categories)
+                                                {
+                                                    <li id="menu-item-5179"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5179">
+                                                        <a title="@i.Name" href="#">@i.Name</a>
+                                                    </li>
+                                                }
+
+                                                @*<li id="menu-item-5180"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5180">
+                                                        <a title="						" href="#">
+                                                            Underrated
+                                                            Comedies
+                                                        </a>
+                                                    </li>
+                                                    <li id="menu-item-5181"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5181">
+                                                        <a title="						" href="#">
+                                                            Scary TV
+                                                            Series
+                                                        </a>
+                                                    </li>
+                                                    <li id="menu-item-5183"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5183">
+                                                        <a title="						" href="#">
+                                                            Best
+                                                            Documentaries
+                                                        </a>
+                                                    </li>
+                                                    <li id="menu-item-5182"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5182">
+                                                        <a title="						" href="#">
+                                                            Classic
+                                                            Shows
+                                                        </a>
+                                                    </li>
+                                                    <li id="menu-item-5184"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5184">
+                                                        <a title="						" href="#">Big TV Premieres</a>
+                                                    </li>
+                                                    <li id="menu-item-5185"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5185">
+                                                        <a title="						" href="~/main/tv-show-genre/crime-drama/index.html">
+                                                            Reality TV
+                                                            Shows
+                                                        </a>
+                                                    </li>
+                                                    <li id="menu-item-5186"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5186">
+                                                        <a title="						" href="~/main/tv-show-genre/drama/index.html">Original Shows</a>
+                                                    </li>
+                                                    <li id="menu-item-5187"
+                                                        class="menu-item menu-item-type-taxonomy menu-item-object-tv_show_genre menu-item-5187">
+                                                        <a title="						" href="~/main/tv-show-genre/fantacy/index.html">
+                                                            Suprise of the
+                                                            Year Shows
+                                                        </a>
+                                                    </li>*@
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="block footer-widget-3">
-                            <div id="nav_menu-3" class="widget widget_nav_menu">
-                                <div class="widget-header"><span class="widget-title">Support</span></div>
-                                <div class="menu-footer-support-links-container">
-                                    <ul id="menu-footer-support-links" class="menu">
-                                        <li id="menu-item-5220"
-                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5220">
-                                            <a title="						" href="~/main/blog/index.html">My Account</a>
-                                        </li>
-                                        <li id="menu-item-5221"
-                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-343 current_page_item menu-item-5221">
-                                            <a title="						" href="~/main/index.html" aria-current="page">FAQ</a>
-                                        </li>
-                                        <li id="menu-item-5222"
-                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5222">
-                                            <a title="						" href="~/main/home-v2/index.html">Read</a>
-                                        </li>
-                                        <li id="menu-item-5223"
-                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5223">
-                                            <a title="						" href="~/main/home-v3/index.html">Help Center</a>
-                                        </li>
-                                        <li id="menu-item-5224"
-                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5224">
-                                            <a title="						" href="~/main/home-v5/index.html">Contact</a>
-                                        </li>
-                                    </ul>
+
+                            <div class="col-md-4">
+                                <div class="block footer-widget-3">
+                                    <div id="nav_menu-3" class="widget widget_nav_menu">
+                                        <div class="widget-header"><span class="widget-title">Support</span></div>
+                                        <div class="menu-footer-support-links-container">
+                                            <ul id="menu-footer-support-links" class="menu">
+                                                <li id="menu-item-5220"
+                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5220">
+                                                    <a title="						" href="#">My Account</a>
+                                                </li>
+                                                <li id="menu-item-5221"
+                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-343 current_page_item menu-item-5221">
+                                                    <a title="						" href="#" aria-current="page">FAQ</a>
+                                                </li>
+                                                <li id="menu-item-5222"
+                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5222">
+                                                    <a title="						" href="#">Read</a>
+                                                </li>
+                                                <li id="menu-item-5223"
+                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5223">
+                                                    <a title="						" href="#">Help Center</a>
+                                                </li>
+                                                <li id="menu-item-5224"
+                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5224">
+                                                    <a title="						" href="#">Contact</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
+
+
+
                     </div>
                 </div>
             </div>
             <div class="footer-bottom-bar">
                 <div class="container">
                     <div class="footer-bottom-bar-inner">
-                        <div class="site-footer__info site-info"> Copyright &copy; 2019, Vodi. All Rights Reserved</div>
+                        <div class="site-footer__info site-info"> Copyright &copy; @DateTime.Now.Year, Alkebulania. All Rights Reserved</div>
                         <ul id="menu-footer-quick-links" class="footer-quick-links nav">
                             <li id="menu-item-5251"
                                 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5251">
@@ -342,7 +383,7 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
         </footer>
         <footer class="site-footer handheld-footer dark">
             <div class="container">
-                <div class="site-footer__info site-info"> Copyright &copy; 2019, Vodi. All Rights Reserved</div>
+                <div class="site-footer__info site-info"> Copyright &copy; @DateTime.Now.Year, Lkebulania. All Rights Reserved</div>
             </div>
         </footer>
     </div>
@@ -437,64 +478,64 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
         <script type='text/javascript'>/* <![CDATA[ */ var vodi_options = { "rtl": "0", "enable_sticky_header": "", "enable_hh_sticky_header": "", "ajax_url": "https:\/\/demo2.madrasthemes.com\/vodi-demos\/main\/wp-admin\/admin-ajax.php", "deal_countdown_text": { "days_text": "Days", "hours_text": "Hours", "mins_text": "Mins", "secs_text": "Secs" }, "wp_local_time_offset": "5.5", "enable_vodi_readmore": "1", "vodi_episode_readmore_data": { "moreLink": "<a class=\"maxlist-more\" href=\"#\">Read More<\/a>", "lessLink": "<a class=\"maxlist-less\" href=\"#\">Show Less<\/a>", "collapsedHeight": 47, "speed": 600 }, "vodi_video_readmore_data": { "moreLink": "<a class=\"maxlist-more\" href=\"#\">Show more<\/a>", "lessLink": "<a class=\"maxlist-less\" href=\"#\">Show less<\/a>", "collapsedHeight": 0, "speed": 600 } }; /* ]]> */</script>*@
     @*<script type='text/javascript' src='~/main/stats.wp.com/e-201922.js' async='async' defer='defer'></script>*@
     <script type='text/javascript'>
-    _stq = window._stq || [];
-    _stq.push(['view', { v: 'ext', j: '1:7.3.1', blog: '162040229', post: '343', tz: '5.5', srv: 'demo2.madrasthemes.com' }]);
-    _stq.push(['clickTrackerInit', '162040229', '343']);</script>
+        _stq = window._stq || [];
+        _stq.push(['view', { v: 'ext', j: '1:7.3.1', blog: '162040229', post: '343', tz: '5.5', srv: 'demo2.madrasthemes.com' }]);
+        _stq.push(['clickTrackerInit', '162040229', '343']);</script>
     <script>
-    window.lazyLoadOptions = {
-        elements_selector: "img[data-lazy-src],.rocket-lazyload",
-        data_src: "lazy-src",
-        data_srcset: "lazy-srcset",
-        data_sizes: "lazy-sizes",
-        class_loading: "lazyloading",
-        class_loaded: "lazyloaded",
-        threshold: 300,
-        callback_loaded: function (element) {
-            if (element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible") {
-                if (element.classList.contains("lazyloaded")) {
-                    if (typeof window.jQuery != "undefined") {
-                        if (jQuery.fn.fitVids) {
-                            jQuery(element).parent().fitVids();
+        window.lazyLoadOptions = {
+            elements_selector: "img[data-lazy-src],.rocket-lazyload",
+            data_src: "lazy-src",
+            data_srcset: "lazy-srcset",
+            data_sizes: "lazy-sizes",
+            class_loading: "lazyloading",
+            class_loaded: "lazyloaded",
+            threshold: 300,
+            callback_loaded: function (element) {
+                if (element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible") {
+                    if (element.classList.contains("lazyloaded")) {
+                        if (typeof window.jQuery != "undefined") {
+                            if (jQuery.fn.fitVids) {
+                                jQuery(element).parent().fitVids();
+                            }
                         }
                     }
                 }
             }
-        }
-    };
-    window.addEventListener('LazyLoad::Initialized', function (e) {
-        var lazyLoadInstance = e.detail.instance;
+        };
+        window.addEventListener('LazyLoad::Initialized', function (e) {
+            var lazyLoadInstance = e.detail.instance;
 
-        if (window.MutationObserver) {
-            var observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    for (i = 0; i < mutation.addedNodes.length; i++) {
-                        if (typeof mutation.addedNodes[i].getElementsByTagName !== 'function') {
-                            return;
+            if (window.MutationObserver) {
+                var observer = new MutationObserver(function (mutations) {
+                    mutations.forEach(function (mutation) {
+                        for (i = 0; i < mutation.addedNodes.length; i++) {
+                            if (typeof mutation.addedNodes[i].getElementsByTagName !== 'function') {
+                                return;
+                            }
+
+                            if (typeof mutation.addedNodes[i].getElementsByClassName !== 'function') {
+                                return;
+                            }
+
+                            imgs = mutation.addedNodes[i].getElementsByTagName('img');
+                            iframes = mutation.addedNodes[i].getElementsByTagName('iframe');
+                            rocket_lazy = mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');
+
+                            if (0 === imgs.length && 0 === iframes.length && 0 === rocket_lazy.length) {
+                                return;
+                            }
+
+                            lazyLoadInstance.update();
                         }
-
-                        if (typeof mutation.addedNodes[i].getElementsByClassName !== 'function') {
-                            return;
-                        }
-
-                        imgs = mutation.addedNodes[i].getElementsByTagName('img');
-                        iframes = mutation.addedNodes[i].getElementsByTagName('iframe');
-                        rocket_lazy = mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');
-
-                        if (0 === imgs.length && 0 === iframes.length && 0 === rocket_lazy.length) {
-                            return;
-                        }
-
-                        lazyLoadInstance.update();
-                    }
+                    });
                 });
-            });
 
-            var b = document.getElementsByTagName("body")[0];
-            var config = { childList: true, subtree: true };
+                var b = document.getElementsByTagName("body")[0];
+                var config = { childList: true, subtree: true };
 
-            observer.observe(b, config);
-        }
-    }, false);</script>
+                observer.observe(b, config);
+            }
+        }, false);</script>
     <script data-no-minify="1" async
             src="~/main/wp-content/plugins/wp-rocket/assets/js/lazyload/11.0.6/lazyload.min.js"></script>
     @*<script src="~/main/wp-content/cache/min/2/6cf84988f35ec0c3ab7b8fa26efcc63a.js" data-minify="1" defer></script>*@
@@ -511,13 +552,13 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
     <script src="~/js/jquery-2.2.3.min.js"></script>
     <script src="~/asset/rating/rater.min.js"></script>
 
-<script>
-    var options = {
-        max_value: 6,
-        step_size: 0.5
-    }
-    $(".rating").rate(options);
-</script>
+    <script>
+        var options = {
+            max_value: 6,
+            step_size: 0.5
+        }
+        $(".rating").rate(options);
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 

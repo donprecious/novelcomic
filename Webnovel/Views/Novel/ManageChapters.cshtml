@@ -1,38 +1,45 @@
 ﻿@model Webnovel.Entities.Novel
+@using Webnovel.Repository
+
+@inject INovel Novel
 @{
     ViewData["Title"] = "Manage Novel";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
+
 }
-  
+@*@inject INovel novel*@
+@* Get First Session *@
+@{
+    var sessions = await Novel.GetNovelSections(Model.Id);
+
+    var firstSession = sessions.FirstOrDefault();
+    var timeZone = TimeZoneInfo.GetSystemTimeZones();
+    //var currentTimeZone = TimeZoneInfo
+}
+<input type="hidden" value="@Model.Id" />
 <div class="row">
     <div class="col-lg-12">
         <div class="page-breadcrumb">
             <h4 class="page-title">Manage Chapters and Section Here</h4>
             <div class="row m-t-5">
-                <div class="col-6">
+                <div class="col-4">
                     <button onclick="showAddChapter()" class="btn btn-outline-orange"><i class="ti ti-plus"></i> Create Chapter</button>
-
-                </div>
-                <div class="col-6">
-                    <button onclick="showCreateSection()" style="float: right" class="btn btn-outline-primary"><i class="ti ti-plus"></i> Create Section</button>
-
                 </div>
 
             </div>
-          
-            </div>
+
         </div>
     </div>
+</div>
 
 
 <div class="left-part bg-white p-b-40">
     <!-- Mobile toggle button -->
-    <a class="ti-menu ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
+    <a class="ti-book ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
     <!-- Mobile toggle button -->
     <div class="scrollable position-relative ps-container ps-theme-default" style="height:100%;" data-ps-id="bfdfe7c7-2f7f-9f54-d173-ff3f0606991b">
         <div class="p-15" id="sections">
             @await Component.InvokeAsync("SectionChapter", new { novelId = Model.Id })
-
         </div>
         <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
 
@@ -42,10 +49,10 @@
 </div>
 
 <div class="right-part">
-    <div class="p-20" id="displayChapter"> 
+    <div class="p-20 displayChapter" id="displayChapter">
 
 
-</div>
+    </div>
 
 </div>
 
@@ -57,7 +64,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                @await Component.InvokeAsync("AddSection", new{novelId = Model.Id })
+                @await Component.InvokeAsync("AddSection", new { novelId = Model.Id })
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
@@ -65,7 +72,7 @@
         </div>
     </div>
 </div>
-    
+
 <div class="modal fade" id="createChapterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -74,7 +81,23 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                @await Component.InvokeAsync("AddChapter", new{novelId = Model.Id })
+                @await Component.InvokeAsync("AddChapter", new { novelId = Model.Id })
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editsectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-megna">
+                <h4 class="modal-title" id="exampleModalLabel1">Edit Section</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body editsection-body">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
@@ -83,25 +106,457 @@
     </div>
 </div>
 
+<div class="modal fade" id="editchapterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-megna">
+                <h4 class="modal-title" id="exampleModalLabel1">Edit Chapter</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body editchapter-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="publishChapterModal" tabindex="-1" role="dialog" aria-labelledby="publishChapterModal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-megna">
+                <h4 class="modal-title" id="">Publish Chapter</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body ">
+                <div class="form-group">
+
+                    <input type="radio" name="publish" checked="checked" value="now"> Publish Now
+                    <input type="radio" name="publish" value="later"> Publish Later
+                </div> 
+                <div style="display: none" id="togglePublish">
+                    <div class="form-group">
+
+                        <label class="control-label"> Date Time</label>
+                        <input type="datetime" id="publishDatetime" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                 
+                        <label class="control-label"> Time Zone</label>
+                        <select class="form-control" id="timezone">
+                            @*<option value=""> @currentTimeZone.StandardName</option>*@
+                            @foreach (var i in timeZone.OrderByDescending(a => a.DisplayName))
+                            {
+                                <option value="@i.Id"> @i.DisplayName - @i.Id</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+           
+                <button class="btn btn-rounded btn-success btn-block" id="completePublish"> Publish</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section css{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+    @*<link href="~/admin/assets/icheck-1.x/skins/flat/flat.css" rel="stylesheet" />*@
+    <link href="~/admin/assets/icheck-1.x/skins/flat/blue.css" rel="stylesheet" />
+
+    <style>
+        a.delete-section {
+            text-align: right;
+            color: #bfbfbf;
+            float: right;
+            font-size: 0.9rem;
+        }
+
+        li.list-group-item {
+            padding: 3px;
+            margin-bottom: 2px;
+            background-color: #d0f3f9;
+            cursor: pointer;
+        }
+    </style>
 }
 
 @section Scripts
-    {
+{
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>*@
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckeditor/adapters/jquery.js"></script>
+    <script src="~/admin/assets/icheck-1.x/icheck.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="~/js/functions.js"></script>
     <script src="~/js/addsection.js"></script>
     <script src="~/js/addchapter.js"></script>
     <script>
-     
-    </script> 
-    
+
+        function renderView(url) {
+            $.ajax(url,
+                {
+                    type: "get",
+                    beforeSend: function() {
+                        //$("#loader").show();
+                    },
+                    complete: function() {
+                        //$("#loader").hide();
+
+                    },
+                    success: function(response) {
+                        $(".showEpisode").html(response);
+                    }
+                });
+            //$(".showEpisode").load("/Comic/ReadEpisode/"+epicId);
+        }
+
+        // edit section
+        function showEditSectionModal(id) {
+            var url = "/Novel/EditSection/" + id;
+            $.ajax(url,
+                {
+                    type: "get",
+                    beforeSend: function() {
+                        //$("#loader").show();
+                    },
+                    complete: function() {
+                        //$("#loader").hide();
+
+                    },
+                    success: function(response) {
+                        $(".editsection-body").html(response);
+                        $("#editsectionModal").modal();
+                    }
+                });
+        }
+
+        function showEditChapterModal(id) {
+            var url = "/Novel/EditChapterDetail/" + id;
+            $.ajax(url,
+                {
+                    type: "get",
+                    beforeSend: function() {
+                        //$("#loader").show();
+                    },
+                    complete: function() {
+                        //$("#loader").hide();
+
+                    },
+                    success: function(response) {
+                        $(".editchapter-body").html(response);
+                        $("#editchapterModal").modal();
+                    }
+                });
+        }
+
+        $(function() {
+            $(document.body).on('submit',
+                "#editSectionForm",
+                function(event) {
+                    event.preventDefault();
+                    var data = $(this).serialize();
+
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $("#btnEditSection").attr('disable', 'disable');
+                            $("#editSectionLoading").show();
+                        },
+                        complete: function() {
+                            $("#btnEditSection").removeAttr('disable');
+                            $("#editSectionLoading").hide();
+
+                        },
+                        success: function(response) {
+                            if (response.status == 200) {
+                                Swal.fire({
+                                    title: 'Success',
+                                    text: 'Section Edit Successfully',
+                                    type: 'success',
+                                    confirmButtonText: 'Cool'
+                                });
+                                location.reload();
+                            } else if (response.status == 400) {
+                                var html = "<ul> ";
+                                response.errors.forEach(a => {
+                                    html += `<li> ${a.errorMessage} </li>`;
+
+                                });
+                                $("#alertNovelError").html(html + '</ul>');
+                                $('#alertNovelError').removeClass('hide');
+
+                            }
+                            console.log(response);
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+
+                    });
+                });
+            $(document.body).on('submit',
+                "#editChapterForm",
+                function(event) {
+                    event.preventDefault();
+                    var data = $(this).serialize();
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $("#btnEditChapter").attr('disable', 'disable');
+                            $("#editChapterLoading").show();
+                        },
+                        complete: function() {
+                            $("#btnEditChapter").removeAttr('disable');
+                            $("#editChapterLoading").hide();
+
+                        },
+                        success: function(response) {
+                            if (response.status == 200) {
+                                Swal.fire({
+                                    title: 'Success',
+                                    text: ' Edit Successfully',
+                                    type: 'success',
+                                    confirmButtonText: 'Cool'
+                                });
+                                location.reload();
+                            } else if (response.status == 400) {
+                                var html = "<ul> ";
+                                response.errors.forEach(a => {
+                                    html += `<li> ${a.errorMessage} </li>`;
+
+                                });
+                                $("#alertNovelError").html(html + '</ul>');
+                                $('#alertNovelError').removeClass('hide');
+
+                            }
+                            console.log(response);
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+
+                    });
+                });
+
+        });
+
+        function deleteSection(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Deleting this section will delete all chapters in it!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax("/Novel/DeleteSection/" + id,
+                        {
+                            type: "get",
+                            beforeSend: function() {
+                                $(this).attr("disabled", "disabled");
+                            },
+                            complete: function() {
+                                $(this).removeAttr("disabled");
+
+                            },
+                            success: function(response) {
+                                if (response.status == 200) {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Your Novel has been deleted.',
+                                        'success'
+                                    );
+                                    location.reload();
+
+                                } else {
+                                    Swal.fire(
+                                        'Error!',
+                                        'Something went wrong',
+                                        'success'
+                                    );
+                                }
+                                console.log(response);
+                            },
+                            error: function(err) {
+                                console.log(err);
+                            }
+                        });
+
+                }
+            });
+        }
+
+        function deleteChapter(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Are You sure you want to delete this chapter",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax("/Novel/DeleteChapter/" + id,
+                        {
+                            type: "get",
+                            beforeSend: function() {
+                                $(this).attr("disabled", "disabled");
+                            },
+                            complete: function() {
+                                $(this).removeAttr("disabled");
+
+                            },
+                            success: function(response) {
+                                if (response.status == 200) {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Your Delete is Successful',
+                                        'success'
+                                    );
+                                    location.reload();
+
+                                } else {
+                                    Swal.fire(
+                                        'Error!',
+                                        'Something went wrong',
+                                        'success'
+                                    );
+                                }
+                                console.log(response);
+                            },
+                            error: function(err) {
+                                console.log(err);
+                            }
+                        });
+
+                }
+            });
+        }
+
+        function viewSection(id) {
+            $.ajax("/Novel/ViewSection/" + id,
+                {
+                    type: "get",
+                    beforeSend: function() {
+                        //$("#loader").show();
+                    },
+                    complete: function() {
+                        //$("#loader").hide();
+
+                    },
+                    success: function(response) {
+                        $(".displayChapter").html(response);
+                    }
+                });
+        }
+    </script>
+
     <script>
-     
+        $(function() {
+            @if (firstSession != null)
+            {
+                @:viewSection(@firstSession.Id);
+
+            }
+
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+            $("#publishDatetime").flatpickr({
+                defaultDate: "today",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                altInput: true,
+                altFormat: "F j, Y",
+                minDate: "today"
+            });
+        });
+
+        $(function() {
+
+            $('input').on('ifClicked',
+                function(event) {
+                    //  console.log();
+                    var p = $(this).val();
+                    if (p == "now") {
+                        $("#togglePublish").hide();
+                    } else {
+                        $("#togglePublish").show();
+                    }
+                });
+        });
+        $(document.body).on('click',
+            "#btnPublish",
+            function() {
+                $("#publishChapterModal").modal();
+            });
+
+        $("#completePublish").on("click",
+            function() {
+                var data = {
+                    "id": $("#chapterId").val(),
+                    "datePublished": $("#publishDatetime").val(),
+                    "timeZone": $("#timezone").val()
+                    };
+                $.ajax("/Novel/Publish",
+                    {
+                        data: data,
+                        type: "post",
+                        beforeSend: function() {
+                            $(this).attr("disabled", "disabled");
+                        },
+                        complete: function() {
+                            $(this).removeAttr("disabled");
+                        },
+                        success: function(res) {
+                            if (res.status == 200) {
+                                Swal.fire({
+                                    title: 'Success',
+                                    text: res.message,
+                                    type: 'success',
+                                    confirmButtonText: 'OK'
+                                }); 
+                               
+                            }
+                            else
+                            {
+                                Swal.fire({
+                                    title: 'Ops !',
+                                    text: res.message,
+                                    type: 'error',
+                                    confirmButtonText: 'OK'
+                                }); 
+                            }
+                        }
+                        
+                    });
+            });
+
     </script>
 }
+

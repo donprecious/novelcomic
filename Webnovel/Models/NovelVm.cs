@@ -1,38 +1,78 @@
-﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Webnovel.Models
 {
-    public class NovelVm
-    {
-        public int Id { get; set; }
+	public class NovelVm
+	{
+		public int Id
+		{
+			get;
+			set;
+		}
 
-        [Required(ErrorMessage = "Novel Title Required")]
-        public string Name { get; set; }
+		[Required(ErrorMessage = "Novel Title Required")]
+		public string Name
+		{
+			get;
+			set;
+		}
 
-        [Required(ErrorMessage = "Novel Description")]
+		[Required(ErrorMessage = "Novel Synopsis Required")]
+		public string Title
+		{
+			get;
+			set;
+		}
 
-        public string Title { get; set; }
+		[Required(ErrorMessage = "Author is Required")]
+		public int AuthorId
+		{
+			get;
+			set;
+		}
 
-        [Required(ErrorMessage = "Author is Required")]
+		public string CoverPageImageUrl
+		{
+			get;
+			set;
+		}
 
-        public int AuthorId { get; set; }
+		[Required(ErrorMessage = "Category Required")]
+		public int CategoryId
+		{
+			get;
+			set;
+		}
 
-        //[ForeignKey("AuthorId")]
-        //public Author Author { get; set; }
-        [Required(ErrorMessage = "Category Required")]
+		public string Language
+		{
+			get;
+			set;
+		}
 
-        public int CategoryId { get; set; }
+		public string LeadingGender
+		{
+			get;
+			set;
+		}
 
-        //[ForeignKey("CategoryId")]
-        //public Category Category { get; set; }
+		public string WariningNotice
+		{
+			get;
+			set;
+		}
 
+		public string AudienceAge
+		{
+			get;
+			set;
+		}
 
-        //public ICollection<Chapter> Chapters { get; set; }
-        //public ICollection<NovelSection> NovelSections { get; set; }
-
-    }
+		public ICollection<string> NTags
+		{
+			get;
+			set;
+		}
+	}
 }

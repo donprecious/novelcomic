@@ -60,12 +60,15 @@
 
 @section css{
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="~/asset/select/css/select2.css" rel="stylesheet" />
 }
 
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link href="~/asset/select/js/select2.full.min.js" rel="stylesheet" />
 
+  
     <script>
         $(function() {
             var hasAuthor = '@ViewBag.Author';

@@ -35,13 +35,11 @@ namespace Webnovel.Services
                 if (uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     uploadedPath = uploadResult.SecureUri.ToString();
-                    
                     return true;
                 }
             }
             catch (Exception ex)
             {
-
                 return false;
             }
            
@@ -49,13 +47,9 @@ namespace Webnovel.Services
         }
         public static async Task<bool> DeleteFromCloud(string file, string folder = "webnovel")
         {
-
             Cloudinary cloud = new Cloudinary(account);
-
-          
             try
             {
-              
                 var uploadResult = cloud.DeleteResources(file);
                 if (uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -64,7 +58,6 @@ namespace Webnovel.Services
             }
             catch (Exception ex)
             {
-
                 return false;
             }
 

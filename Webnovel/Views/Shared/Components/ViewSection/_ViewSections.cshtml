@@ -1,0 +1,35 @@
+﻿@model Webnovel.Entities.NovelSection
+
+    <div class="card text-center">
+        <div class="card-header">
+            Section
+        </div>
+        <div class="card-body">
+            <h4 class="card-title"></h4>
+            <p class="card-text">@Model.Title</p>
+            <a onclick="showEditSectionModal(@Model.Id)" class="btn btn-info text-white"><i class="mdi mdi-pencil fa-edit"></i> Edit </a>  <a onclick="deleteSection(@Model.Id)" class="btn btn-danger  text-white"><i class="mdi mdi-delete"></i> Delete</a>
+        </div>
+    
+    </div>
+<div class="row">
+    @foreach (var i in Model.Chapters)
+    {
+
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h4 class="card-title">@i.Name</h4>
+                </div>
+                <div class="card-body">
+
+                    <p class="card-text">@i.Description</p>
+                    <a onclick="showEditChapterModal(@i.Id)" class="btn btn-info">Edit</a> 
+                    <a onclick="showEditChapter(@i.Id)" class="btn btn-outline-orange">Edit Content</a>
+
+                    <a onclick="deleteDelete(@i.Id)" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+ 
+</div>

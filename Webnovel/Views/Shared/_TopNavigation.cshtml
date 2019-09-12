@@ -3,14 +3,15 @@
 
 @inject ICategory Categories
 
-
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @inject IComic Comic
 @{
     var category = await Categories.List();
-    //var comic = await Comic.GetAllComics(); 
+    //var comic = await Comic.GetAllComics();
 
 }
-<header id="site-header" class="site-header header-v1 desktop-header stick-this light" role="banner" style="" >
+<header id="site-header" class="site-header header-v1 desktop-header stick-this light" role="banner" style="">
     <div class="container-fluid">
         <div class="site-header__inner">
             <div class="site-header__right">
@@ -39,13 +40,20 @@
                                         <a title="Novels" data-toggle="dropdown" aria-haspopup="true"
                                            aria-expanded="false" class="dropdown-toggle nav-link">Novels</a>
                                         <ul class="dropdown-menu" role="menu">
+                                            <li itemscope="itemscope"
+                                                itemtype="https://www.schema.org/SiteNavigationElement"
+                                                id="menu-item-5579"
+                                                class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5579 nav-item">
+                                                <a title="Action" href="@Url.Action("Novels","Home")"
+                                                   class="dropdown-item">All Novels</a>
+                                            </li>
                                             @foreach (var i in category)
                                             {
                                                 <li itemscope="itemscope"
                                                     itemtype="https://www.schema.org/SiteNavigationElement"
                                                     id="menu-item-5579"
                                                     class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5579 nav-item">
-                                                    <a title="Action" href="#"
+                                                    <a title="Action"
                                                        class="dropdown-item">@i.Name</a>
                                                 </li>
 
@@ -80,6 +88,13 @@
                                         <a title="Videos" data-toggle="dropdown" aria-haspopup="true"
                                            aria-expanded="false" class="dropdown-toggle nav-link">Comics</a>
                                         <ul class="dropdown-menu" role="menu">
+                                            <li itemscope="itemscope"
+                                                itemtype="https://www.schema.org/SiteNavigationElement"
+                                                id="menu-item-5579"
+                                                class="menu-item menu-item-type-taxonomy menu-item-object-movie_genre menu-item-5579 nav-item">
+                                                <a title="Action" href="@Url.Action("Comics","Home")"
+                                                   class="dropdown-item">All Comics</a>
+                                            </li>
                                             @foreach (var i in category)
                                             {
                                                 <li itemscope="itemscope"
@@ -108,448 +123,25 @@
                     </div>
                 </div>
                 <div class="site-header__logo">
-                    <a href="~/main/index.html" rel="home" class="navbar-brand">
-                        <svg version="1.1" width="103" height="40px">
-                            <linearGradient id="vodi-gr" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0" style="stop-color:#2A4999" />
-                                <stop offset="1" style="stop-color:#2C9CD4" />
-                            </linearGradient>
-                            <g class="vodi-gr">
-                                <path class="vodi-svg0" d="M72.8,12.7c0-2.7,0-1.8,0-4.4c0-0.9,0-1.8,0-2.8C73,3,74.7,1.4,77,1.4c2.3,0,4.1,1.8,4.2,4.2c0,1,0,2.1,0,3.1
-c0,6.5,0,9.4,0,15.9c0,4.7-1.7,8.8-5.6,11.5c-4.5,3.1-9.3,3.5-14.1,0.9c-4.7-2.5-7.1-6.7-7-12.1c0.1-7.8,6.3-13.6,14.1-13.2
-c0.7,0,1.4,0.2,2.1,0.3C71.3,12.2,72,12.4,72.8,12.7z M67.8,19.8c-2.9,0-5.2,2.2-5.2,5c0,2.9,2.3,5.3,5.2,5.3
-c2.8,0,5.2-2.4,5.2-5.2C73,22.2,70.6,19.8,67.8,19.8z
-M39.9,38.6c-7.3,0-13.3-6.1-13.3-13.5c0-7.5,5.9-13.4,13.4-13.4c7.5,0,13.4,6,13.4,13.5
-C53.4,32.6,47.4,38.6,39.9,38.6z M39.9,30.6c3.2,0,5.6-2.3,5.6-5.6c0-3.2-2.3-5.5-5.5-5.5c-3.2,0-5.6,2.2-5.6,5.4
-C34.4,28.2,36.7,30.6,39.9,30.6z
-M14.6,27c0.6-1.4,1.1-2.6,1.6-3.8c1.2-2.9,2.5-5.8,3.7-8.8c0.7-1.7,2-2.8,4-2.7c3,0,4.9,2.6,3.8,5.4
-c-0.5,1.3-1.2,2.6-1.8,3.9c-2.4,5-4.9,10-7.3,15c-0.8,1.6-2,2.6-3.9,2.6c-2,0-3.3-0.8-4.2-2.6c-2.7-5.6-5.3-11.1-8-16.7
-c-0.3-0.7-0.6-1.3-0.9-2c-0.8-1.8-0.3-3.7,1.1-4.8c1.5-1.2,4-1.3,5.3,0c0.7,0.6,1.2,1.5,1.6,2.3C11.3,18.8,12.9,22.7,14.6,27z
-M90.9,25.1c0,3.1,0,6.2,0,9.4c0,1.9-1.2,3.4-2.9,4c-1.7,0.5-3.5,0-4.5-1.6c-0.5-0.8-0.8-1.8-0.8-2.6
-c-0.1-6.1-0.1-11.3,0-17.5c0-2.2,1.5-3.9,3.5-4.2c2.1-0.3,4.1,0.9,4.7,2.9c0.1,0.5,0.2,1.1,0.2,1.6C90.9,20,90.9,22.1,90.9,25.1
-C90.9,25.1,90.9,25.1,90.9,25.1z
-M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,91.5,5.5,90.2,4.7z" />
-                            </g>
-                        </svg>
+                    <a href="@Url.Action("Index","Home")" rel="home" class="navbar-brand">
+
+                        <img src="~/images/logo_black.png" width="180" height="80" />
                     </a>
                 </div>
                 <div class="site_header__primary-nav">
                     <ul id="menu-primary-menu" class="nav yamm">
-                        <li id="menu-item-5555"
-                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5555">
-                            <a>Home</a>
-                        </li>
+                        @*<li id="menu-item-5555"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5555">
+                                    <a>Home</a>
+                            </li>*@
                         <li id="menu-item-5551"
                             class="yamm-fw menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-5551">
-                            <a title ="Comic">Comic</a>
+                            <a>Novels</a>
                             <ul class="sub-menu">
 
                                 <li id="menu-item-5204"
                                     class="menu-item menu-item-type-post_type menu-item-object-mas_static_content menu-item-5204">
-                                    <a title="Comic Genre"
-                                       >
-                                    </a>
-                                    <div class="yamm-content">
-                                        <div class="wp-block-columns has-3-columns">
-                                            <div class="wp-block-column">
-                                                <h2>Comic of the Day</h2>
-                                                <div class="masvideos masvideos-movies vodi-megamenu-movie">
-                                                    <div class="movies columns-1">
-                                                        <div class="movies__inner">
-                                                            <div class="post-322 movie type-movie status-publish has-post-thumbnail hentry movie_genre-adventure movie_genre-comedy movie_genre-romance movie_tag-4k-ultra movie_tag-king movie_tag-premieres movie_tag-viking">
-                                                                <div class="movie__poster">
-                                                                    <a href="#"
-                                                                       class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                                        <img width="300" height="450"
-                                                                             src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20450'%3E%3C/svg%3E"
-                                                                             class="movie__poster--image" alt=""
-                                                                             data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-150x225.jpg 150w"
-                                                                             data-lazy-sizes="(max-width: 300px) 100vw, 300px"
-                                                                             data-lazy-src="~/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-300x450.jpg" />
-                                                                        <noscript>
-                                                                            <img width="300" height="450"
-                                                                                 src="~/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-300x450.jpg"
-                                                                                 class="movie__poster--image"
-                                                                                 alt=""
-                                                                                 srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-150x225.jpg 150w"
-                                                                                 sizes="(max-width: 300px) 100vw, 300px" />
-                                                                        </noscript>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="movie__body">
-                                                                    <div class="movie__info">
-                                                                        <div class="movie__info--head">
-                                                                            <div class="movie__meta">
-                                                                                <span class="movie__meta--release-year">2017</span>
-                                                                                <span class="movie__meta--genre">
-                                                                                    <a href="#"
-                                                                                       rel="tag">Adventure</a>,
-                                                                                    <a href="#"
-                                                                                       rel="tag">Comedy</a>,
-                                                                                    <a href="~/main/movie-genre/romance/index.html"
-                                                                                       rel="tag">Romance</a>
-                                                                                </span>
-                                                                            </div>
-                                                                            <a href="#"
-                                                                               class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                                                <h3 class="masvideos-loop-movie__title  movie__title">
-                                                                                    The Big Sick
-                                                                                </h3>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="movie__short-description">
-                                                                            <div>
-                                                                                <p>
-                                                                                    Pakistan-born comedian Kumail
-                                                                                    Nanjiani and grad student
-                                                                                    Emily Gardner fall in love
-                                                                                    but struggle as their
-                                                                                    cultures clash. When Emily
-                                                                                    contracts a mysterious
-                                                                                    illness, Kumail finds
-                                                                                    himself forced to face her
-                                                                                    feisty parents, his
-                                                                                    family&#8217;s expectations,
-                                                                                    and his true feelings
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="movie__actions">
-                                                                            <a href="#"
-                                                                               class="movie-actions--link_watch">
-                                                                                Read
-                                                                                Now
-                                                                            </a>
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="movie__review-info">
-                                                                        <a href="#"
-                                                                           class="avg-rating">
-                                                                            <span class="rating-with-count">
-                                                                                <svg class="vodi-svg"
-                                                                                     width="40px" height="39px"
-                                                                                     xmlns="http://www.w3.org/2000/svg"
-                                                                                     viewBox="0 0 40 39">
-                                                                                    <title>play</title>
-                                                                                    <path fill-rule="evenodd"
-                                                                                          d="M19.633,-0.000 C21.509,0.035 21.530,1.174 22.167,2.414 C23.329,4.679 24.406,7.067 25.572,9.338 C25.853,9.886 26.431,11.640 26.918,11.834 C27.486,12.203 29.345,12.109 30.165,12.316 C32.170,12.825 34.489,12.860 36.500,13.364 C37.516,13.618 38.689,13.413 39.430,13.927 C39.689,14.107 39.770,14.504 39.984,14.732 C40.047,16.499 39.096,16.843 38.163,17.792 C36.473,19.509 34.784,21.227 33.095,22.944 C32.585,23.462 31.092,24.543 31.036,25.359 C31.423,25.951 31.307,27.455 31.511,28.258 C32.138,30.727 32.213,33.522 32.857,35.987 C33.142,37.078 33.016,38.241 32.303,38.724 C31.108,39.533 29.632,38.193 28.819,37.758 C26.695,36.623 24.601,35.624 22.483,34.457 C21.979,34.179 20.607,33.178 20.108,33.088 C19.748,33.023 18.163,34.107 17.812,34.296 C15.557,35.505 13.340,36.640 11.080,37.839 C10.548,38.120 9.180,39.226 8.309,38.966 C6.955,38.558 6.874,36.993 7.280,35.423 C7.716,33.733 7.697,31.880 8.151,30.109 C8.527,28.642 8.907,26.529 9.022,24.957 C8.092,24.344 7.202,23.107 6.408,22.300 C4.760,20.625 3.059,18.990 1.340,17.389 C0.646,16.742 -0.578,15.515 0.311,14.249 C0.915,13.388 2.364,13.656 3.557,13.364 C6.678,12.599 10.114,12.468 13.298,11.834 C14.186,9.747 15.306,7.711 16.307,5.716 C16.954,4.426 17.496,3.163 18.128,1.931 C18.334,1.531 18.358,1.093 18.603,0.724 C18.845,0.362 19.299,0.273 19.633,-0.000 Z" />
-                                                                                </svg>
-                                                                                <span class="avg-rating-number">
-                                                                                    5.0
-                                                                                </span>
-                                                                            </span>
-                                                                            <span class="rating-number-with-text">
-                                                                                <span class="avg-rating-number">
-                                                                                    5.0
-                                                                                </span>
-                                                                                <span class="avg-rating-text">
-                                                                                    <span>1</span> Vote
-                                                                                </span>
-                                                                            </span>
-                                                                        </a>
-                                                                        <div class="viewers-count"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="wp-block-column">
-                                                <h2>Comic Genre</h2>
-                                                <ul class="menu">
-                                                   @foreach (var i in category)
-                                                   {
-                                                       <li>
-                                                           <a href="#">@i.Name</a>
-                                                       </li>
-                                                   }
-                                                   
-
-                                                </ul>
-                                            </div>
-                                            <div class="wp-block-column">
-                                                <h2>Popular Comics</h2>
-                                                <section id="section-videos-carousel-flex-header-5cf3b8a67eaa0"
-                                                         class="home-section section-videos-carousel-flex-header style-2"
-                                                         style="padding-left: 40px; padding-right: 40px;">
-                                                    <div class="container">
-                                                        <div class="home-section__inner">
-                                                            <div class="section-videos-carousel__carousel">
-                                                                <div class="videos-carousel__inner"
-                                                                     data-ride="vodi-slick-carousel"
-                                                                     data-wrap=".videos__inner"
-                                                                     data-slick="{&quot;slidesToShow&quot;:1,&quot;slidesToScroll&quot;:1,&quot;dots&quot;:false,&quot;arrows&quot;:true,&quot;autoplay&quot;:false,&quot;infinite&quot;:false,&quot;responsive&quot;:[{&quot;breakpoint&quot;:768,&quot;settings&quot;:{&quot;slidesToShow&quot;:1,&quot;slidesToScroll&quot;:1}},{&quot;breakpoint&quot;:992,&quot;settings&quot;:{&quot;slidesToShow&quot;:3,&quot;slidesToScroll&quot;:1}},{&quot;breakpoint&quot;:1200,&quot;settings&quot;:{&quot;slidesToShow&quot;:4,&quot;slidesToScroll&quot;:1}}]}">
-                                                                    <div class="masvideos masvideos-videos ">
-                                                                        <div class="videos columns-1">
-                                                                            <div class="videos__inner">
-                                                                                <div class="post-1478 video type-video status-publish has-post-thumbnail hentry video_cat-tennis">
-                                                                                    <div class="video__container">
-                                                                                        <div class="video__poster">
-                                                                                            <a href="#"
-                                                                                               class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">
-                                                                                                <img width="480"
-                                                                                                     height="270"
-                                                                                                     src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20480%20270'%3E%3C/svg%3E"
-                                                                                                     class="video__poster--image"
-                                                                                                     alt=""
-                                                                                                     data-gallery-images="[]"
-                                                                                                     data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-480x270.jpg 480w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-270x153.jpg 270w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-220x125.jpg 220w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-244x138.jpg 244w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-339x192.jpg 339w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-327x185.jpg 327w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-300x169.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-768x432.jpg 768w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-1024x576.jpg 1024w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-640x360.jpg 640w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-120x67.jpg 120w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk.jpg 1280w"
-                                                                                                     data-lazy-sizes="(max-width: 480px) 100vw, 480px"
-                                                                                                     data-lazy-src="~/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-480x270.jpg" />
-                                                                                                <noscript>
-                                                                                                    <img width="480"
-                                                                                                         height="270"
-                                                                                                         src="~/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-480x270.jpg"
-                                                                                                         class="video__poster--image"
-                                                                                                         alt=""
-                                                                                                         data-gallery-images="[]"
-                                                                                                         srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-480x270.jpg 480w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-270x153.jpg 270w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-220x125.jpg 220w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-244x138.jpg 244w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-339x192.jpg 339w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-327x185.jpg 327w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-300x169.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-768x432.jpg 768w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-1024x576.jpg 1024w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-640x360.jpg 640w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-120x67.jpg 120w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk.jpg 1280w"
-                                                                                                         sizes="(max-width: 480px) 100vw, 480px" />
-                                                                                                </noscript>
-                                                                                            </a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="video__body">
-                                                                                        <div class="video__info">
-                                                                                            <div class="video__info--head">
-                                                                                                <a href="#"
-                                                                                                   class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">
-                                                                                                    <h3 class="masvideos-loop-video__title  video__title">
-                                                                                                        Anderson
-                                                                                                        Fights
-                                                                                                        His Way
-                                                                                                        to Glory
-                                                                                                    </h3>
-                                                                                                </a>
-                                                                                                <div class="video__views-meta">
-                                                                                                    <div class="vodi-jetpack-views">
-                                                                                                        <span>
-                                                                                                            83
-                                                                                                            views
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                    <div class="video__meta">
-                                                                                                        <span class="video__meta--last-update">
-                                                                                                            4
-                                                                                                            months
-                                                                                                            ago
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="video__short-description">
-                                                                                                <div>
-                                                                                                    Kevin
-                                                                                                    Anderson is
-                                                                                                    a South
-                                                                                                    African
-                                                                                                    professional
-                                                                                                    tennis
-                                                                                                    player who
-                                                                                                    is ranked
-                                                                                                    world No. 5
-                                                                                                    in
-                                                                                                    men&#8217;s
-                                                                                                    singles by
-                                                                                                    the
-                                                                                                    Association
-                                                                                                    of Tennis
-                                                                                                    Professionals
-                                                                                                    as of 28
-                                                                                                    January
-                                                                                                    2019.
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            @*<div class="video__actions">
-                                                                                                <a href="~/main/video/anderson-fights-his-way-to-glory/index.html"
-                                                                                                   class="video-actions--link_watch">
-                                                                                                    Watch
-                                                                                                    Now
-                                                                                                </a>
-                                                                                                <div class="video-actions--link_add-to-playlist dropdown">
-                                                                                                    <a class="dropdown-toggle"
-                                                                                                       href="#"
-                                                                                                       data-toggle="dropdown">
-                                                                                                        +
-                                                                                                        Playlist
-                                                                                                    </a>
-                                                                                                    <div class="dropdown-menu">
-                                                                                                        <a class="login-link"
-                                                                                                           href="~/main/my-account/video-playlists/index.html">
-                                                                                                            Sign
-                                                                                                            in
-                                                                                                            to
-                                                                                                            add
-                                                                                                            this
-                                                                                                            video
-                                                                                                            to a
-                                                                                                            playlist.
-                                                                                                        </a>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>*@
-                                                                                        </div>
-                                                                                        @*<div class="video__review-info">
-                                                                                            <div class="viewers-count">
-                                                                                                200
-                                                                                            </div>
-                                                                                        </div>*@
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="post-1475 video type-video status-publish has-post-thumbnail hentry video_cat-cricket">
-                                                                                    <span class="video__badge">
-                                                                                        <span class="video__badge--featured">Featured</span>
-                                                                                    </span>
-                                                                                    <div class="video__container">
-                                                                                        <div class="video__poster">
-                                                                                            <a href="~/main/video/unstoppable-vihari-cruises-with-151/index.html"
-                                                                                               class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">
-                                                                                                <img width="480"
-                                                                                                     height="270"
-                                                                                                     src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20480%20270'%3E%3C/svg%3E"
-                                                                                                     class="video__poster--image"
-                                                                                                     alt=""
-                                                                                                     data-gallery-images="[]"
-                                                                                                     data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-480x270.jpg 480w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-270x153.jpg 270w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-220x125.jpg 220w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-244x138.jpg 244w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-339x192.jpg 339w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-327x185.jpg 327w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-120x67.jpg 120w"
-                                                                                                     data-lazy-sizes="(max-width: 480px) 100vw, 480px"
-                                                                                                     data-lazy-src="~/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-480x270.jpg" />
-                                                                                                <noscript>
-                                                                                                    <img width="480"
-                                                                                                         height="270"
-                                                                                                         src="~/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-480x270.jpg"
-                                                                                                         class="video__poster--image"
-                                                                                                         alt=""
-                                                                                                         data-gallery-images="[]"
-                                                                                                         srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-480x270.jpg 480w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-270x153.jpg 270w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-220x125.jpg 220w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-244x138.jpg 244w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-339x192.jpg 339w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-327x185.jpg 327w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-120x67.jpg 120w"
-                                                                                                         sizes="(max-width: 480px) 100vw, 480px" />
-                                                                                                </noscript>
-                                                                                            </a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="video__body">
-                                                                                        <div class="video__info">
-                                                                                            <div class="video__info--head">
-                                                                                                <a href="~/main/video/unstoppable-vihari-cruises-with-151/index.html"
-                                                                                                   class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">
-                                                                                                    <h3 class="masvideos-loop-video__title  video__title">
-                                                                                                        Unstoppable
-                                                                                                        Vihari
-                                                                                                        Cruises
-                                                                                                        with
-                                                                                                        151*
-                                                                                                    </h3>
-                                                                                                </a>
-                                                                                                <div class="video__views-meta">
-                                                                                                    <div class="vodi-jetpack-views">
-                                                                                                        <span>
-                                                                                                            53
-                                                                                                            views
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                    <div class="video__meta">
-                                                                                                        <span class="video__meta--last-update">
-                                                                                                            4
-                                                                                                            months
-                                                                                                            ago
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="video__short-description">
-                                                                                                <div>
-                                                                                                    Hanuma
-                                                                                                    Vihari is an
-                                                                                                    Indian
-                                                                                                    cricketer
-                                                                                                    who plays
-                                                                                                    for Andhra
-                                                                                                    in Indian
-                                                                                                    domestic
-                                                                                                    cricket. A
-                                                                                                    right-handed
-                                                                                                    batsman and
-                                                                                                    occasional
-                                                                                                    right arm
-                                                                                                    off break
-                                                                                                    bowler, he
-                                                                                                    was a member
-                                                                                                    of the India
-                                                                                                    Under-19
-                                                                                                    cricket team
-                                                                                                    that won the
-                                                                                                    2012 ICC
-                                                                                                    Under-19
-                                                                                                    Cricket
-                                                                                                    World Cup in
-                                                                                                    Australia.
-                                                                                                    He made his
-                                                                                                    Test debut
-                                                                                                    for India in
-                                                                                                    September
-                                                                                                    2018.
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="video__actions">
-                                                                                                <a href="~/main/video/unstoppable-vihari-cruises-with-151/index.html"
-                                                                                                   class="video-actions--link_watch">
-                                                                                                    Watch
-                                                                                                    Now
-                                                                                                </a>
-                                                                                                @*<div class="video-actions--link_add-to-playlist dropdown">
-                                                                                                    <a class="dropdown-toggle"
-                                                                                                       href="~/main/video/unstoppable-vihari-cruises-with-151/index.html"
-                                                                                                       data-toggle="dropdown">
-                                                                                                        +
-                                                                                                        Playlist
-                                                                                                    </a>
-                                                                                                    <div class="dropdown-menu">
-                                                                                                        <a class="login-link"
-                                                                                                           href="~/main/my-account/video-playlists/index.html">
-                                                                                                            Sign
-                                                                                                            in
-                                                                                                            to
-                                                                                                            add
-                                                                                                            this
-                                                                                                            video
-                                                                                                            to a
-                                                                                                            playlist.
-                                                                                                        </a>
-                                                                                                    </div>
-                                                                                                </div>*@
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        @*<div class="video__review-info">
-                                                                                            <div class="viewers-count">
-                                                                                            </div>
-                                                                                        </div>*@
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li id="menu-item-5551"
-                            class="yamm-fw menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-5551">
-                            <a >Novels</a>
-                            <ul class="sub-menu">
-
-                                <li id="menu-item-5204"
-                                    class="menu-item menu-item-type-post_type menu-item-object-mas_static_content menu-item-5204">
-                                    <a title="						"
-                                       href="#">
+                                    <a href="#">
 
                                     </a>
                                     <div class="yamm-content">
@@ -659,25 +251,29 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                                                     </div>
                                                 </div>
                                             </div>
-                                        <div class="wp-block-column">
-                                            
-                                              <h2>Novel Genre </h2>
-                                            <ul class="menu">
-                                                <a href="#"
-                                                   class="movie-actions--link_watch">
-                                                    <li>Create Novel</li>  
-                                                </a>
-                                                @foreach (var i in category)
-                                                {
+                                            <div class="wp-block-column">
+
+                                                <h2>Novel Genre </h2>
+                                                <ul class="menu">
+
                                                     <li>
-                                                        <a href="#">@i.Name</a>
+                                                        <a href="@Url.Action("Novels", "Home")">Novels</a>
                                                     </li>
-                                                }
+
+                                                    <li>
+                                                        <a href="#">Create a novel</a>
+                                                    </li>
+                                                    @foreach (var i in category)
+                                                    {
+                                                        <li>
+                                                            <a href="#">@i.Name</a>
+                                                        </li>
+                                                    }
 
 
-                                            </ul>
-                                     
-                                        </div>
+                                                </ul>
+
+                                            </div>
                                             <div class="wp-block-column">
                                                 <h2>Coming Soon</h2>
                                                 <section id="section-videos-carousel-flex-header-5cf3b8a67eaa0"
@@ -800,7 +396,7 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                     
+
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="post-1475 video type-video status-publish has-post-thumbnail hentry video_cat-cricket">
@@ -931,7 +527,7 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                             
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -946,6 +542,412 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                                 </li>
                             </ul>
                         </li>
+                        <li id="menu-item-5551"
+                            class="yamm-fw menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-5551">
+                            <a href="" title="Comic">Comic</a>
+                            <ul class="sub-menu">
+
+                                <li id="menu-item-5204"
+                                    class="menu-item menu-item-type-post_type menu-item-object-mas_static_content menu-item-5204">
+                                    <a title="Comic Genre">
+                                    </a>
+                                    <div class="yamm-content">
+                                        <div class="wp-block-columns has-3-columns">
+                                            <div class="wp-block-column">
+                                                <h2>Comic of the Day</h2>
+                                                <div class="masvideos masvideos-movies vodi-megamenu-movie">
+                                                    <div class="movies columns-1">
+                                                        <div class="movies__inner">
+                                                            <div class="post-322 movie type-movie status-publish has-post-thumbnail hentry movie_genre-adventure movie_genre-comedy movie_genre-romance movie_tag-4k-ultra movie_tag-king movie_tag-premieres movie_tag-viking">
+                                                                <div class="movie__poster">
+                                                                    <a href="#"
+                                                                       class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
+                                                                        <img width="300" height="450"
+                                                                             src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20450'%3E%3C/svg%3E"
+                                                                             class="movie__poster--image" alt=""
+                                                                             data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-150x225.jpg 150w"
+                                                                             data-lazy-sizes="(max-width: 300px) 100vw, 300px"
+                                                                             data-lazy-src="~/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-300x450.jpg" />
+                                                                        <noscript>
+                                                                            <img width="300" height="450"
+                                                                                 src="~/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-300x450.jpg"
+                                                                                 class="movie__poster--image"
+                                                                                 alt=""
+                                                                                 srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/36-cztery-lwy-150x225.jpg 150w"
+                                                                                 sizes="(max-width: 300px) 100vw, 300px" />
+                                                                        </noscript>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="movie__body">
+                                                                    <div class="movie__info">
+                                                                        <div class="movie__info--head">
+                                                                            <div class="movie__meta">
+                                                                                <span class="movie__meta--release-year">2017</span>
+                                                                                <span class="movie__meta--genre">
+                                                                                    <a href="#"
+                                                                                       rel="tag">Adventure</a>,
+                                                                                    <a href="#"
+                                                                                       rel="tag">Comedy</a>,
+                                                                                    <a href="#"
+                                                                                       rel="tag">Romance</a>
+                                                                                </span>
+                                                                            </div>
+                                                                            <a href="#"
+                                                                               class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
+                                                                                <h3 class="masvideos-loop-movie__title  movie__title">
+                                                                                    The Big Sick
+                                                                                </h3>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="movie__short-description">
+                                                                            <div>
+                                                                                <p>
+                                                                                    Pakistan-born comedian Kumail
+                                                                                    Nanjiani and grad student
+                                                                                    Emily Gardner fall in love
+                                                                                    but struggle as their
+                                                                                    cultures clash. When Emily
+                                                                                    contracts a mysterious
+                                                                                    illness, Kumail finds
+                                                                                    himself forced to face her
+                                                                                    feisty parents, his
+                                                                                    family&#8217;s expectations,
+                                                                                    and his true feelings
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="movie__actions">
+                                                                            <a href="#"
+                                                                               class="movie-actions--link_watch">
+                                                                                Read
+                                                                                Now
+                                                                            </a>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="movie__review-info">
+                                                                        <a href="#"
+                                                                           class="avg-rating">
+                                                                            <span class="rating-with-count">
+                                                                                <svg class="vodi-svg"
+                                                                                     width="40px" height="39px"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     viewBox="0 0 40 39">
+                                                                                    <title>play</title>
+                                                                                    <path fill-rule="evenodd"
+                                                                                          d="M19.633,-0.000 C21.509,0.035 21.530,1.174 22.167,2.414 C23.329,4.679 24.406,7.067 25.572,9.338 C25.853,9.886 26.431,11.640 26.918,11.834 C27.486,12.203 29.345,12.109 30.165,12.316 C32.170,12.825 34.489,12.860 36.500,13.364 C37.516,13.618 38.689,13.413 39.430,13.927 C39.689,14.107 39.770,14.504 39.984,14.732 C40.047,16.499 39.096,16.843 38.163,17.792 C36.473,19.509 34.784,21.227 33.095,22.944 C32.585,23.462 31.092,24.543 31.036,25.359 C31.423,25.951 31.307,27.455 31.511,28.258 C32.138,30.727 32.213,33.522 32.857,35.987 C33.142,37.078 33.016,38.241 32.303,38.724 C31.108,39.533 29.632,38.193 28.819,37.758 C26.695,36.623 24.601,35.624 22.483,34.457 C21.979,34.179 20.607,33.178 20.108,33.088 C19.748,33.023 18.163,34.107 17.812,34.296 C15.557,35.505 13.340,36.640 11.080,37.839 C10.548,38.120 9.180,39.226 8.309,38.966 C6.955,38.558 6.874,36.993 7.280,35.423 C7.716,33.733 7.697,31.880 8.151,30.109 C8.527,28.642 8.907,26.529 9.022,24.957 C8.092,24.344 7.202,23.107 6.408,22.300 C4.760,20.625 3.059,18.990 1.340,17.389 C0.646,16.742 -0.578,15.515 0.311,14.249 C0.915,13.388 2.364,13.656 3.557,13.364 C6.678,12.599 10.114,12.468 13.298,11.834 C14.186,9.747 15.306,7.711 16.307,5.716 C16.954,4.426 17.496,3.163 18.128,1.931 C18.334,1.531 18.358,1.093 18.603,0.724 C18.845,0.362 19.299,0.273 19.633,-0.000 Z" />
+                                                                                </svg>
+                                                                                <span class="avg-rating-number">
+                                                                                    5.0
+                                                                                </span>
+                                                                            </span>
+                                                                            <span class="rating-number-with-text">
+                                                                                <span class="avg-rating-number">
+                                                                                    5.0
+                                                                                </span>
+                                                                                <span class="avg-rating-text">
+                                                                                    <span>1</span> Vote
+                                                                                </span>
+                                                                            </span>
+                                                                        </a>
+                                                                        <div class="viewers-count"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="wp-block-column">
+                                                <h2>Comic Genre</h2>
+                                                <ul class="menu">
+                                                    <li>
+                                                        <a href="@Url.Action("Comics", "Home")">All Comics</a>
+                                                    </li>
+
+                                                    @foreach (var i in category)
+                                                    {
+                                                        <li>
+                                                            <a href="#">@i.Name</a>
+                                                        </li>
+                                                    }
+
+
+                                                </ul>
+                                            </div>
+                                            <div class="wp-block-column">
+                                                <h2>Popular Comics</h2>
+                                                <section id="section-videos-carousel-flex-header-5cf3b8a67eaa0"
+                                                         class="home-section section-videos-carousel-flex-header style-2"
+                                                         style="padding-left: 40px; padding-right: 40px;">
+                                                    <div class="container">
+                                                        <div class="home-section__inner">
+                                                            <div class="section-videos-carousel__carousel">
+                                                                <div class="videos-carousel__inner"
+                                                                     data-ride="vodi-slick-carousel"
+                                                                     data-wrap=".videos__inner"
+                                                                     data-slick="{&quot;slidesToShow&quot;:1,&quot;slidesToScroll&quot;:1,&quot;dots&quot;:false,&quot;arrows&quot;:true,&quot;autoplay&quot;:false,&quot;infinite&quot;:false,&quot;responsive&quot;:[{&quot;breakpoint&quot;:768,&quot;settings&quot;:{&quot;slidesToShow&quot;:1,&quot;slidesToScroll&quot;:1}},{&quot;breakpoint&quot;:992,&quot;settings&quot;:{&quot;slidesToShow&quot;:3,&quot;slidesToScroll&quot;:1}},{&quot;breakpoint&quot;:1200,&quot;settings&quot;:{&quot;slidesToShow&quot;:4,&quot;slidesToScroll&quot;:1}}]}">
+                                                                    <div class="masvideos masvideos-videos ">
+                                                                        <div class="videos columns-1">
+                                                                            <div class="videos__inner">
+                                                                                <div class="post-1478 video type-video status-publish has-post-thumbnail hentry video_cat-tennis">
+                                                                                    <div class="video__container">
+                                                                                        <div class="video__poster">
+                                                                                            <a href="#"
+                                                                                               class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">
+                                                                                                <img width="480"
+                                                                                                     height="270"
+                                                                                                     src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20480%20270'%3E%3C/svg%3E"
+                                                                                                     class="video__poster--image"
+                                                                                                     alt=""
+                                                                                                     data-gallery-images="[]"
+                                                                                                     data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-480x270.jpg 480w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-270x153.jpg 270w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-220x125.jpg 220w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-244x138.jpg 244w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-339x192.jpg 339w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-327x185.jpg 327w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-300x169.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-768x432.jpg 768w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-1024x576.jpg 1024w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-640x360.jpg 640w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-120x67.jpg 120w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk.jpg 1280w"
+                                                                                                     data-lazy-sizes="(max-width: 480px) 100vw, 480px"
+                                                                                                     data-lazy-src="~/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-480x270.jpg" />
+                                                                                                <noscript>
+                                                                                                    <img width="480"
+                                                                                                         height="270"
+                                                                                                         src="~/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-480x270.jpg"
+                                                                                                         class="video__poster--image"
+                                                                                                         alt=""
+                                                                                                         data-gallery-images="[]"
+                                                                                                         srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-480x270.jpg 480w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-270x153.jpg 270w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-220x125.jpg 220w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-244x138.jpg 244w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-339x192.jpg 339w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-327x185.jpg 327w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-300x169.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-768x432.jpg 768w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-1024x576.jpg 1024w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-640x360.jpg 640w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk-120x67.jpg 120w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-K5h2cd4QtKk.jpg 1280w"
+                                                                                                         sizes="(max-width: 480px) 100vw, 480px" />
+                                                                                                </noscript>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="video__body">
+                                                                                        <div class="video__info">
+                                                                                            <div class="video__info--head">
+                                                                                                <a href="#"
+                                                                                                   class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">
+                                                                                                    <h3 class="masvideos-loop-video__title  video__title">
+                                                                                                        Anderson
+                                                                                                        Fights
+                                                                                                        His Way
+                                                                                                        to Glory
+                                                                                                    </h3>
+                                                                                                </a>
+                                                                                                <div class="video__views-meta">
+                                                                                                    <div class="vodi-jetpack-views">
+                                                                                                        <span>
+                                                                                                            83
+                                                                                                            views
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                    <div class="video__meta">
+                                                                                                        <span class="video__meta--last-update">
+                                                                                                            4
+                                                                                                            months
+                                                                                                            ago
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="video__short-description">
+                                                                                                <div>
+                                                                                                    Kevin
+                                                                                                    Anderson is
+                                                                                                    a South
+                                                                                                    African
+                                                                                                    professional
+                                                                                                    tennis
+                                                                                                    player who
+                                                                                                    is ranked
+                                                                                                    world No. 5
+                                                                                                    in
+                                                                                                    men&#8217;s
+                                                                                                    singles by
+                                                                                                    the
+                                                                                                    Association
+                                                                                                    of Tennis
+                                                                                                    Professionals
+                                                                                                    as of 28
+                                                                                                    January
+                                                                                                    2019.
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            @*<div class="video__actions">
+                                                                                                    <a href="~/main/video/anderson-fights-his-way-to-glory/index.html"
+                                                                                                       class="video-actions--link_watch">
+                                                                                                        Watch
+                                                                                                        Now
+                                                                                                    </a>
+                                                                                                    <div class="video-actions--link_add-to-playlist dropdown">
+                                                                                                        <a class="dropdown-toggle"
+                                                                                                           href="#"
+                                                                                                           data-toggle="dropdown">
+                                                                                                            +
+                                                                                                            Playlist
+                                                                                                        </a>
+                                                                                                        <div class="dropdown-menu">
+                                                                                                            <a class="login-link"
+                                                                                                               href="~/main/my-account/video-playlists/index.html">
+                                                                                                                Sign
+                                                                                                                in
+                                                                                                                to
+                                                                                                                add
+                                                                                                                this
+                                                                                                                video
+                                                                                                                to a
+                                                                                                                playlist.
+                                                                                                            </a>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>*@
+                                                                                        </div>
+                                                                                        @*<div class="video__review-info">
+                                                                                                <div class="viewers-count">
+                                                                                                    200
+                                                                                                </div>
+                                                                                            </div>*@
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="post-1475 video type-video status-publish has-post-thumbnail hentry video_cat-cricket">
+                                                                                    <span class="video__badge">
+                                                                                        <span class="video__badge--featured">Featured</span>
+                                                                                    </span>
+                                                                                    <div class="video__container">
+                                                                                        <div class="video__poster">
+                                                                                            <a href="~/main/video/unstoppable-vihari-cruises-with-151/index.html"
+                                                                                               class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">
+                                                                                                <img width="480"
+                                                                                                     height="270"
+                                                                                                     src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20480%20270'%3E%3C/svg%3E"
+                                                                                                     class="video__poster--image"
+                                                                                                     alt=""
+                                                                                                     data-gallery-images="[]"
+                                                                                                     data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-480x270.jpg 480w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-270x153.jpg 270w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-220x125.jpg 220w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-244x138.jpg 244w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-339x192.jpg 339w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-327x185.jpg 327w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-120x67.jpg 120w"
+                                                                                                     data-lazy-sizes="(max-width: 480px) 100vw, 480px"
+                                                                                                     data-lazy-src="~/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-480x270.jpg" />
+                                                                                                <noscript>
+                                                                                                    <img width="480"
+                                                                                                         height="270"
+                                                                                                         src="~/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-480x270.jpg"
+                                                                                                         class="video__poster--image"
+                                                                                                         alt=""
+                                                                                                         data-gallery-images="[]"
+                                                                                                         srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-480x270.jpg 480w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-270x153.jpg 270w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-220x125.jpg 220w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-244x138.jpg 244w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-339x192.jpg 339w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-327x185.jpg 327w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/video-thumbnail-KXVlVCix6NI-120x67.jpg 120w"
+                                                                                                         sizes="(max-width: 480px) 100vw, 480px" />
+                                                                                                </noscript>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="video__body">
+                                                                                        <div class="video__info">
+                                                                                            <div class="video__info--head">
+                                                                                                <a href="~/main/video/unstoppable-vihari-cruises-with-151/index.html"
+                                                                                                   class="masvideos-LoopVideo-link masvideos-loop-video__link video__link">
+                                                                                                    <h3 class="masvideos-loop-video__title  video__title">
+                                                                                                        Unstoppable
+                                                                                                        Vihari
+                                                                                                        Cruises
+                                                                                                        with
+                                                                                                        151*
+                                                                                                    </h3>
+                                                                                                </a>
+                                                                                                <div class="video__views-meta">
+                                                                                                    <div class="vodi-jetpack-views">
+                                                                                                        <span>
+                                                                                                            53
+                                                                                                            views
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                    <div class="video__meta">
+                                                                                                        <span class="video__meta--last-update">
+                                                                                                            4
+                                                                                                            months
+                                                                                                            ago
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="video__short-description">
+                                                                                                <div>
+                                                                                                    Hanuma
+                                                                                                    Vihari is an
+                                                                                                    Indian
+                                                                                                    cricketer
+                                                                                                    who plays
+                                                                                                    for Andhra
+                                                                                                    in Indian
+                                                                                                    domestic
+                                                                                                    cricket. A
+                                                                                                    right-handed
+                                                                                                    batsman and
+                                                                                                    occasional
+                                                                                                    right arm
+                                                                                                    off break
+                                                                                                    bowler, he
+                                                                                                    was a member
+                                                                                                    of the India
+                                                                                                    Under-19
+                                                                                                    cricket team
+                                                                                                    that won the
+                                                                                                    2012 ICC
+                                                                                                    Under-19
+                                                                                                    Cricket
+                                                                                                    World Cup in
+                                                                                                    Australia.
+                                                                                                    He made his
+                                                                                                    Test debut
+                                                                                                    for India in
+                                                                                                    September
+                                                                                                    2018.
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="video__actions">
+                                                                                                <a href="~/main/video/unstoppable-vihari-cruises-with-151/index.html"
+                                                                                                   class="video-actions--link_watch">
+                                                                                                    Watch
+                                                                                                    Now
+                                                                                                </a>
+                                                                                                @*<div class="video-actions--link_add-to-playlist dropdown">
+                                                                                                        <a class="dropdown-toggle"
+                                                                                                           href="~/main/video/unstoppable-vihari-cruises-with-151/index.html"
+                                                                                                           data-toggle="dropdown">
+                                                                                                            +
+                                                                                                            Playlist
+                                                                                                        </a>
+                                                                                                        <div class="dropdown-menu">
+                                                                                                            <a class="login-link"
+                                                                                                               href="~/main/my-account/video-playlists/index.html">
+                                                                                                                Sign
+                                                                                                                in
+                                                                                                                to
+                                                                                                                add
+                                                                                                                this
+                                                                                                                video
+                                                                                                                to a
+                                                                                                                playlist.
+                                                                                                            </a>
+                                                                                                        </div>
+                                                                                                    </div>*@
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        @*<div class="video__review-info">
+                                                                                                <div class="viewers-count">
+                                                                                                </div>
+                                                                                            </div>*@
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+
                         <li id="menu-item-5552"
                             class="yamm-fw menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-5552">
                             <a href="#"> Animations</a>
@@ -955,7 +957,7 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                                     <a title="						"
                                        href="#">
                                         Animations
-                                       
+
                                     </a>
                                     <div class="yamm-content">
                                         <div class="wp-block-columns has-2-columns">
@@ -969,7 +971,7 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                                                             </a>
                                                         </li>
                                                     }
-                                                  
+
                                                     <li class="highlight">
                                                         <a href="~/main/tv-shows/index.html">
                                                             Popular
@@ -988,8 +990,8 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                                                             Exclusives
                                                         </a>
                                                     </li>
-                                                
-                                                 
+
+
                                                 </ul>
                                                 <p></p>
                                             </div>
@@ -3125,50 +3127,91 @@ M90.2,4.7L86,2.3c-1.3-0.8-3,0.2-3,1.7v4.8c0,1.5,1.7,2.5,3,1.7l4.2-2.4C91.5,7.4,9
                         </li>
                         <li id="menu-item-5555"
                             class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5555">
-                            <a href="#">Blog</a>
+                            <a href="#">More</a>
                         </li>
-                        <li id="menu-item-5555"
-                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5555">
-                            <a href="#">Contact Us</a>
-                        </li>
+
                     </ul>
                 </div>
             </div>
             <div class="site-header__left">
                 <div class="site-header__search">
-                    <form role="search" method="get" class="search-form masvideos-search masvideos-search-video"
-                          action="#">
-                        <label class="screen-reader-text" for="masvideos-search-field-0">Search for:</label> <input type="search" id="masvideos-search-field-0" class="search-field"
-                                                                                                                    placeholder="Search &hellip;" value="" name="s" /> <button type="submit"
-                                                                                                                                                                               class="search-submit">
+                    <a role="search" class="search-form masvideos-search masvideos-search-video"
+                       href="#">
+                        <label class="screen-reader-text" for="masvideos-search-field-0">Search for:</label>
+                        <button type="submit" class="search-submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18"
                                  height="18">
                                 <path d="M7 0C11-0.1 13.4 2.1 14.6 4.9 15.5 7.1 14.9 9.8 13.9 11.4 13.7 11.7 13.6 12 13.3 12.2 13.4 12.5 14.2 13.1 14.4 13.4 15.4 14.3 16.3 15.2 17.2 16.1 17.5 16.4 18.2 16.9 18 17.5 17.9 17.6 17.9 17.7 17.8 17.8 17.2 18.3 16.7 17.8 16.4 17.4 15.4 16.4 14.3 15.4 13.3 14.3 13 14.1 12.8 13.8 12.5 13.6 12.4 13.5 12.3 13.3 12.2 13.3 12 13.4 11.5 13.8 11.3 14 10.7 14.4 9.9 14.6 9.2 14.8 8.9 14.9 8.6 14.9 8.3 14.9 8 15 7.4 15.1 7.1 15 6.3 14.8 5.6 14.8 4.9 14.5 2.7 13.6 1.1 12.1 0.4 9.7 0 8.7-0.2 7.1 0.2 6 0.3 5.3 0.5 4.6 0.9 4 1.8 2.4 3 1.3 4.7 0.5 5.2 0.3 5.7 0.2 6.3 0.1 6.5 0 6.8 0.1 7 0ZM7.3 1.5C7.1 1.6 6.8 1.5 6.7 1.5 6.2 1.6 5.8 1.7 5.4 1.9 3.7 2.5 2.6 3.7 1.9 5.4 1.7 5.8 1.7 6.2 1.6 6.6 1.4 7.4 1.6 8.5 1.8 9.1 2.4 11.1 3.5 12.3 5.3 13 5.9 13.3 6.6 13.5 7.5 13.5 7.7 13.5 7.9 13.5 8.1 13.5 8.6 13.4 9.1 13.3 9.6 13.1 11.2 12.5 12.4 11.4 13.1 9.8 13.6 8.5 13.6 6.6 13.1 5.3 12.2 3.1 10.4 1.5 7.3 1.5Z" />
                             </svg><span class="screen-reader-text">Search</span>
                         </button> <input type="hidden" name="post_type" value="video" />
-                    </form>
-                </div>
-          
-                <div class="site-header__user-account dropdown">
-                    <a href="~/main/my-account/index.html"
-                       class="site-header__user-account--link" data-toggle="dropdown">
-                        <svg width="32px"
-                             height="32px">
-                            <image x="0px" y="0px" width="32px" height="32px"
-                                   xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACB1BMVEW7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu3t7eys7KztLO4uLi6u7q0tbSxsrG2t7awsrC7vLu8vLy1trW8vby1tbWysrK6urq3uLe5urm9vr24ubitrq2wsbCsrazV1dXs7Oz29vb39/fw8PDe3t6vsK/v7+/////5+vnLy8urrKuxsbHGx8aur67k5OT4+Pizs7P9/f3R0tGurq7Oz87j4+OsrqzU1NTo6OiusK7+/v7k5eT4+fjGyMa7u7v6+vrMzMyrq6u+vr7Ky8ri4uLt7e3u7u7m5+bT1NOwsLC+v77Q0NDe397f39/T09O/v7/FxsX5+fn09PS9vb37+/v09fTNzs3g4ODh4uHX2Nf8/PzY2djIyMjIycjU1dTl5uXx8fHm5ubV1tVi3+TsAAAAUnRSTlMADleWxOHwxphZESftmiuDiBvN0iAq8TAW9xzX340dI5ymCPj9VV+lydDl5/P05srRnqdjCvr+EKCqipTd5Pb7IfI31NmLkAQvojIVn+PLoWIYYNJBTgAAAAFiS0dEca8HXOIAAAAHdElNRQfjBQECDwMxTbKCAAACG0lEQVQ4y21T90PTQBQ+RKpY3FisExcuEHEvFPdeXLikJLnakjbVgjESSEutqIiKIo66R90L/SNtbzTp+H66e9/37r17A4ACqqZUT63xeGqmTa+dAcrhra7rhEIXQl2iFPDMnFXKz0bdoqzIBIosdqM5RfTceYKKZRdwUJhf7/AL6iD35lAU6Gvg/ELfJe4eCgd62FGT/IuYYDGkPI5E9RASYiK9anAJyw8yFx1evhLv7buKYwoJqMCleX4ZUskVG+iaSXC936ICFS3PCRoHyItKUOw1OQZtYsMDKwBYuUqgEaxEgTeTQxFiE1dXgTWdlFdxyhGYN9LM2gQaJVoB46aLN4ctWg19LVjH/nDrtltwJ42IFa4HG8JUMFLpBTm8ETSHeA53K+SAmkELE8jWqMPfY7/ICzYFWHfcdbhv40KIVok3Z+RBH6XHHj7ivYWbQZvOL+N6+vHEk6fPnoejCh8dfQuo5SHkjB158fLV6zdvg3aGj4e6FWzbTkqtida74SQN8T4xGBM0UuodOwHYlW+WZosT7jok1HROgfXduW7WI1HRoviDWYT4eEzLtdubH4g98GOmZ8wsQVY2NLiXjtQ+Q/pkliE+ZLTzod/fb1bA5wMdfKwbDn4p57/6DzmL0XH42/diOvXjiLdot47+TLgkqdFfx46XLOeJtpbffyaT2Wxy8u8//8lTFfb7dNOZ1rMeX/u58xcuOtb/keQ/CDzeyUsAAAAASUVORK5CYII=" />
-                        </svg>
                     </a>
-                    <ul class="dropdown-menu sub-menu">
-                        <li>
-                            <a asp-controller="Account"  asp-action="Login"  data-toggle="modal"
-                               data-target="#modal-register-login">Sign in</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Account" asp-action="Register" data-toggle="modal"
-                               data-target="#modal-register-login">Register</a>
-                        </li>
-                    </ul>
                 </div>
+
+                <div class="site-header__upload">
+                    <a href="@Url.Action("CreateContent","User")" class="site-header__upload--link">
+                        <span class="site-header__upload--icon">
+
+                        </span>
+                        Create
+                    </a>
+                </div>
+                <div class="site-header__upload">
+                    <a href="#" class="site-header__upload--link">
+                        @*<span class="site-header__upload--icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="18">
+                    <path d="M15.2 16.2C15.2 15.6 15.2 15 15.2 14.4 17.7 14.4 21.1 14.8 22.2 13.3 22.5 12.9 22.8 12.5 23 12 23.8 9.7 22.1 7.8 20.6 7.3 20 7.1 19.4 7.2 18.7 7.2 18.6 6.4 18.3 5.7 17.9 5.1 16.9 3.3 16 2.6 13.8 2 13.2 1.8 12.2 1.7 11.5 1.9 11.1 2 10.6 2.1 10.2 2.2 9.3 2.6 8.6 3.1 8 3.7 7.7 4 7.5 4.6 7.1 4.7 6.8 4.5 6 4.5 5.7 4.6 5 4.9 4.6 5.3 4.5 6.1 4.5 6.5 4.5 6.8 4.6 7.2 3 7.6 1.2 9.5 1.9 11.8 2.1 12.4 2.4 12.9 2.8 13.3 3.9 14.8 7.2 14.4 9.8 14.4 9.8 15 9.8 15.6 9.8 16.2 8 16.2 5.1 16.4 3.8 16 2.3 15.5 1.3 14.5 0.6 13.2 0.2 12.3-0.2 10.7 0.2 9.4 0.4 8.6 1.1 7.5 1.7 7 2 6.8 2.6 6.5 2.7 6 2.8 5.8 2.8 5.2 2.9 4.9 3.3 4.1 3.9 3.4 4.7 3 5 2.9 5.3 2.8 5.7 2.7 6 2.6 6.5 2.8 6.6 2.7 7 2.4 7.4 2 7.7 1.6 8.5 1.1 9.4 0.6 10.4 0.3 11.7-0.2 13.6 0 14.8 0.4 17.4 1.3 19 2.9 20 5.5 22.4 5.5 24.2 7.4 24.8 9.3 25.3 10.7 24.8 12.6 24.3 13.5 23.6 14.6 22.5 15.5 21.2 16 19.9 16.4 17 16.2 15.2 16.2ZM13.4 10.8C13.4 13.2 13.4 15.6 13.4 18 12.8 18 12.2 18 11.6 18 11.6 15.6 11.6 13.2 11.6 10.8 10.7 10.8 9.8 10.8 9 10.8 9 10.8 9 10.7 9 10.7 9.8 9.8 10.7 9 11.5 8.1 11.8 7.9 12.1 7.3 12.6 7.2 13.4 8.1 14.2 8.9 15.1 9.8 15.4 10.1 15.9 10.4 16 10.8 15.2 10.8 14.3 10.8 13.4 10.8Z"></path>
+                </svg>
+                              </span>  *@
+                        My Barn
+                    </a>
+                </div>
+                @if (User.Identity.IsAuthenticated)
+             
+                {
+                    <div class="site-header__user-account dropdown">
+                        <a href="@Url.Action("Switch","User")"
+                           class="site-header__user-account--link" data-toggle="dropdown">
+                            <svg width="32px"
+                                 height="32px">
+                                <image x="0px" y="0px" width="32px" height="32px"
+                                       xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACB1BMVEW7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu3t7eys7KztLO4uLi6u7q0tbSxsrG2t7awsrC7vLu8vLy1trW8vby1tbWysrK6urq3uLe5urm9vr24ubitrq2wsbCsrazV1dXs7Oz29vb39/fw8PDe3t6vsK/v7+/////5+vnLy8urrKuxsbHGx8aur67k5OT4+Pizs7P9/f3R0tGurq7Oz87j4+OsrqzU1NTo6OiusK7+/v7k5eT4+fjGyMa7u7v6+vrMzMyrq6u+vr7Ky8ri4uLt7e3u7u7m5+bT1NOwsLC+v77Q0NDe397f39/T09O/v7/FxsX5+fn09PS9vb37+/v09fTNzs3g4ODh4uHX2Nf8/PzY2djIyMjIycjU1dTl5uXx8fHm5ubV1tVi3+TsAAAAUnRSTlMADleWxOHwxphZESftmiuDiBvN0iAq8TAW9xzX340dI5ymCPj9VV+lydDl5/P05srRnqdjCvr+EKCqipTd5Pb7IfI31NmLkAQvojIVn+PLoWIYYNJBTgAAAAFiS0dEca8HXOIAAAAHdElNRQfjBQECDwMxTbKCAAACG0lEQVQ4y21T90PTQBQ+RKpY3FisExcuEHEvFPdeXLikJLnakjbVgjESSEutqIiKIo66R90L/SNtbzTp+H66e9/37r17A4ACqqZUT63xeGqmTa+dAcrhra7rhEIXQl2iFPDMnFXKz0bdoqzIBIosdqM5RfTceYKKZRdwUJhf7/AL6iD35lAU6Gvg/ELfJe4eCgd62FGT/IuYYDGkPI5E9RASYiK9anAJyw8yFx1evhLv7buKYwoJqMCleX4ZUskVG+iaSXC936ICFS3PCRoHyItKUOw1OQZtYsMDKwBYuUqgEaxEgTeTQxFiE1dXgTWdlFdxyhGYN9LM2gQaJVoB46aLN4ctWg19LVjH/nDrtltwJ42IFa4HG8JUMFLpBTm8ETSHeA53K+SAmkELE8jWqMPfY7/ICzYFWHfcdbhv40KIVok3Z+RBH6XHHj7ivYWbQZvOL+N6+vHEk6fPnoejCh8dfQuo5SHkjB158fLV6zdvg3aGj4e6FWzbTkqtida74SQN8T4xGBM0UuodOwHYlW+WZosT7jok1HROgfXduW7WI1HRoviDWYT4eEzLtdubH4g98GOmZ8wsQVY2NLiXjtQ+Q/pkliE+ZLTzod/fb1bA5wMdfKwbDn4p57/6DzmL0XH42/diOvXjiLdot47+TLgkqdFfx46XLOeJtpbffyaT2Wxy8u8//8lTFfb7dNOZ1rMeX/u58xcuOtb/keQ/CDzeyUsAAAAASUVORK5CYII=" />
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu sub-menu">
+                            <li>
+                                <a asp-controller="User" asp-action="Switch">Select Account</a>
+                            </li>
+                            <li>
+                                <a >My Profile</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Account" asp-action="SignOut" data-toggle="modal">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="site-header__user-account dropdown">
+                        <a href="@Url.Action("Login","Account")"
+                           class="site-header__user-account--link" data-toggle="dropdown">
+                            <svg width="32px"
+                                 height="32px">
+                                <image x="0px" y="0px" width="32px" height="32px"
+                                       xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACB1BMVEW7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu7vLu3t7eys7KztLO4uLi6u7q0tbSxsrG2t7awsrC7vLu8vLy1trW8vby1tbWysrK6urq3uLe5urm9vr24ubitrq2wsbCsrazV1dXs7Oz29vb39/fw8PDe3t6vsK/v7+/////5+vnLy8urrKuxsbHGx8aur67k5OT4+Pizs7P9/f3R0tGurq7Oz87j4+OsrqzU1NTo6OiusK7+/v7k5eT4+fjGyMa7u7v6+vrMzMyrq6u+vr7Ky8ri4uLt7e3u7u7m5+bT1NOwsLC+v77Q0NDe397f39/T09O/v7/FxsX5+fn09PS9vb37+/v09fTNzs3g4ODh4uHX2Nf8/PzY2djIyMjIycjU1dTl5uXx8fHm5ubV1tVi3+TsAAAAUnRSTlMADleWxOHwxphZESftmiuDiBvN0iAq8TAW9xzX340dI5ymCPj9VV+lydDl5/P05srRnqdjCvr+EKCqipTd5Pb7IfI31NmLkAQvojIVn+PLoWIYYNJBTgAAAAFiS0dEca8HXOIAAAAHdElNRQfjBQECDwMxTbKCAAACG0lEQVQ4y21T90PTQBQ+RKpY3FisExcuEHEvFPdeXLikJLnakjbVgjESSEutqIiKIo66R90L/SNtbzTp+H66e9/37r17A4ACqqZUT63xeGqmTa+dAcrhra7rhEIXQl2iFPDMnFXKz0bdoqzIBIosdqM5RfTceYKKZRdwUJhf7/AL6iD35lAU6Gvg/ELfJe4eCgd62FGT/IuYYDGkPI5E9RASYiK9anAJyw8yFx1evhLv7buKYwoJqMCleX4ZUskVG+iaSXC936ICFS3PCRoHyItKUOw1OQZtYsMDKwBYuUqgEaxEgTeTQxFiE1dXgTWdlFdxyhGYN9LM2gQaJVoB46aLN4ctWg19LVjH/nDrtltwJ42IFa4HG8JUMFLpBTm8ETSHeA53K+SAmkELE8jWqMPfY7/ICzYFWHfcdbhv40KIVok3Z+RBH6XHHj7ivYWbQZvOL+N6+vHEk6fPnoejCh8dfQuo5SHkjB158fLV6zdvg3aGj4e6FWzbTkqtida74SQN8T4xGBM0UuodOwHYlW+WZosT7jok1HROgfXduW7WI1HRoviDWYT4eEzLtdubH4g98GOmZ8wsQVY2NLiXjtQ+Q/pkliE+ZLTzod/fb1bA5wMdfKwbDn4p57/6DzmL0XH42/diOvXjiLdot47+TLgkqdFfx46XLOeJtpbffyaT2Wxy8u8//8lTFfb7dNOZ1rMeX/u58xcuOtb/keQ/CDzeyUsAAAAASUVORK5CYII=" />
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu sub-menu">
+                            <li>
+                                <a asp-controller="Account" asp-action="Login">Sign in</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Account" asp-action="Register" data-toggle="modal">Register</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+
             </div>
         </div>
     </div>

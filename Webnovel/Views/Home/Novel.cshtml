@@ -50,7 +50,7 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="summary entry-summary">
-                                    <h1 class="movie_title entry-title">@Model.Title</h1>
+                                    <h1 class="movie_title entry-title">@Model.Name</h1>
                                     <div class="movie__info--head">
                                         <div class="movie__meta">
                                             <span class="movie__meta--release-year">By @Model.Author.Title</span>
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="movie__description">
                                         <div style="height: auto; max-height: none;">
-                                            @Model.Name
+                                            @Model.Title;
                                         </div>
                                     </div>
                                 </div>
@@ -114,12 +114,12 @@
                                                         <span class="movie__meta--genre"><a href="@Url.Action("Novels", new{categoryId = c.CategoryId})" rel="tag">@c.Category.Name</a>, <a href="@Url.Action("AuthorNovels", new{authorId = c.AuthorId})" rel="tag">@*@c.Author.Title*@</a></span>
                                                     </div>
                                                     <a href="@Url.Action("Novel", new{id =c.Id })" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                        <h3 class="masvideos-loop-movie__title  movie__title">@c.Title</h3>
+                                                        <h3 class="masvideos-loop-movie__title  movie__title">@c.Name</h3>
                                                     </a>
                                                 </div>
                                                 <div class="movie__short-description">
                                                     <div>
-                                                        <p>@c.Name</p>
+                                                        <p>@c.Title</p>
                                                     </div>
                                                 </div>
                                                 <div class="movie__actions">

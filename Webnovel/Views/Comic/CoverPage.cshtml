@@ -9,7 +9,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title">Upload Cover Page</h3>
+                <h3 class="card-title">Upload a  Cover Picture </h3>
                 <div class="row">
                   
                     <div class="col-sm-4">
@@ -34,7 +34,6 @@
                                 <img class="img-upload img-fluid" id="item-img-output" src="" />
                             </div>
                                 <img src="~/images/loading.gif" width="40" class="hide img-fluid" id="novelLoading" />
-
                                 <button type="submit" id="submitButton" class="btn btn-primary"> upload picture </button>
                         </form>
 
@@ -139,7 +138,7 @@
                             confirmButtonText: 'Cool'
                         });
                         var url = "@Url.Action("Manage","Comic", new {id= Model.Id})";
-                        windows.location.href = url;
+                        location.href = url;
                         console.log(response);
                     } else {
                         $("#alertNovelError").text(response.message);

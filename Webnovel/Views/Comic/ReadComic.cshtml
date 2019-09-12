@@ -4,11 +4,11 @@
 @inject IComic _Comic
 @{
     ViewData["Title"] = "Read Comic";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
 
     var comicScene = await _Comic.GetComicScenes(Model.Id);
-
-    var episodeId = ViewBag.EpisodeId;
+    
+    var chapterId = ViewBag.chapterId;
 }
 <div class="left-part bg-white p-b-40">
     <!-- Mobile toggle button -->
@@ -79,7 +79,7 @@
                         <img src="~/images/loading.gif" />
                     </div>
                     <div class="showEpisode">
-                        @await Component.InvokeAsync("ReadEpisode", new {episodeId = episodeId})
+                        @*@await Component.InvokeAsync("ReadEpisode", new {episodeId = episodeId})*@
 
                     </div>
                 </div>
@@ -116,5 +116,10 @@
                 });
             //$(".showEpisode").load("/Comic/ReadEpisode/"+epicId);
         }
+        $(function() {
+            @if (chapterId != null){
+                @:displayChapter(@chapterId);
+}
+        });
     </script>
 }
