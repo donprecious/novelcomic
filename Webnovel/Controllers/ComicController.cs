@@ -62,7 +62,40 @@ namespace Webnovel.Controllers
 				if (await _comic.Save())
 				{
 					ComicVm data = Mapper.Map<ComicVm>((object)mapped);
-					return (IActionResult)(object)((Controller)this).Json((object)new
+                    ICollection<string> nTags = comic.NTags;
+                    List<ComicTag> novelTag = new List<ComicTag>();
+                    if (nTags != null)
+                    {
+                        foreach (string t in nTags)
+                        {
+                            if (!(await _comic.FindTag(t)))
+                            {
+                                await _comic.AddTag(new Tag
+                                {
+                                    Name = t
+                                });
+                                await _comic.Save();
+                            }
+                            Tag tag = await _comic.GetTag(t);
+                            if (tag != null)
+                            {
+                                novelTag.Add(new ComicTag
+                                {
+                                    ComicId = data.Id,
+                                    TagId = tag.Id
+                                });
+                                await _comic.Save();
+                            }
+                        }
+                    }
+                    //create scene 
+                  await  _comic.CreateComicScene(new ComicScene()
+                    {
+                        ComicId = data.Id,
+                        Title = "First"
+                    });
+                  await _comic.Save();
+                    return (IActionResult)(object)((Controller)this).Json((object)new
 					{
 						status = 200,
 						message = "Check your entries",
@@ -376,6 +409,10 @@ namespace Webnovel.Controllers
 			});
 		}
 
+        public async Task<IActionResult> SceneList(int id)
+        {
+            return ViewComponent(typeof(SceneListViewComponent), new { comicId = id });
+        }
 		public async Task<IActionResult> ReadEpisode(int id)
 		{
 			userId = _userManager.GetUserId(User);

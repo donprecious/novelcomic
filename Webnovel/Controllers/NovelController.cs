@@ -600,6 +600,8 @@ namespace Webnovel.Controllers
 			});
 		}
 
+
+
 		public async Task<IActionResult> DeleteSection(int id)
 		{
 			await _novel.DeleteNovelSection(id);

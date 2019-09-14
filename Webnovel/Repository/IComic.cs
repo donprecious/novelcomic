@@ -61,13 +61,14 @@ namespace Webnovel.Repository
 		Task<bool> CheckLibrary(int chapterId);
 
 		Task AddTag(Tag tag);
-
+        Task<Tag> GetTag(string tag);
 		Task RemoveTag(Tag tag);
 
 		Task AddComicTag(ComicTag tag);
 
 		Task RemoveComicTag(ComicTag tag);
-
-		Task<bool> Save();
-	}
+        Task<bool> FindTag(string tag);
+        Task<ICollection<Tag>> GetTags();
+        Task<bool> Save();
+    }
 }

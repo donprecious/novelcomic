@@ -299,7 +299,6 @@
                                 confirmButtonText: 'Cool'
                             });
                             console.log(response);
-
                             location.href = "/Novel/ManageChapters/" + response.data.id;
                         } else {
                             $("#alertNovelError").text(response.message);

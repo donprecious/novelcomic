@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Webnovel.Models
@@ -43,5 +44,11 @@ namespace Webnovel.Models
 			get;
 			set;
 		}
-	}
+
+        public ICollection<string> NTags
+        {
+            get;
+            set;
+        }
+    }
 }

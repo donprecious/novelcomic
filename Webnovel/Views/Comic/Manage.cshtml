@@ -69,7 +69,7 @@
 
 <div class="modal fade" id="createChapterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content"> 
+        <div class="modal-content">
             <div class="modal-header bg-megna">
                 <h4 class="modal-title" id="exampleModalLabel1">Add Episode to @Model.Title</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -87,6 +87,23 @@
 @section css{
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+    <link type="text/css" href="https://uicdn.toast.com/tui-color-picker/v2.2.3/tui-color-picker.css" rel="stylesheet">
+    <link href="~/comic-editor/dist/tui-image-editor.css" rel="stylesheet" /> 
+    <style>
+        a.delete-section {
+            text-align: right;
+            color: #bfbfbf;
+            float: right;
+            font-size: 0.9rem;
+        }
+
+        li.list-group-item {
+            padding: 3px;
+            margin-bottom: 2px;
+            background-color: #d0f3f9;
+            cursor: pointer;
+        }
+    </style>
 }
 
 @section Scripts
@@ -96,7 +113,13 @@
 
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="~/js/doFormPost.js"></script>
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.3.2/fabric.js"></script>
+    <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
+    <script type="text/javascript" src="https://uicdn.toast.com/tui-color-picker/v2.2.3/tui-color-picker.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+    <script src="~/comic-editor/dist/tui-image-editor.js"></script>
+    <script type="text/javascript" src="~/comic-editor/dist/js/theme/white-theme.js"></script>
+    <script type="text/javascript" src="~/comic-editor/dist/js/theme/black-theme.js"></script>
     <script>
         function showAddScene() {
             $("#createSectionModal").modal();
@@ -107,9 +130,38 @@
         }
 
         function showEpisode(epicId) {
-            $("#display").load("/Comic/DisplayEpisode/"+epicId);
+
+
+            $("#display").load("/Comic/DisplayEpisode/" + epicId,
+                function ()
+                {
+                    //var imageEditor = new tui.ImageEditor('.img-div',
+                    //    {
+                    //        includeUI: {
+                    //            loadImage: {
+                    //                path: $("#myImage").attr("src"),
+                    //                name: $("#myImage").attr("title")
+                    //            },
+                    //            theme: blackTheme, // or whiteTheme
+                    //            initMenu: 'filter',
+                    //            menuBarPosition: 'bottom',
+                    //            uiSize: {  height: 1000 }
+                    //        },
+
+                    //        cssMaxWidth: 700,
+                    //        cssMaxHeight: 500,
+                    //        usageStatistics: false
+                    //    });
+
+                    //window.onresize = function() {
+                    //    imageEditor.ui.resizeEditor({
+                    //        uiSize: {  height: 1000 }
+                    //    });
+                    //}
+                });
+
         }
- 
+
         function beginUpload(episodeId) {
 
             var img = $("#uploadedFileData").val();
@@ -118,10 +170,10 @@
             } else {
                 $.ajax('/Comic/ChangePicture/',
                     {
-                        type: "Post", 
+                        type: "Post",
                         data: {
-                            "episodeId":  episodeId,
-                            "imgData": img 
+                            "episodeId": episodeId,
+                            "imgData": img
                         },
                         beforeSend: function() {
                             $("#loadingImg").show();
@@ -136,8 +188,8 @@
                                 type: 'success',
                                 confirmButtonText: 'Ok'
                             });
-                            $("#display").load("/Comic/DisplayEpisode/"+episodeId);
-                        }, 
+                            $("#display").load("/Comic/DisplayEpisode/" + episodeId);
+                        },
                         error: function(err) {
                             console.log(err);
                         }
@@ -155,26 +207,26 @@
             tempFilename,
             rawImg,
             imageId;
+
         function readFile(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     //$('.upload-demo').addClass('ready');
                     //$('#cropImagePop').modal('show');
                     rawImg = e.target.result;
-                 
+
                     $('#myImage').attr('src', rawImg);
                     $('#uploadedFileData').val(rawImg);
 
                 }
                 reader.readAsDataURL(input.files[0]);
-            }
-            else {
+            } else {
                 swal("Sorry - you're browser doesn't support the FileReader API");
             }
         }
 
-        $(function () {
+        $(function() {
             $(document.body).on('change',
                 '#UploadFileControl',
                 function() {
@@ -183,9 +235,9 @@
                     //$('#cancelCropBtn').data('id', imageId);
                     readFile(this);
                 });
-         
+
         });
-     
+
     </script>
 }
 

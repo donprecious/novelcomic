@@ -134,15 +134,15 @@
 
                     <input type="radio" name="publish" checked="checked" value="now"> Publish Now
                     <input type="radio" name="publish" value="later"> Publish Later
-                </div> 
+                </div>
                 <div style="display: none" id="togglePublish">
                     <div class="form-group">
 
                         <label class="control-label"> Date Time</label>
-                        <input type="datetime" id="publishDatetime" class="form-control"/>
+                        <input type="datetime" id="publishDatetime" class="form-control" />
                     </div>
                     <div class="form-group">
-                 
+
                         <label class="control-label"> Time Zone</label>
                         <select class="form-control" id="timezone">
                             @*<option value=""> @currentTimeZone.StandardName</option>*@
@@ -153,7 +153,7 @@
                         </select>
                     </div>
                 </div>
-           
+
                 <button class="btn btn-rounded btn-success btn-block" id="completePublish"> Publish</button>
             </div>
             <div class="modal-footer">
@@ -169,7 +169,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
     @*<link href="~/admin/assets/icheck-1.x/skins/flat/flat.css" rel="stylesheet" />*@
     <link href="~/admin/assets/icheck-1.x/skins/flat/blue.css" rel="stylesheet" />
-
+    <link href="~/comic-editor/dist/tui-image-editor.min.css" rel="stylesheet" />
     <style>
         a.delete-section {
             text-align: right;
@@ -183,12 +183,12 @@
             margin-bottom: 2px;
             background-color: #d0f3f9;
             cursor: pointer;
-        }
+        } 
     </style>
 }
 
 @section Scripts
-{
+    {
 
     @*<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>*@
     <script src="~/ckeditor/ckeditor.js"></script>
@@ -201,20 +201,21 @@
     <script src="~/js/functions.js"></script>
     <script src="~/js/addsection.js"></script>
     <script src="~/js/addchapter.js"></script>
+    <script src="~/comic-editor/dist/tui-image-editor.min.js"></script>
     <script>
 
         function renderView(url) {
             $.ajax(url,
                 {
                     type: "get",
-                    beforeSend: function() {
+                    beforeSend: function () {
                         //$("#loader").show();
                     },
-                    complete: function() {
+                    complete: function () {
                         //$("#loader").hide();
 
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $(".showEpisode").html(response);
                     }
                 });
@@ -227,14 +228,14 @@
             $.ajax(url,
                 {
                     type: "get",
-                    beforeSend: function() {
+                    beforeSend: function () {
                         //$("#loader").show();
                     },
-                    complete: function() {
+                    complete: function () {
                         //$("#loader").hide();
 
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $(".editsection-body").html(response);
                         $("#editsectionModal").modal();
                     }
@@ -246,24 +247,24 @@
             $.ajax(url,
                 {
                     type: "get",
-                    beforeSend: function() {
+                    beforeSend: function () {
                         //$("#loader").show();
                     },
-                    complete: function() {
+                    complete: function () {
                         //$("#loader").hide();
 
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $(".editchapter-body").html(response);
                         $("#editchapterModal").modal();
                     }
                 });
         }
 
-        $(function() {
+        $(function () {
             $(document.body).on('submit',
                 "#editSectionForm",
-                function(event) {
+                function (event) {
                     event.preventDefault();
                     var data = $(this).serialize();
 
@@ -272,16 +273,16 @@
                         type: 'POST',
                         data: data,
                         dataType: 'json',
-                        beforeSend: function() {
+                        beforeSend: function () {
                             $("#btnEditSection").attr('disable', 'disable');
                             $("#editSectionLoading").show();
                         },
-                        complete: function() {
+                        complete: function () {
                             $("#btnEditSection").removeAttr('disable');
                             $("#editSectionLoading").hide();
 
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.status == 200) {
                                 Swal.fire({
                                     title: 'Success',
@@ -302,7 +303,7 @@
                             }
                             console.log(response);
                         },
-                        error: function(err) {
+                        error: function (err) {
                             console.log(err);
                         }
 
@@ -310,7 +311,7 @@
                 });
             $(document.body).on('submit',
                 "#editChapterForm",
-                function(event) {
+                function (event) {
                     event.preventDefault();
                     var data = $(this).serialize();
                     $.ajax({
@@ -318,16 +319,16 @@
                         type: 'POST',
                         data: data,
                         dataType: 'json',
-                        beforeSend: function() {
+                        beforeSend: function () {
                             $("#btnEditChapter").attr('disable', 'disable');
                             $("#editChapterLoading").show();
                         },
-                        complete: function() {
+                        complete: function () {
                             $("#btnEditChapter").removeAttr('disable');
                             $("#editChapterLoading").hide();
 
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.status == 200) {
                                 Swal.fire({
                                     title: 'Success',
@@ -348,7 +349,7 @@
                             }
                             console.log(response);
                         },
-                        error: function(err) {
+                        error: function (err) {
                             console.log(err);
                         }
 
@@ -371,14 +372,14 @@
                     $.ajax("/Novel/DeleteSection/" + id,
                         {
                             type: "get",
-                            beforeSend: function() {
+                            beforeSend: function () {
                                 $(this).attr("disabled", "disabled");
                             },
-                            complete: function() {
+                            complete: function () {
                                 $(this).removeAttr("disabled");
 
                             },
-                            success: function(response) {
+                            success: function (response) {
                                 if (response.status == 200) {
                                     Swal.fire(
                                         'Deleted!',
@@ -396,7 +397,7 @@
                                 }
                                 console.log(response);
                             },
-                            error: function(err) {
+                            error: function (err) {
                                 console.log(err);
                             }
                         });
@@ -419,14 +420,14 @@
                     $.ajax("/Novel/DeleteChapter/" + id,
                         {
                             type: "get",
-                            beforeSend: function() {
+                            beforeSend: function () {
                                 $(this).attr("disabled", "disabled");
                             },
-                            complete: function() {
+                            complete: function () {
                                 $(this).removeAttr("disabled");
 
                             },
-                            success: function(response) {
+                            success: function (response) {
                                 if (response.status == 200) {
                                     Swal.fire(
                                         'Deleted!',
@@ -444,7 +445,7 @@
                                 }
                                 console.log(response);
                             },
-                            error: function(err) {
+                            error: function (err) {
                                 console.log(err);
                             }
                         });
@@ -457,14 +458,14 @@
             $.ajax("/Novel/ViewSection/" + id,
                 {
                     type: "get",
-                    beforeSend: function() {
+                    beforeSend: function () {
                         //$("#loader").show();
                     },
-                    complete: function() {
+                    complete: function () {
                         //$("#loader").hide();
 
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $(".displayChapter").html(response);
                     }
                 });
@@ -482,7 +483,7 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('input').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
@@ -497,10 +498,10 @@
             });
         });
 
-        $(function() {
+        $(function () {
 
             $('input').on('ifClicked',
-                function(event) {
+                function (event) {
                     //  console.log();
                     var p = $(this).val();
                     if (p == "now") {
@@ -512,48 +513,47 @@
         });
         $(document.body).on('click',
             "#btnPublish",
-            function() {
+            function () {
                 $("#publishChapterModal").modal();
             });
 
         $("#completePublish").on("click",
-            function() {
+            function () {
                 var data = {
                     "id": $("#chapterId").val(),
                     "datePublished": $("#publishDatetime").val(),
                     "timeZone": $("#timezone").val()
-                    };
+                };
                 $.ajax("/Novel/Publish",
                     {
                         data: data,
                         type: "post",
-                        beforeSend: function() {
+                        beforeSend: function () {
                             $(this).attr("disabled", "disabled");
                         },
-                        complete: function() {
+                        complete: function () {
                             $(this).removeAttr("disabled");
                         },
-                        success: function(res) {
+                        success: function (res) {
                             if (res.status == 200) {
                                 Swal.fire({
                                     title: 'Success',
                                     text: res.message,
                                     type: 'success',
                                     confirmButtonText: 'OK'
-                                }); 
-                               
+                                });
+
                             }
-                            else
-                            {
+                            else {
                                 Swal.fire({
                                     title: 'Ops !',
                                     text: res.message,
                                     type: 'error',
                                     confirmButtonText: 'OK'
-                                }); 
+                                });
                             }
                         }
-                        
+
                     });
             });
 

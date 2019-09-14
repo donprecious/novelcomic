@@ -16,6 +16,7 @@ namespace Webnovel.Models
 			set;
 		}
 
+        public string ProfileImage { get; set; }
 		public ApplicationUser()
         {
 		}

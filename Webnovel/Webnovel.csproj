@@ -952,6 +952,10 @@
     <None Include="wwwroot\ckeditor\CHANGES.md" />
     <None Include="wwwroot\ckeditor\ckeditor.js" />
     <None Include="wwwroot\ckeditor\config.js" />
+    <None Include="wwwroot\comic-editor\dist\js\service-basic.js" />
+    <None Include="wwwroot\comic-editor\dist\js\service-mobile.js" />
+    <None Include="wwwroot\comic-editor\dist\js\theme\black-theme.js" />
+    <None Include="wwwroot\comic-editor\dist\js\theme\white-theme.js" />
     <None Include="wwwroot\ckeditor\lang\af.js" />
     <None Include="wwwroot\ckeditor\lang\ar.js" />
     <None Include="wwwroot\ckeditor\lang\az.js" />
@@ -1271,6 +1275,12 @@
     <None Include="wwwroot\ckeditor\skins\moono-lisa\readme.md" />
     <None Include="wwwroot\ckeditor\styles.js" />
     <None Include="wwwroot\ckeditor\vendor\promise.js" />
+    <None Include="wwwroot\comic-editor\dist\svg\icon-a.svg" />
+    <None Include="wwwroot\comic-editor\dist\svg\icon-b.svg" />
+    <None Include="wwwroot\comic-editor\dist\svg\icon-c.svg" />
+    <None Include="wwwroot\comic-editor\dist\svg\icon-d.svg" />
+    <None Include="wwwroot\comic-editor\dist\tui-image-editor.js" />
+    <None Include="wwwroot\comic-editor\dist\tui-image-editor.min.js" />
     <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\font-awesome-4.7.0\less\animated.less" />

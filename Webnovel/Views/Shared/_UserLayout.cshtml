@@ -348,20 +348,18 @@
                         <li class="sidebar-item"><a asp-controller="Animation" asp-action="" class="sidebar-link"><i class="mdi mdi-plus"></i><span class="hide-menu"> Create Animations </span></a></li>
                         <li class="sidebar-item"><a asp-controller="Animation" asp-action="Index" class="sidebar-link"><i class="mdi mdi-video"></i><span class="hide-menu"> My Animations </span></a></li>
 
-                
                     </ul>
                 </li> 
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" asp-controller="Wallet" asp-action="FundWallet" aria-expanded="false">
-                        <i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Fund</span>
+                        <i class="mdi mdi-view-dashboard"></i><span class="hide-menu">My Income</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">My Account </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a  class="sidebar-link"><i class="mdi mdi-wallet"></i><span class="hide-menu"> My Wallet </span></a></li>
-                        <li class="sidebar-item"><a  class="sidebar-link"><i class="mdi mdi-settings"></i><span class="hide-menu"> Profile </span></a></li>
-
+                        @*<li class="sidebar-item"><a  class="sidebar-link" href="#"><i class="mdi mdi-wallet"></i><span class="hide-menu"> My Wallet </span></a></li>*@
+                        <li class="sidebar-item"><a  class="sidebar-link"  href="@Url.Action("CreatorProfile","User")"><i class="mdi mdi-settings"></i><span class="hide-menu"> Profile </span></a></li>
                     </ul>
                 </li> 
                 <li class="sidebar-item">

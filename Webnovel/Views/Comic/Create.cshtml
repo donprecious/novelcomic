@@ -2,12 +2,14 @@
 @using Webnovel.Repository
 
 @inject ICategory category
+@inject IComic Comic
+
 @{
     var categories = await category.List();
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
+    var tags = await Comic.GetTags();
 }
-
 
 <div class="col-md-12 ">
     <div class="card">
@@ -37,13 +39,24 @@
 
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
-              
+
                 <div class="form-group">
                     <label asp-for="Description" class="control-label"> Give a description of your comic</label>
                     <textarea asp-for="Description" class="form-control" rows="5" placeholder="comic Description"> </textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label asp-for="NTags" class="control-label"> Tags </label> <br />
+                    <select asp-for="NTags" class="form-control custom-select tags" multiple="multiple">
 
+
+                        @foreach (var i in tags.OrderByDescending(a=>a.Name))
+                        {
+                            <option value="@i.Name">@i.Name</option>
+                        }
+                    </select>
+
+                </div>
                 <div>
                     <button class="btn btn-primary" id="btnCreateNovel" type="submit">
                         Next
@@ -58,12 +71,36 @@
 
 @section css{
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="~/asset/select/css/select2.css" rel="stylesheet" />
+
+    <style>
+        .select2-container--classic .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            background-color: #bdc3d1;
+            border-color: #7398ff;
+            color: #fff;
+        }
+
+        .btn-background {
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: right;
+            background-attachment: local;
+        }
+    </style>
 }
 
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
-
+    <script src="~/asset/select/js/select2.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.tags').select2({
+                tags: true
+            });
+        });
+    </script>
     <script>
         $(function() {
             var hasAuthor = '@ViewBag.Author';
@@ -163,7 +200,7 @@
             });
         });
     </script>
-    
+
 
 }
 

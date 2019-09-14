@@ -47,7 +47,8 @@ namespace Webnovel.Repository
 
 		public async Task<Webnovel.Entities.Author> Get(string userId)
 		{
-			return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<Webnovel.Entities.Author>(((IQueryable<Webnovel.Entities.Author>)_context.Authors).Where((Webnovel.Entities.Author a) => a.UserId == userId), default(CancellationToken));
+
+			return await _context.Authors.Where(a => a.UserId == userId).FirstOrDefaultAsync();
 		}
 
 		public async Task<bool> AuthorExist(string userId)

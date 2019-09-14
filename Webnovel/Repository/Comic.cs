@@ -199,9 +199,23 @@ namespace Webnovel.Repository
 			_context.ComicTags.Remove(tag);
 		}
 
-		public async Task<bool> Save()
+        public async Task<bool> FindTag(string tag)
+        {
+            return await _context.Tags.AnyAsync(a => a.Name == tag);
+        }
+        public async Task<Tag> GetTag(string tag)
+        {
+            return await _context.Tags.Where(a => a.Name == tag).FirstOrDefaultAsync();
+        }
+        public async Task<ICollection<Tag>> GetTags()
+        {
+            return await _context.Tags.ToListAsync();
+        }
+        public async Task<bool> Save()
 		{
 			return await((DbContext)_context).SaveChangesAsync(default(CancellationToken)) >= 0;
 		}
-	}
+
+    
+    }
 }

@@ -5,7 +5,7 @@
     <div class="card-body">
         <h4 class="card-title">Add Comic Scene</h4>
 
-        <form class="m-t-25" asp-controller="Comic" asp-action="AddSceneAsync">
+        <form class="m-t-25" id="addSceneForm" asp-controller="Comic" asp-action="AddSceneAsync">
             @Html.AntiForgeryToken()
             <div class="alert alert-warning hide" ></div>
             <input asp-for="ComicId" type="hidden" />

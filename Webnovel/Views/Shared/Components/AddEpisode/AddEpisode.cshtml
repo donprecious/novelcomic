@@ -11,7 +11,7 @@
     <div class="card-body">
         <h4 class="card-title">Add Episode</h4>
 
-        <form class="m-t-25" asp-controller="Comic" id="addChapterForm" asp-action="AddEpisodeAsync">
+        <form class="m-t-25" asp-controller="Comic" id="addEpisodeForm" asp-action="AddEpisodeAsync">
             @Html.AntiForgeryToken()
             <div class="alert alert-warning hide" id="alertError"></div>
             <input asp-for="ComicId" type="hidden" />
