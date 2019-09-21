@@ -15,7 +15,7 @@
             @Html.AntiForgeryToken()
             <div class="alert alert-warning hide" id="alertError"></div>
             <input asp-for="ComicId" type="hidden" />
-            <div class="form-group">
+            @*<div class="form-group">
                 <label class="control-label">Select Scene</label>
                
                 <select class="form-control" asp-for="ComicSceneId">
@@ -24,7 +24,7 @@
                         <option value="@i.Id">@i.Title</option>
                     }
                 </select>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label class="control-label">Comic Title</label>
                 <input asp-for="Name" type="text" placeholder="Title" class="form-control">

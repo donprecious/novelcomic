@@ -62,8 +62,32 @@ namespace Webnovel.Entities
 			get;
 			set;
 		}
+        public string Language
+        {
+            get;
+            set;
+        }
 
-		public ICollection<Episode> Episodes
+        public string LeadingGender
+        {
+            get;
+            set;
+        }
+
+        public string WariningNotice
+        {
+            get;
+            set;
+        }
+
+        public string AudienceAge
+        {
+            get;
+            set;
+        }
+
+     
+        public ICollection<Episode> Episodes
 		{
 			get;
 			set;
@@ -74,8 +98,12 @@ namespace Webnovel.Entities
 			get;
 			set;
 		}
-
-		public ICollection<ComicRating> ComicRatings
+        public ICollection<ComicTag> Tags
+        {
+            get;
+            set;
+        }
+        public ICollection<ComicRating> ComicRatings
 		{
 			get;
 			set;

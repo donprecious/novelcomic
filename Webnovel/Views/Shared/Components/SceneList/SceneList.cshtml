@@ -2,27 +2,29 @@
 
 
 <div class="p-15">
+    <button class="btn btn-outline-orange" onclick="showAllEpisode(@Model.FirstOrDefault().ComicId)" >Show All</button>
+
     @if (Model.Count() == 0)
     {
         <h4 class="text-primary card-title"> No Scene Yet </h4>
-        <button class="btn btn-outline-orange" onclick="showAddScene()" >Add Scene</button>
+        <button class="btn btn-outline-orange" onclick="showAddScene()">Add Scene</button>
     }
     @foreach (var i in Model)
     {
         <h4 class="text-primary card-title m-2">@i.Title</h4>
         <ul class="list-group">
-           
+
             @if (i.Episodes.Any())
             {
                 foreach (var a in i.Episodes)
                 {
-                    <li class="list-group-item"> <a class="text-cyanbtn"  onclick="showEpisode(@a.Id)"> @a.Name </a>   </li>
+                    <li class="list-group-item"> <a class="text-cyanbtn" onclick="showEpisode(@a.Id)"> @a.Name </a> </li>
                 }
 
             }
             else
             {
-                <li class="">   <a onclick="showAddEpisode()" class="btn btn-primary text-white btn-block" > Add </a></li>
+                <li class=""> <a onclick="showAddEpisode()" class="btn btn-primary text-white btn-block"> Add Episode </a></li>
             }
             @*<li class="list-group-item"> <a href="#">Chapter 1</a> </li>
             <li class="list-group-item">Chapter 2</li>

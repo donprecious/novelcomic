@@ -394,6 +394,8 @@ namespace Webnovel.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AudienceAge");
+
                     b.Property<int>("AuthorId");
 
                     b.Property<int>("CategoryId");
@@ -404,7 +406,13 @@ namespace Webnovel.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<string>("Language");
+
+                    b.Property<string>("LeadingGender");
+
                     b.Property<string>("Title");
+
+                    b.Property<string>("WariningNotice");
 
                     b.HasKey("Id");
 
@@ -573,6 +581,8 @@ namespace Webnovel.Migrations
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("Name");
+
+                    b.Property<int>("Preference");
 
                     b.HasKey("Id");
 
@@ -1156,7 +1166,7 @@ namespace Webnovel.Migrations
             modelBuilder.Entity("Webnovel.Entities.ComicTag", b =>
                 {
                     b.HasOne("Webnovel.Entities.Comic", "Comic")
-                        .WithMany()
+                        .WithMany("Tags")
                         .HasForeignKey("ComicId")
                         .OnDelete(DeleteBehavior.Cascade);
 

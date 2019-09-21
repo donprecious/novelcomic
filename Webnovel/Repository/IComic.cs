@@ -69,6 +69,8 @@ namespace Webnovel.Repository
 		Task RemoveComicTag(ComicTag tag);
         Task<bool> FindTag(string tag);
         Task<ICollection<Tag>> GetTags();
+                 Task   AddEpisodes(int comicId, List<string> pictures);
+        Task SortEpisodes(List<int> episodes);
         Task<bool> Save();
     }
 }

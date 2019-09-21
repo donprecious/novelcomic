@@ -271,7 +271,8 @@ namespace Webnovel.Data
 			builder.Entity<AnimationRating>().HasOne<Animation>((Expression<Func<AnimationRating, Animation>>)((AnimationRating a) => a.Animation)).WithMany((Expression<Func<Animation, IEnumerable<AnimationRating>>>)((Animation a) => a.AnimationRatings));
 			builder.Entity<ComicRating>().HasOne<ApplicationUser>((Expression<Func<ComicRating, ApplicationUser>>)((ComicRating a) => a.User));
 			builder.Entity<ComicRating>().HasOne<Comic>((Expression<Func<ComicRating, Comic>>)((ComicRating a) => a.Comic)).WithMany((Expression<Func<Comic, IEnumerable<ComicRating>>>)((Comic a) => a.ComicRatings));
-			builder.Entity<NovelRating>().HasOne<ApplicationUser>((Expression<Func<NovelRating, ApplicationUser>>)((NovelRating a) => a.User));
+            builder.Entity<Comic>().HasMany(a => a.Tags).WithOne(a=>a.Comic);
+            builder.Entity<NovelRating>().HasOne<ApplicationUser>((Expression<Func<NovelRating, ApplicationUser>>)((NovelRating a) => a.User));
 			builder.Entity<NovelRating>().HasOne<Novel>((Expression<Func<NovelRating, Novel>>)((NovelRating a) => a.Novel)).WithMany((Expression<Func<Novel, IEnumerable<NovelRating>>>)((Novel a) => a.NovelRatings));
 			builder.Entity<UserFund>().HasOne<ApplicationUser>((Expression<Func<UserFund, ApplicationUser>>)((UserFund a) => a.User));
 			builder.Entity<FundHistory>().HasOne<ApplicationUser>((Expression<Func<FundHistory, ApplicationUser>>)((FundHistory a) => a.User));

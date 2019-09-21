@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\**" />
-    <Content Remove="Pages\**" />
-    <EmbeddedResource Remove="Pages\**" />
-    <None Remove="Pages\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.cs" />
     <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs" />
     <Compile Remove="Data\Migrations\20190602214637_initialDb.cs" />
@@ -86,6 +79,7 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Pages\Components\" />
     <Folder Include="wwwroot\main\video-category\games\page\2\" />
     <Folder Include="wwwroot\main\video-category\hockey\" />
     <Folder Include="wwwroot\main\video\1-0n-1-it-is-a-tough-group\" />
@@ -947,6 +941,12 @@
     <None Include="wwwroot\bootstrap\scss\_type.scss" />
     <None Include="wwwroot\bootstrap\scss\_utilities.scss" />
     <None Include="wwwroot\bootstrap\scss\_variables.scss" />
+    <None Include="wwwroot\bustter\fonts\fontawesome-webfont93e3.svg" />
+    <None Include="wwwroot\bustter\fonts\fontawesome-webfont93e3.woff2" />
+    <None Include="wwwroot\bustter\js\custom.js" />
+    <None Include="wwwroot\bustter\js\jquery.js" />
+    <None Include="wwwroot\bustter\js\plugins.js" />
+    <None Include="wwwroot\bustter\js\plugins2.js" />
     <None Include="wwwroot\ckeditor\adapters\jquery.js" />
     <None Include="wwwroot\ckeditor\build-config.js" />
     <None Include="wwwroot\ckeditor\CHANGES.md" />
@@ -1401,6 +1401,28 @@
     <None Include="wwwroot\lib\jquery\dist\jquery.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lightGallary\dist\css\lg-fb-comment-box.css.map" />
+    <None Include="wwwroot\lightGallary\dist\css\lg-transitions.css.map" />
+    <None Include="wwwroot\lightGallary\dist\css\lightgallery.css.map" />
+    <None Include="wwwroot\lightGallary\dist\fonts\lg.svg" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-autoplay.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-autoplay.min.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-fullscreen.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-fullscreen.min.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-hash.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-hash.min.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-pager.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-pager.min.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-share.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-share.min.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-thumbnail.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-thumbnail.min.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-video.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-video.min.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-zoom.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lg-zoom.min.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lightgallery.js" />
+    <None Include="wwwroot\lightGallary\dist\js\lightgallery.min.js" />
     <None Include="wwwroot\main\s0.wp.com\wp-content\js\devicepx-jetpack9794.js" />
     <None Include="wwwroot\main\stats.wp.com\e-201922.js" />
     <None Include="wwwroot\main\wp-content\cache\min\2\01300db3ba4599229dcabe5c1675ca9f.js" />
@@ -1447,6 +1469,33 @@
     <None Include="wwwroot\main\wp-json\oembed\1.0\embede7a6" />
     <None Include="wwwroot\main\xmlrpc.php" />
     <None Include="wwwroot\main\xmlrpc0db0.php" />
+    <None Include="wwwroot\novelist\wp-content\plugins\contact-form-7\includes\js\jquery.form.mind03d.js" />
+    <None Include="wwwroot\novelist\wp-content\plugins\contact-form-7\includes\js\scripts1c9b.js" />
+    <None Include="wwwroot\novelist\wp-content\plugins\zoom_box\zoom_box199e.js" />
+    <None Include="wwwroot\novelist\wp-content\plugins\zoom_box\zoom_box4f4a.js" />
+    <None Include="wwwroot\novelist\wp-content\themes\wpnovelist\font-awesome-4.7.0\fonts\fontawesome-webfont3e6e.svg" />
+    <None Include="wwwroot\novelist\wp-content\themes\wpnovelist\font-awesome-4.7.0\fonts\fontawesome-webfont3e6e.woff2" />
+    <None Include="wwwroot\novelist\wp-content\themes\wpnovelist\scripts\custom199e.js" />
+    <None Include="wwwroot\novelist\wp-content\themes\wpnovelist\scripts\custom4f4a.js" />
+    <None Include="wwwroot\novelist\wp-content\themes\wpnovelist\scripts\jquery.backstretch.min199e.js" />
+    <None Include="wwwroot\novelist\wp-content\themes\wpnovelist\scripts\jquery.backstretch.min4f4a.js" />
+    <None Include="wwwroot\novelist\wp-content\themes\wpnovelist\scripts\respond.min199e.js" />
+    <None Include="wwwroot\novelist\wp-content\themes\wpnovelist\scripts\respond.min4f4a.js" />
+    <None Include="wwwroot\novelist\wp-includes\js\comment-reply.min4f4a.js" />
+    <None Include="wwwroot\novelist\wp-includes\js\jquery\jquery-migrate.min330a.js" />
+    <None Include="wwwroot\novelist\wp-includes\js\jquery\jqueryb8ff.js" />
+    <None Include="wwwroot\novelist\wp-includes\js\wp-embed.min199e.js" />
+    <None Include="wwwroot\novelist\wp-includes\js\wp-embed.min4f4a.js" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embed1b7b" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embed3b2f" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embed49e7" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embed4b97" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embed5936" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embed9cc0" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embeda191" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embedca9d" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embedda77" />
+    <None Include="wwwroot\novelist\wp-json\oembed\1.0\embedfe45" />
   </ItemGroup>
 
 </Project>

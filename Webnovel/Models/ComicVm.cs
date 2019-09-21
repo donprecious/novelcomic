@@ -45,6 +45,30 @@ namespace Webnovel.Models
 			set;
 		}
 
+        public string Language
+        {
+            get;
+            set;
+        }
+
+        public string LeadingGender
+        {
+            get;
+            set;
+        }
+
+        public string WariningNotice
+        {
+            get;
+            set;
+        }
+
+        public string AudienceAge
+        {
+            get;
+            set;
+        }
+
         public ICollection<string> NTags
         {
             get;

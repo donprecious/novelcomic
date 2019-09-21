@@ -12,6 +12,7 @@ namespace Webnovel.Services
         public static string apiKey = "849621861927721";
         public static string apiSecret = "0ofuuFUGk_6zt4lmaXTsXayy07k";
         public static string cloud = "votel";
+        public static string folder = "webnovel";
         public static string uploadedPath;
         private static Account account = new Account()
         {

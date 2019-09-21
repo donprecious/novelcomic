@@ -1,5 +1,6 @@
 ﻿@model Webnovel.Models.ComicVm
 @using Webnovel.Repository
+@using Webnovel.Services
 
 @inject ICategory category
 @inject IComic Comic
@@ -15,48 +16,106 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Start creating your Comic</h4>
+
             <form class="m-t-20" asp-action="Create" id="novelForm" method="post">
-                @Html.AntiForgeryToken()
-                <div class="alert alert-warning hide" id="alertNovelError">
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.AntiForgeryToken()
+                        <div class="alert alert-warning hide" id="alertNovelError">
+
+                        </div>
+                        <input type="hidden" asp-for="AuthorId" class="form-control" id="authorId">
+
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label">Comic Title</label>
+                            <input type="text" asp-for="Title" class="form-control" placeholder="Comic Title">
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CategoryId" class="control-label"> Select Genre *</label>
+                            <select class="form-control" asp-for="CategoryId">
+
+                                @foreach (var i in categories)
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+                            </select>
+
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label">Synopsis *</label>
+                            <textarea asp-for="Description" class="form-control" rows="5" placeholder="comic Description"> </textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CoverPageImageUrl" class="control-label"> Upload Cover Page </label>
+                            <span class="text text-info">   Click to Begin Upload (max 20 mb) </span> <br />
+                            <button class="btn btn-outline-cyan form-control btn-background" id="beginUpload" style="padding: 2.4rem" type="button">
+                                <i class="mdi mdi-camera"></i>
+                            </button>
+                            <span id="txtUploadSuccess" class="text-info"></span>
+                            <input type="hidden" asp-for="CoverPageImageUrl" id="uploadedUrl" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label asp-for="Language" class="control-label"> Language</label>
+                            <select asp-for="Language" class="form-control custom-select">
+                                <option value="English">English</option>
+                                <option value="French">French</option>
+                                <option value="Portuguese">Portuguese</option>
+                                <option value="Arabic">Arabic</option>
+
+
+                            </select>
+
+                            @*<span asp-validation-for="Title" class="text-danger"></span>*@
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LeadingGender" class="control-label"> Leading Gender Age <i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="The main character sex of your story" data-original-title="The main character sex of your story"></i> </label>
+                            <select asp-for="LeadingGender" class="form-control custom-select">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+
+                            </select>
+
+                            @*<span asp-validation-for="Title" class="text-danger"></span>*@
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AudienceAge" class="control-label"> Target Age <i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="Ages of audience that can access this content" data-original-title="Ages of audience that can access this content"></i> </label>
+                            <select asp-for="AudienceAge" class="form-control custom-select">
+                                <option value="General">General</option>
+                                <option value="Parental Guidance (PG)">Parental Guidance (PG)</option>
+                                <option value="13+">13+</option>
+                                <option value="16+">16+</option>
+                                <option value="Adult">Adult (18+)</option>
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="WariningNotice" class="control-label"> Warning Notice  <i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="Warning notice to tell your audience before accessing this content" data-original-title="Warning notice to tell your audience before accessing this content"></i></label>
+                            <textarea asp-for="WariningNotice" class="form-control" placeholder="Warining Notice"> </textarea>
+                            <span asp-validation-for="WariningNotice" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="NTags" class="control-label"> Tags </label> <br />
+                            <select asp-for="NTags" class="form-control custom-select tags" multiple="multiple">
+
+                                @foreach (var i in tags.OrderByDescending(a => a.Name))
+                                {
+                                    <option value="@i.Name">@i.Name</option>
+                                }
+                            </select>
+
+                        </div>
+                    </div>
 
                 </div>
-                <input type="hidden" asp-for="AuthorId" class="form-control" id="authorId">
-
-                <div class="form-group">
-                    <label asp-for="Title" class="control-label">Comic Title</label>
-                    <input type="text" asp-for="Title" class="form-control" placeholder="Comic Title">
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CategoryId" class="control-label"> Select category</label>
-                    <select class="form-control" asp-for="CategoryId">
-
-                        @foreach (var i in categories)
-                        {
-                            <option value="@i.Id">@i.Name</option>
-                        }
-                    </select>
-
-                    <span asp-validation-for="CategoryId" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"> Give a description of your comic</label>
-                    <textarea asp-for="Description" class="form-control" rows="5" placeholder="comic Description"> </textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="NTags" class="control-label"> Tags </label> <br />
-                    <select asp-for="NTags" class="form-control custom-select tags" multiple="multiple">
 
 
-                        @foreach (var i in tags.OrderByDescending(a=>a.Name))
-                        {
-                            <option value="@i.Name">@i.Name</option>
-                        }
-                    </select>
-
-                </div>
                 <div>
                     <button class="btn btn-primary" id="btnCreateNovel" type="submit">
                         Next
@@ -69,10 +128,45 @@
 </div>
 
 
+
+<div class="modal fade __web-inspector-hide-shortcut__" id="createAuthorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-megna">
+                <h4 class="modal-title" id="exampleModalLabel1">Become an author</h4>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>*@
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateAuthor" asp-controller="Novel" id="authorForm">
+                    <div class="alert alert-warning hide" id="alertError">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Enter your Title</label>
+                        <input type="text" class="form-control" required id="txtAuthorTitle">
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="btnCreateAuthor">
+                            Ok
+                            <img src="~/images/loading.gif" width="40" height="20" class="hide" id="authorLoading" />
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                @*<button type="button" class="btn btn-primary">Ok</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section css{
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="~/asset/select/css/select2.css" rel="stylesheet" />
-
+    <link rel="stylesheet" type="text/css" href="~/admin/assets/libs/prism/prism.css">
     <style>
         .select2-container--classic .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
             background-color: #bdc3d1;
@@ -81,7 +175,8 @@
         }
 
         .btn-background {
-            height: 100px;
+            height: 150px;
+            width: 100px;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: right;
@@ -93,7 +188,8 @@
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
-    <script src="~/asset/select/js/select2.js"></script>
+    <script src="~/asset/select/js/select2.js"></script> 
+    <script src="~/admin/assets/libs/prism/prism.js"></script>
     <script>
         $(document).ready(function () {
             $('.tags').select2({
@@ -184,7 +280,7 @@
                             });
                             console.log(response);
 
-                            location.href = "/Comic/CoverPage/" + response.data.id;
+                            location.href = "/Comic/Manage/" + response.data.id;
                         } else {
                             $("#alertNovelError").text(response.message);
                             $('#alertNovelError').removeClass('hide');
@@ -200,7 +296,39 @@
             });
         });
     </script>
+    
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript">
+    </script>
 
+
+
+    <script>
+        var cloudName = "@CloudinaryUpload.cloud";
+        var apiKey = "@CloudinaryUpload.apiKey";
+        var widget = cloudinary.createUploadWidget({
+                cloudName: cloudName,
+                apiKey: apiKey,
+                uploadPreset: "unsignedUpload",
+                folder: "@CloudinaryUpload.folder",
+                maxFiles: 1,
+                resourceType: "image",
+                maxFileSize: 21000000
+            },
+            (error, result) => {
+                if (result && result.event === "success") {
+                    // do something
+                    $("#uploadedUrl").val(result.info.secure_url);
+                    $("#beginUpload").css("background-image", "url(" + result.info.secure_url+")");
+                    $("#txtUploadSuccess").html("Uploaded Successfully");
+                }
+                console.log(result);
+            });
+
+        $("#beginUpload").click(function(event) {
+            event.preventDefault();
+            widget.open();
+        });
+    </script>
 
 }
 

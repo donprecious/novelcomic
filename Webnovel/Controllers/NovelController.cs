@@ -469,9 +469,10 @@ namespace Webnovel.Controllers
 		}
 
 		public async Task<IActionResult> ViewSection(int id)
-		{
-			return (IActionResult)(object)((Controller)this).PartialView("_ViewSection", (object)(await _novel.GetNovelSection(id)));
-		}
+        {
+            return ViewComponent("ViewSection", new {Id = id});
+            //return (IActionResult)(object)((Controller)this).PartialView("_ViewSection", (object)(await _novel.GetNovelSection(id)));
+        }
 
 		[HttpPost]
 		public async Task<IActionResult> Publish(Chapter chapter)

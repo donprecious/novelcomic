@@ -92,7 +92,7 @@ namespace Webnovel.Controllers
                   await  _comic.CreateComicScene(new ComicScene()
                     {
                         ComicId = data.Id,
-                        Title = "First"
+                        Title = "First Scence"
                     });
                   await _comic.Save();
                     return (IActionResult)(object)((Controller)this).Json((object)new
@@ -423,9 +423,29 @@ namespace Webnovel.Controllers
 			});
 		}
 
-		public IActionResult RemoveFromLibrary(int id)
+        public async Task<IActionResult> ShowAllEpisode(int id)
+        {
+            return  ViewComponent(typeof(AllEpisodeViewComponent), new {comicId = id});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveEpisodes(int comicId, List<string> pictures)
+        {
+            // first save all pictures  and create episodes 
+            //next take update the episode prefrence numbers using the last prefrencse number  
+                await _comic.AddEpisodes(comicId, pictures); 
+             //if(!await _comic.Save()) return Json(new {stats=400, message="Unable to save comic please try again later"});
+            return Json(new { stats = 200, message = "Comic Saved Successfully" });
+        }
+        [HttpPost]
+        public async Task<IActionResult> SortEpisodes(List<int> episodes)
+        {
+            await _comic.SortEpisodes(episodes);
+            return Json(new { stats = 200, message = "Sorting Complete" });
+        }
+        public IActionResult RemoveFromLibrary(int id)
 		{
-			userId = _userManager.GetUserId(User);
+            userId = _userManager.GetUserId(User);
 			_comic.RemoveFromLibrary(id, userId);
 			return (IActionResult)(object)((ControllerBase)this).RedirectToAction("Library");
 		}

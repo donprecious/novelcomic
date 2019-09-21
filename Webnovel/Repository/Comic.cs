@@ -211,6 +211,65 @@ namespace Webnovel.Repository
         {
             return await _context.Tags.ToListAsync();
         }
+
+        public async Task AddEpisodes(int comicId, List<string> pictures)
+        {
+            var episodes = new List<Episode>();
+            var scence = await GetComicScenes(comicId);
+            var sceneId = 0;
+            if (scence != null)
+            {
+                sceneId = scence.FirstOrDefault().Id;
+            }
+            else
+            {
+                //create a new scence  
+                var x = await _context.ComicScenes.AddAsync(new ComicScene()
+                {
+                    ComicId = comicId,
+                    Title = "Default"
+                });
+             await  _context.SaveChangesAsync();
+             sceneId = x.Entity.Id;
+            }
+            foreach (var i in pictures)
+            {
+                //episodes.Add(new Episode()
+                //{
+                //    ImageUrl = i 
+                //}); 
+                _context.Episodes.Add(new Episode()
+                {
+                    ImageUrl = i, 
+                    ComicId = comicId,
+                    ComicSceneId = sceneId
+                });
+            await  _context.SaveChangesAsync();
+            }
+            //await _context.Episodes.AddRangeAsync(episodes);
+        }
+
+        public async Task SortEpisodes( List<int> episodes)
+        {
+            // get current episodes  
+            var order = 1;
+        
+            //var epics = await _context.Episodes.Where(a => a.ComicId == comicId).ToListAsync();
+            foreach (var i in episodes)
+            {
+                var epics = await _context.Episodes.FindAsync(i);
+                if (epics != null)
+                {
+                    epics.Preference = order;
+                    order += 1;
+                    _context.Entry(epics).State = EntityState.Modified;
+                  await  _context.SaveChangesAsync();
+                }
+               
+            }
+          
+           
+        }
         public async Task<bool> Save()
 		{
 			return await((DbContext)_context).SaveChangesAsync(default(CancellationToken)) >= 0;

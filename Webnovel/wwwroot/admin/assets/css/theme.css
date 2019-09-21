@@ -27885,7 +27885,10 @@ ol li {
 }
 
 .radius {
-    border-radius: 2px
+    border-radius: 2px;
+}
+.radius-10 {
+    border-radius: 10px;
 }
 
 .round,

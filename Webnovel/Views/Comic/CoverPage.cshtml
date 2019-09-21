@@ -1,4 +1,5 @@
-﻿@model Webnovel.Models.CoverPageVm
+﻿@using Webnovel.Services
+@model Webnovel.Models.CoverPageVm
 
 @{
     ViewData["Title"] = "Comic Cover Page";
@@ -9,36 +10,38 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title">Upload a  Cover Picture </h3>
+                <h3 class="card-title">Update Cover Picture </h3>
                 <div class="row">
-                  
-                    <div class="col-sm-4">
+
+                    <div class="col-md-12">
                         <a href="@Url.Action("Manage", "Comic", new {id = Model.Id} )">Manage Comic</a>
-                        <div>
-                            <label>Select Picture</label> <br/>
-                            <input type="file" id="uploadFile" class="form-control"/>
-                        </div>
-                      
 
-                       
+                        <label class="control-label"> Upload Cover Page </label>
+                        <span class="text text-info">   Click to Begin Upload (max 20 mb) </span> <br />
+                        <button class="btn btn-outline-cyan form-control btn-background" id="beginUpload" style="padding: 2.4rem" type="button">
+                            <i class="mdi mdi-camera"></i>
+                        </button>
+                        <span id="txtUploadSuccess" class="text-info"></span>
+                        <input type="hidden" id="uploadedUrl" />
+                        <input type="hidden" asp-for="Id" id="comicId" />
                     </div>
-                    <div class="col-sm-8">
-                        
-                        <form asp-action="CoverPage" id="coverPageForm">
-                            <input type="hidden" asp-for="Id" />
-                            <input type="hidden" asp-for="ImageData" id="imgData" />
-                            <div class="alert alert-warning hide" id="alertNovelError">
+                    @*<div class="col-sm-8">
 
-                            </div>
-                            <div id="show-image" style="width: 200px; display: none">
-                                <img class="img-upload img-fluid" id="item-img-output" src="" />
-                            </div>
-                                <img src="~/images/loading.gif" width="40" class="hide img-fluid" id="novelLoading" />
-                                <button type="submit" id="submitButton" class="btn btn-primary"> upload picture </button>
-                        </form>
+                            <form asp-action="CoverPage" id="coverPageForm">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="ImageData" id="imgData" />
+                                <div class="alert alert-warning hide" id="alertNovelError">
 
-                       
-                    </div>
+                                </div>
+                                <div id="show-image" style="width: 200px; display: none">
+                                    <img class="img-upload img-fluid" id="item-img-output" src="" />
+                                </div>
+                                    <img src="~/images/loading.gif" width="40" class="hide img-fluid" id="novelLoading" />
+                                    <button type="submit" id="submitButton" class="btn btn-primary"> upload picture </button>
+                            </form>
+
+
+                        </div>*@
 
                 </div>
             </div>
@@ -48,6 +51,8 @@
 
 @section css{
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
+
     <link href="~/css/croppie.css" rel="stylesheet" />
     <style>
         .img-1 {
@@ -56,11 +61,24 @@
             padding-bottom: 25px;*/
         }
     </style>
+    <style>
+
+        .btn-background {
+            height: 250px;
+            width: 200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: right;
+            background-attachment: local;
+        }
+    </style>
 }
 
 @section Scripts{
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="~/js/croppie.min.js"></script>
+    <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
+
     <script>
         var $uploadCrop,
             tempFilename,
@@ -85,7 +103,7 @@
             }
         }
 
-       
+
         $('#uploadFile').on('change', function () {
             imageId = $(this).data('id');
             tempFilename = $(this).val();
@@ -118,7 +136,9 @@
                 dataType: 'json',
                 beforeSend: function () {
                     $("#submitButton").attr('disabled', 'disabled');
-                    $("#novelLoading").show();
+                    $("#novelLoading").show(); 
+                    toastr.success("Saving Changes");
+
                 },
                 complete: function(){
                     $("#submitButton").removeAttr('disabled');
@@ -154,6 +174,84 @@
             });
         });
 
+    </script>
+
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript">
+    </script>
+
+
+
+    <script>
+        var cloudName = "@CloudinaryUpload.cloud";
+        var apiKey = "@CloudinaryUpload.apiKey";
+        var widget = cloudinary.createUploadWidget({
+                cloudName: cloudName,
+                apiKey: apiKey,
+                uploadPreset: "unsignedUpload",
+                folder: "webnovel",
+                maxFiles: 1,
+                resourceType: "image",
+                maxFileSize: 21000000
+            },
+            (error, result) => {
+                if (result && result.event === "success") {
+                    // do something
+                    $("#uploadedUrl").val(result.info.secure_url);
+                    $("#beginUpload").css("background-image", "url(" + result.info.secure_url+")");
+                    $("#txtUploadSuccess").html("Uploaded Successfully");
+                    var data = {
+                        id: '@Model.Id',
+                        ImageData: result.info.secure_url
+                    };
+
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        beforeSend: function () {
+                            //$("#submitButton").attr('disabled', 'disabled');
+                            //$("#novelLoading").show();
+                        },
+                        //complete: function(){
+                        //    $("#submitButton").removeAttr('disabled');
+                        //    $("#novelLoading").hide();
+                        //},
+                        success: function (response) {
+                            if (response.status == 200) {
+                                //$("#createAuthorModal").modal('hide');
+                                //$('#alertError').addClass('hide');
+                                //$('#authorId').val(response.data.id);
+
+                                Swal.fire({
+                                    title: 'Success',
+                                    text: 'Upload was Successful',
+                                    type: 'success',
+                                    confirmButtonText: 'Cool'
+                                });
+                                var url = "@Url.Action("Manage","Comic", new {id= Model.Id})";
+                                location.href = url;
+                                console.log(response);
+                            } else {
+                                $("#alertNovelError").text(response.message);
+                                $('#alertNovelError').removeClass('hide');
+
+                            }
+                            console.log(response);
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+
+                    });
+                }
+                console.log(result);
+            });
+
+        $("#beginUpload").click(function(event) {
+            event.preventDefault();
+            widget.open();
+        });
     </script>
 }
 

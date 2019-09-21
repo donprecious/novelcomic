@@ -35,7 +35,7 @@ namespace Webnovel.Entities
 			get;
 			set;
 		}
-
+        public int Preference { get; set; }
 		public int ComicId
 		{
 			get;

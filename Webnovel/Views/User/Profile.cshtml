@@ -3,6 +3,8 @@
 @using Webnovel.Services
 @model ApplicationUser
 @inject IAuthor Author
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     ViewBag.Title = "My Profile";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -44,7 +46,7 @@
                     <h5 class="card-subtitle"> @Model.Email</h5>
                     @if (author != null)
                     {
-                        <h6 class="card-subtitle"> @author.</h6>
+                        <h6 class="card-subtitle"> @author.Title</h6>
                     }
 
 
@@ -78,17 +80,17 @@
         <div class="card">
             <!-- Tabs -->
             <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
-               
+
                 <li class="nav-item">
                     <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">Setting</a>
+                    <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">Edit</a>
                 </li>
             </ul>
             <!-- Tabs -->
             <div class="tab-content" id="pills-tabContent">
-             
+
                 <div class="tab-pane fade show active" id="last-month" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="card-body">
                         <div class="row">
@@ -105,7 +107,7 @@
                             <div class="col-md-3 col-xs-6 b-r">
                                 <strong>My Title</strong>
                                 <br>
-                                <p class="text-muted">@author!.Title</p>
+                                <p class="text-muted">@(author!=null ? author.Title: "") </p>
                             </div>
 
                             <div class="col-md-3 col-xs-6">
@@ -115,62 +117,13 @@
                             </div>
                         </div>
                         <hr>
-                  
+
                     </div>
                 </div>
                 <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
                     <div class="card-body">
-                        <form class="form-horizontal form-material">
-                            <div class="form-group">
-                                <label class="col-md-12">First Name</label> 
-                                <div class="col-md-12">
-                                    <input type="text" placeholder="Johnathan Doe" class="form-control form-control-line">
-                                </div>
-                            </div> 
-                            <div class="form-group">
-                                <label class="col-md-12">Last Name</label> 
-                                <div class="col-md-12">
-                                    <input type="text" placeholder="Johnathan Doe" class="form-control form-control-line">
-                                </div>
-                            </div> 
-                            <div class="form-group">
-                                <label class="col-md-12">My Title</label> 
-                                <div class="col-md-12">
-                                    <input type="text" placeholder="Johnathan Doe" class="form-control form-control-line">
-                                </div>
-                            </div> 
-
-                         
-                            <div class="form-group">
-                                <label class="col-md-12">Phone No</label>
-                                <div class="col-md-12">
-                                    <input type="text" placeholder="123 456 7890" class="form-control form-control-line">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Message</label>
-                                <div class="col-md-12">
-                                    <textarea rows="5" class="form-control form-control-line"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-12">Select Country</label>
-                                <div class="col-sm-12">
-                                    <select class="form-control form-control-line">
-                                        <option>London</option>
-                                        <option>India</option>
-                                        <option>Usa</option>
-                                        <option>Canada</option>
-                                        <option>Thailand</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <button class="btn btn-success">Update Profile</button>
-                                </div>
-                            </div>
-                        </form>
+                       
+                        @await Component.InvokeAsync("EditAuthorProfile", new{userId = Model.Id})
                     </div>
                 </div>
             </div>
@@ -181,7 +134,7 @@
 
 
 @section css{
-
+    <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
     <style>
         .img-back {
             background-color: #0000008a;
@@ -216,7 +169,7 @@
 @section Scripts
     {
     <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript" ></script>
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
 
     <script>
         var cloudName = "@CloudinaryUpload.cloud";
@@ -234,13 +187,13 @@
             (error, result) => {
                 if (result && result.event === "success") {
                     // do something
-                   // $("#uploadedUrl").val(result.info.secure_url); 
+                    // $("#uploadedUrl").val(result.info.secure_url);
                     $("#profile-pic").attr("src", result.info.secure_url);
                     $.ajax("/User/ChangeProfilePicture/",
                         {
                             type: "post",
                             data: { "picture": result.info.secure_url },
-                            success: function (res) {
+                            success: function(res) {
                                 if (res.status == 200) {
                                     toastr.success(res.message);
                                     $("#profile-pic").attr("src", result.info.secure_url);
@@ -251,12 +204,12 @@
 
 
                             }
-                        })
+                        });
                 }
                 console.log(result);
             });
 
-    
+
         $(document.body).on("mouseover",".img-link",
             function() {
                 $(this).find(".img-back").show();
@@ -269,5 +222,28 @@
             widget.open();
         });
     </script>
+    <script>
+        $("#editProfileForm").submit(function(event) {
+            event.preventDefault();
+            var data = $(this).serialize();
+            $.ajax("/User/EditAuthorProfile",
+                {
+                    type: "post",
+                    data: data, 
+                    beforeSend: function() {
+                        $(this).find("button[type='submit']").attr("disabled", "disabled");
 
+                    },
+                    complete: function() {
+                        $(this).find("button[type='submit']").removeAttr("disabled");
+                    },
+
+                    success: function(res) {
+                        if (res.status == 200) {
+                            toastr.success(res.message);
+                        }
+                    }
+                });
+        })
+    </script>
 }

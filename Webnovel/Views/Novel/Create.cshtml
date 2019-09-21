@@ -46,10 +46,10 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="CoverPageImageUrl" class="control-label"> Upload Cover Page </label>
-                            <span class="text text-info" > </span> <br />
-                            <button class="btn btn-outline-cyan form-control btn-background"   id="beginUpload" style="padding: 2.4rem" type="button"> Click to Begin Upload (max 20 mb) 
-                      
-                            </button> 
+                            <span class="text text-info">   Click to Begin Upload (max 20 mb) </span> <br />
+                            <button class="btn btn-outline-cyan form-control btn-background" id="beginUpload" style="padding: 2.4rem" type="button">
+                                <i class="mdi mdi-camera"></i>
+                            </button>
                             <span id="txtUploadSuccess" class="text-info"></span>
                             <input type="hidden" asp-for="CoverPageImageUrl" id="uploadedUrl" />
                         </div>
@@ -61,6 +61,8 @@
                             <select asp-for="Language" class="form-control custom-select">
                                 <option value="English">English</option>
                                 <option value="French">French</option>
+                                <option value="Portuguese">Portuguese</option>
+                                <option value="Arabic">Arabic</option>
 
 
                             </select>
@@ -68,7 +70,7 @@
                             @*<span asp-validation-for="Title" class="text-danger"></span>*@
                         </div>
                         <div class="form-group">
-                            <label asp-for="LeadingGender" class="control-label"> Leading Gender</label>
+                            <label asp-for="LeadingGender" class="control-label"> Leading Gender Age <i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="The main character sex of your story" data-original-title="The main character sex of your story"></i> </label>
                             <select asp-for="LeadingGender" class="form-control custom-select">
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -78,24 +80,25 @@
                             @*<span asp-validation-for="Title" class="text-danger"></span>*@
                         </div>
                         <div class="form-group">
-                            <label asp-for="AudienceAge" class="control-label"> Target Age </label>
+                            <label asp-for="AudienceAge" class="control-label"> Target Age <i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="Ages of audience that can access this content" data-original-title="Ages of audience that can access this content"></i> </label>
                             <select asp-for="AudienceAge" class="form-control custom-select">
-                                <option value="All">All</option>
-                                <option value="Children">Children</option>
-                                <option value="Teenagers">Teenagers</option>
+                                <option value="General">General</option>
+                                <option value="Parental Guidance (PG)">Parental Guidance (PG)</option>
+                                <option value="13+">13+</option>
+                                <option value="16+">16+</option>
                                 <option value="Adult">Adult (18+)</option>
                             </select>
 
                         </div>
                         <div class="form-group">
-                            <label asp-for="WariningNotice" class="control-label"> Warning Notice</label>
+                            <label asp-for="WariningNotice" class="control-label"> Warning Notice  <i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="Warning notice to tell your audience before accessing this content" data-original-title="Warning notice to tell your audience before accessing this content"></i></label>
                             <textarea asp-for="WariningNotice" class="form-control" placeholder="Warining Notice"> </textarea>
                             <span asp-validation-for="WariningNotice" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="NTags" class="control-label"> Tags </label> <br />
                             <select asp-for="NTags" class="form-control custom-select tags" multiple="multiple">
-                             
+
 
                                 @foreach (var i in tags)
                                 {
@@ -106,13 +109,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div>
                     <button class="btn btn-primary" id="btnCreateNovel" type="submit">
                         Next
                         <img src="~/images/loading.gif" width="40" height="20" class="hide" id="novelLoading" />
                     </button>
                 </div>
+
             </form>
         </div>
     </div>
@@ -191,6 +194,7 @@
 @section css{
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="~/asset/select/css/select2.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/admin/assets/libs/prism/prism.css">
     <style>
         .select2-container--classic .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
             background-color: #bdc3d1;
@@ -198,7 +202,8 @@
             color: #fff;
         }
         .btn-background {
-            height: 100px;
+            height: 150px;
+            width: 100px;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: right;
@@ -210,6 +215,8 @@
 @section Scripts{
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="~/asset/select/js/select2.js"></script>
+    <script src="~/admin/assets/libs/prism/prism.js"></script>
+
     <script>
         $(document).ready(function () {
             $('.tags').select2({

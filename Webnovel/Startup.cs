@@ -51,6 +51,7 @@ namespace Webnovel
             services.AddScoped<IAuthor, Repository.Author>();
             services.AddScoped<IComic, Repository.Comic>();
             services.AddScoped<IAnimation, Repository.Animation>();
+            services.AddScoped<IUser, Repository.User>();
 
 
             services.AddMvc();

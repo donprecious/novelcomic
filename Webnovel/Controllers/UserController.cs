@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Webnovel.Data;
+using Webnovel.Entities;
 using Webnovel.Models;
 
 namespace Webnovel.Controllers
@@ -131,5 +132,50 @@ namespace Webnovel.Controllers
             return Json(new { message = "Picture changes successfully", status = 200 });
         }
 
+        
+        public async Task<ActionResult> EditProfile()
+        {
+            userId = _userManager.GetUserId(User);
+            var user = await _context.Users.Where(a => a.Id == userId).SingleAsync();
+            return PartialView("_EditProfile", user);
+        }
+
+        [HttpPost]
+        public ActionResult EditAuthorProfile(EditUserVm user)
+        {
+            //get user  
+            var findUser = _context.Users.SingleOrDefault(a => a.Id == user.UserId);
+            var author = _context.Authors.FirstOrDefault(a => a.UserId == user.UserId);
+            findUser.FirstName = user.FirstName;
+            findUser.LastName = user.LastName;
+            findUser.PhoneNumber = user.Phone;
+            _context.Entry(findUser).State = EntityState.Modified;
+            _context.SaveChanges();
+            //check author 
+            if (author != null)
+            {
+                 // check for title 
+                 if (user.AuthorTitle != null || string.IsNullOrEmpty(user.AuthorTitle))
+                 {
+                     author.Title = user.AuthorTitle;
+                     _context.Entry(author).State = EntityState.Modified;
+                     _context.SaveChanges();
+                 }
+            }
+            else
+            {
+                //create new person 
+                if (user.AuthorTitle != null || string.IsNullOrEmpty(user.AuthorTitle))
+                {
+                    _context.Authors.Add(new Author()
+                    {
+                        UserId = user.UserId,
+                        Title = user.AuthorTitle,
+                    });
+                    _context.SaveChanges();
+                }
+            }
+           return Json(new { status = 200, message = "Changes Saved Successfully" });
+        }
     }
 }

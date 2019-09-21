@@ -10,21 +10,30 @@
     @foreach (var i in Model)
     {
         @*<h4 class="text-primary card-title m-2"><a href="#" onclick="viewSection(@i.Id)">@i.Title </a></h4>*@
-        <ul class="list-group">
-            <li class="list-group-item"> <a class="text-primary" onclick="viewSection(@i.Id)"> View All </a> </li>
-            @if (i.Chapters.Any())
+    <ul class="list-group">
+        <li class="list-group-item"> <a class="text-primary" onclick="viewSection(@i.Id)"> View All </a> </li>
+        @if (i.Chapters.Any())
+        {
+            foreach (var a in i.Chapters)
             {
-                foreach (var a in i.Chapters)
+                if (a.isPublished)
                 {
-                    <li class="list-group-item"> <a class="text-cyan" onclick="showDisplayChapter(@a.Id)"> @a.Name </a> </li>
-                }
+        <li class="list-group-item">  <i class="mdi mdi-publish" data-toggle="tooltip" data-placement="top" title="Content Published" data-original-title="Content Published"></i> <a class="text-cyan" onclick="showDisplayChapter(@a.Id)"> @a.Name </a> </li>
 
+                }
+                else
+                {
+        <li class="list-group-item">  <i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Content still in edit mode, Not published" data-original-title="Content still in edit mode, Not published"></i> <a class="text-cyan" onclick="showDisplayChapter(@a.Id)"> @a.Name </a> </li>
+
+                }
             }
-            else
-            {
-                <h4 class="text-primary card-title"> No Chapters Yet </h4>
-            }
-       
-        </ul>
+
+        }
+        else
+        {
+            <h4 class="text-primary card-title"> No Chapters Yet </h4>
+        }
+
+    </ul>
     }
 </div>
