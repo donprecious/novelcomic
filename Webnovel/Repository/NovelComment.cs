@@ -22,6 +22,23 @@ namespace Webnovel.Repository
 			await _context.NovelComments.AddAsync(comment, default(CancellationToken));
 		}
 
+        public async Task CreateChapterComment(Webnovel.Entities.ChapterComment comment)
+        {
+            await _context.ChapterComments.AddAsync(comment, default(CancellationToken));
+        }
+
+
+        public async Task<ChapterComment> GetChapterComment(int id)
+        {
+            return await _context.ChapterComments.Where(a => a.Id == id).Include(a => a.User).SingleOrDefaultAsync();
+        }
+
+        public async Task <IEnumerable<Entities.ChapterComment>> GetChapterComments(int id)
+        {
+            var replies = await _context.ChapterComments.Where(a => a.ChapterId == id).Include(a=>a.User).ToListAsync();
+            return replies;
+
+        }
 		public async Task Delete(int Id)
 		{
 			DbSet<Webnovel.Entities.NovelComment> novelComments = _context.NovelComments;

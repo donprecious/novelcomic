@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ReflectionIT.Mvc.Paging;
 using Webnovel.Components;
 using Webnovel.Entities;
 using Webnovel.Models;
@@ -242,6 +243,15 @@ namespace Webnovel.Controllers
 			Episode mapped = Mapper.Map<Episode>((object)m);
 			if (ModelState.IsValid)
 			{
+                // get first scene
+                var scene = await _comic.GetComicScenes(m.ComicId);
+                if (scene.Any())
+                {
+                    // 
+                  var firstScene =  scene.FirstOrDefault();
+                  mapped.ComicSceneId = firstScene.Id;
+                }
+              
 				await _comic.CreateEpisode(mapped);
 				if (await _comic.Save())
 				{
@@ -364,10 +374,10 @@ namespace Webnovel.Controllers
 			return (IActionResult)(object)((Controller)this).View((object)(await _comic.GetLibrary(userId)));
 		}
 
-		public async Task<IActionResult> ReadComic(int id, int? chapterId = null)
+		public async Task<IActionResult> ReadComic( int id, int page = 1, int? chapterId = null)
 		{
 			userId = _userManager.GetUserId(User);
-			Webnovel.Entities.Comic comic = await _comic.GetComic(id);
+			Webnovel.Entities.Comic comic =  await _comic.GetComic(id);
 			if (!chapterId.HasValue)
 			{
 				Episode chapter = comic.Episodes.FirstOrDefault();
@@ -398,7 +408,12 @@ namespace Webnovel.Controllers
 					ViewBag.chapterId = chapter.Id;
 				}
 			}
-			return (IActionResult)(object)((Controller)this).View((object)comic);
+
+            ViewBag.Title = comic.Title;
+            ViewBag.Description = comic.Description;
+            var episodes = await _comic.GetEpisodes(id);
+            var model = await PagingList.CreateAsync(episodes, 5, page);
+			return (IActionResult)(object)((Controller)this).View((object)model);
 		}
 
 		public async Task<IActionResult> DisplayEpisode(int id)

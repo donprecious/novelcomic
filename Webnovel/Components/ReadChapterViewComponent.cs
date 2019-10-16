@@ -23,7 +23,7 @@ namespace Webnovel.Components
 			{
 				await _novel.AddToLibrary(new NovelLibrary
 				{
-					ChapterId = chapterId,
+				
 					NovelId = novel.NovelId,
 					UserId = userId
 				});

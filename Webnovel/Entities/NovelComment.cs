@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Webnovel.Models;
@@ -33,6 +34,10 @@ namespace Webnovel.Entities
 			set;
 		}
 
+        public int RateId { get; set; }
+
+        [ForeignKey("RateId")]
+        public NovelRating NovelRating { get; set; }
 		public int NovelId
 		{
 			get;
@@ -44,6 +49,8 @@ namespace Webnovel.Entities
 		{
 			get;
 			set;
-		}
+		} 
+        public DateTime? DateTime { get; set; }
+
 	}
 }

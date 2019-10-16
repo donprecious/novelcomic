@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Webnovel.Entities
@@ -85,6 +86,8 @@ namespace Webnovel.Entities
 		{
 			get;
 			set;
-		}
+		} 
+
+        public ICollection<ChapterComment> ChapterComments { get; set; }
 	}
 }

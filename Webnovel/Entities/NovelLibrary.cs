@@ -18,23 +18,14 @@ namespace Webnovel.Entities
 			set;
 		}
 
-		public int ChapterId
-		{
-			get;
-			set;
-		}
-
+	
 		public string UserId
 		{
 			get;
 			set;
 		}
 
-		public int LastViewedChapterId
-		{
-			get;
-			set;
-		}
+	
 
 		[ForeignKey("NovelId")]
 		public Novel Novel
@@ -43,12 +34,6 @@ namespace Webnovel.Entities
 			set;
 		}
 
-		[ForeignKey("ChapterId")]
-		public Chapter Chapter
-		{
-			get;
-			set;
-		}
 
 		[ForeignKey("UserId")]
 		public ApplicationUser User

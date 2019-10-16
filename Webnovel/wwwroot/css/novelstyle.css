@@ -1,0 +1,11 @@
+﻿@media screen and (min-width: 860px) .entry {
+    -moz-column-count: 1;
+    -webkit-column-count: 1;
+    column-count: 1;
+    -moz-column-gap: 50px;
+    -webkit-column-gap: 50px;
+    column-gap: 50px;
+    -moz-column-rule: 1px dashed #eee;
+    -webkit-column-rule: 1px dashed #eee;
+    column-rule: 1px dashed #eee;
+}

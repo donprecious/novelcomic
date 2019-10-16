@@ -28,9 +28,12 @@ namespace Webnovel.Repository
 		}
 
 		public async Task<List<Webnovel.Entities.Animation>> GetAllAnimations()
-		{
-			return await EntityFrameworkQueryableExtensions.ToListAsync<Webnovel.Entities.Animation>((IQueryable<Webnovel.Entities.Animation>)_context.Animations, default(CancellationToken));
-		}
+        {
+            return await _context.Animations.Include(a => a.Author)
+                .Include(a => a.Category)
+                .Include(a => a.AnimationEpisodes)
+                .ToListAsync();
+        }
 
 		public async Task<Webnovel.Entities.Animation> GetAnimation(int animationId)
 		{

@@ -28,14 +28,42 @@ namespace Webnovel.Repository
 			await _context.Novels.AddAsync(novel, default(CancellationToken));
 		}
 
-		public async Task<List<Webnovel.Entities.Novel>> GetAllNovels()
-		{
-			return await EntityFrameworkQueryableExtensions.ToListAsync<Webnovel.Entities.Novel>((IQueryable<Webnovel.Entities.Novel>)_context.Novels, default(CancellationToken));
-		}
+		public async Task<List<Webnovel.Entities.Novel>> GetAllNovels(bool? hasImage =null, bool? hasChapters=null)
+        {
+            var list = await _context.Novels.Include(a => a.Category)
+                .Include(a => a.Author)
+                .Include(a => a.Chapters)
+                .Include(a=>a.NovelRatings)
+               
+
+                .Include(a => a.Tags).ToListAsync();
+            if ( hasImage != null)
+            {
+                if ((bool)hasImage)
+                {
+                    list = list.Where(a => a.CoverPageImageUrl != null).ToList();
+
+                }
+            }
+            if ( hasChapters != null)
+            {
+                if ((bool)hasChapters)
+                {
+                    list = list.Where(a => a.Chapters.Any()).ToList();
+
+                }
+            }
+
+            return list;
+        }
 
 		public async Task<Webnovel.Entities.Novel> GetNovel(int novelId)
 		{
-			return await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Webnovel.Entities.Novel>(((IQueryable<Webnovel.Entities.Novel>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Novel, ICollection<Chapter>>((IQueryable<Webnovel.Entities.Novel>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Novel, ICollection<NovelSection>>((IQueryable<Webnovel.Entities.Novel>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Novel, Webnovel.Entities.Category>((IQueryable<Webnovel.Entities.Novel>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Novel, Webnovel.Entities.Author>((IQueryable<Webnovel.Entities.Novel>)_context.Novels, (Expression<Func<Webnovel.Entities.Novel, Webnovel.Entities.Author>>)((Webnovel.Entities.Novel a) => a.Author)), (Expression<Func<Webnovel.Entities.Novel, Webnovel.Entities.Category>>)((Webnovel.Entities.Novel a) => a.Category)), (Expression<Func<Webnovel.Entities.Novel, ICollection<NovelSection>>>)((Webnovel.Entities.Novel a) => a.NovelSections)), (Expression<Func<Webnovel.Entities.Novel, ICollection<Chapter>>>)((Webnovel.Entities.Novel a) => a.Chapters))).Where((Webnovel.Entities.Novel a) => a.Id == novelId), default(CancellationToken));
+            return await _context.Novels.Where(a=>a.Id == novelId).Include(a=>a.Category)
+                .Include(a=>a.Author)
+                .Include(a=>a.Chapters)
+                .Include(a=>a.Tags)
+                .SingleOrDefaultAsync();
 		}
 
 		public async Task<List<Webnovel.Entities.Novel>> GetAuthorNovels(int id)
@@ -148,10 +176,10 @@ namespace Webnovel.Repository
 			{
 				_context.NovelLibraries.Add(comicLibrary);
 			}
-			else
-			{
-				novelLibrary.LastViewedChapterId = comicLibrary.LastViewedChapterId;
-			}
+			//else
+			//{
+			//	novelLibrary.LastViewedChapterId = comicLibrary.LastViewedChapterId;
+			//}
 		}
 
 		public async Task<IEnumerable<NovelLibrary>> GetLibrary(string userId)
@@ -186,7 +214,7 @@ namespace Webnovel.Repository
 			{
 				id
 			});
-			novelLibrary.LastViewedChapterId = chapterId;
+		//	novelLibrary.LastViewedChapterId = chapterId;
             _context.Entry<NovelLibrary>(novelLibrary).State = EntityState.Modified;
         }
 
@@ -197,13 +225,16 @@ namespace Webnovel.Repository
 		}
 
 		public async Task<IEnumerable<NovelLibrary>> GetLibraries(string userId)
-		{
-			return await EntityFrameworkQueryableExtensions.ToListAsync<NovelLibrary>((IQueryable<NovelLibrary>)EntityFrameworkQueryableExtensions.Include<NovelLibrary, Webnovel.Entities.Novel>((IQueryable<NovelLibrary>)EntityFrameworkQueryableExtensions.Include<NovelLibrary, Chapter>(((IQueryable<NovelLibrary>)_context.NovelLibraries).Where((NovelLibrary a) => a.UserId == userId), (Expression<Func<NovelLibrary, Chapter>>)((NovelLibrary a) => a.Chapter)), (Expression<Func<NovelLibrary, Webnovel.Entities.Novel>>)((NovelLibrary a) => a.Novel)), default(CancellationToken));
+        {
+            var lib = await _context.NovelLibraries.Where(a => a.UserId == userId).Include(a => a.User)
+                .Include(a => a.Novel).ToListAsync();
+            return lib;
+			//return await EntityFrameworkQueryableExtensions.ToListAsync<NovelLibrary>((IQueryable<NovelLibrary>)EntityFrameworkQueryableExtensions.Include<NovelLibrary, Webnovel.Entities.Novel>((IQueryable<NovelLibrary>)EntityFrameworkQueryableExtensions.Include<NovelLibrary, Chapter>(((IQueryable<NovelLibrary>)_context.NovelLibraries).Where((NovelLibrary a) => a.UserId == userId), (Expression<Func<NovelLibrary, Chapter>>)((NovelLibrary a) => a.Chapter)), (Expression<Func<NovelLibrary, Webnovel.Entities.Novel>>)((NovelLibrary a) => a.Novel)), default(CancellationToken));
 		}
 
-		public async Task<bool> CheckLibrary(int chapterId)
+		public async Task<bool> CheckLibrary(int novelId)
 		{
-			return ((IQueryable<NovelLibrary>)_context.NovelLibraries).Any((NovelLibrary a) => a.ChapterId == chapterId);
+			return ((IQueryable<NovelLibrary>)_context.NovelLibraries).Any((NovelLibrary a) => a.NovelId == novelId);
 		}
 
 		public async Task AddTag(Tag tag)
@@ -241,6 +272,11 @@ namespace Webnovel.Repository
 			return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<Tag>(((IQueryable<Tag>)_context.Tags).Where((Tag a) => a.Name == name), default(CancellationToken));
 		}
 
+
+        public async Task ChapterComment(ChapterComment chapterComment)
+        {
+          await  _context.ChapterComments.AddAsync(chapterComment);
+        }
 		public async Task<bool> Save()
 		{
 			return await((DbContext)_context).SaveChangesAsync(default(CancellationToken)) >= 0;

@@ -13,5 +13,12 @@ namespace Webnovel.Controllers
 			
 		{
 		}
+
+        public IActionResult ReaderProfile()
+        {
+            return View();
+        }
+
+       
 	}
 }

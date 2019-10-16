@@ -27,14 +27,18 @@ namespace Webnovel.Controllers
 
 		private string userId;
 
-		public NovelController(INovel novel, IAuthor author, UserManager<ApplicationUser> userManager)
-        {
-			_novel = novel;
-			_author = author;
-			_userManager = userManager;
-		}
+        private INovelHistory _novelHistory;
 
-		public async Task<IActionResult> Create()
+        public NovelController(INovel novel, IAuthor author, UserManager<ApplicationUser> userManager,
+            INovelHistory novelHistory)
+        {
+            _novel = novel;
+            _author = author;
+            _userManager = userManager;
+            _novelHistory = novelHistory;
+        }
+
+        public async Task<IActionResult> Create()
 		{
 			userId = _userManager.GetUserId(User);
 			ViewBag.Author = "";
@@ -410,47 +414,108 @@ namespace Webnovel.Controllers
 				{
 					await _novel.AddToLibrary(new NovelLibrary
 					{
-						ChapterId = Convert.ToInt32(chapterId),
+				
 						NovelId = id,
 						UserId = userId
 					});
 					await _novel.Save();
 					ViewBag.chapterId = Convert.ToInt32(chapterId);
 				}
-				else if (await _novel.CheckLibrary(chapter.Id))
+				else if (await _novel.CheckLibrary(id))
 				{
-					ViewBag.chapterId = chapter.Id;
+					//ViewBag.chapterId = chapter.Id;
 				}
 				else
 				{
 					await _novel.AddToLibrary(new NovelLibrary
 					{
-						ChapterId = chapter.Id,
 						NovelId = id,
 						UserId = userId
 					});
 					await _novel.Save();
-					ViewBag.chapterId = chapter.Id;
+				//	ViewBag.chapterId = chapter.Id;
 				}
 			}
-			return (IActionResult)(object)((Controller)this).View((object)comic);
-		}
 
+            return RedirectToAction("ReadChapter", new {novelId = id, chapterId = chapterId});
+        }
+
+        public async Task<IActionResult> ReadChapter(int novelId, int? chapterId = null)
+		{
+            userId = _userManager.GetUserId(User);
+         //   var chapterHistory = await _novelHistory.GetHistories(userId,novelId);
+         if (chapterId != null)
+           {
+                    var checkHistory = await _novelHistory.CheckHistory(userId, (int) chapterId);
+                    if (!checkHistory)
+                    {
+                        // add history 
+                        await _novelHistory.AddHistory(new NovelChapterHistory()
+                        {
+                            UserId = userId,
+                            ChapterId = (int) chapterId,
+                            DateAdded = DateTime.UtcNow,
+                            LastOpened = DateTime.UtcNow,
+                            NovelId = novelId
+                        });
+                    await    _novelHistory.Save();
+                    }
+                }
+
+                var lastViewed = await _novelHistory.GetLastHistory(userId, novelId);
+                if (lastViewed == null)
+                {
+                    // add new history meaning no history  
+                    var chapter = (await _novel.GetNovel(novelId)).Chapters.FirstOrDefault();
+                    if (chapter != null)
+                    {
+                        await _novelHistory.AddHistory(new NovelChapterHistory()
+                        {
+
+                            UserId = userId,
+                            ChapterId = chapter.Id,
+                            DateAdded = DateTime.UtcNow,
+                            LastOpened = DateTime.UtcNow,
+                            NovelId = novelId
+                        }); 
+                        await    _novelHistory.Save();
+                    }
+                  
+                    return View(chapter);
+                }
+                else
+                {
+                    //get the novel first chapter 
+                    var chapter = (await _novel.GetNovel(novelId)).Chapters.FirstOrDefault();
+                //add to history just in case something went wrong 
+                    await _novelHistory.AddHistory(new NovelChapterHistory()
+                    {
+                        UserId = userId,
+                        ChapterId = (int) chapter.Id,
+                        DateAdded = DateTime.UtcNow,
+                        LastOpened = DateTime.UtcNow,
+                        NovelId = novelId
+                    });
+                    await _novelHistory.Save();
+                    return View(chapter);
+                }
+         
+		}
 		public async Task<IActionResult> Library()
 		{
 			userId = _userManager.GetUserId(User);
 			return (IActionResult)(object)((Controller)this).View((object)(await _novel.GetLibraries(userId)));
 		}
 
-		public async Task<IActionResult> ReadChapter(int id)
-		{
-			userId = _userManager.GetUserId(User);
-			return (IActionResult)(object)((Controller)this).ViewComponent(typeof(ReadChapterViewComponent), (object)new
-			{
-				chapterId = id,
-				userId = userId
-			});
-		}
+		//public async Task<IActionResult> ReadChapter(int id)
+		//{
+		//	userId = _userManager.GetUserId(User);
+		//	return (IActionResult)(object)((Controller)this).ViewComponent(typeof(ReadChapterViewComponent), (object)new
+		//	{
+		//		chapterId = id,
+		//		userId = userId
+		//	});
+		//}
 
 		public async Task<IActionResult> EditChapterView(int id)
 		{

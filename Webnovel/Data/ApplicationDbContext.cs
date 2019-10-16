@@ -220,6 +220,23 @@ namespace Webnovel.Data
 			set;
 		}
 
+        public DbSet<Referral> Referrals { get; set; }
+
+        public DbSet<Referred> Referreds {
+            get;
+            set;
+        }
+        public DbSet<Country> Countries {get;set;}
+
+        public DbSet<NovelChapterHistory> NovelChapterHistories  {
+            get;
+            set;
+        }
+
+        public DbSet<ChapterComment> ChapterComments { get; set; } 
+        public DbSet<ChapterCommentReply> ChapterCommentReplies { get; set; } 
+
+        public DbSet<RatingType> RatingTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -250,7 +267,7 @@ namespace Webnovel.Data
 			builder.Entity<AnimationComment>().HasOne<Animation>((Expression<Func<AnimationComment, Animation>>)((AnimationComment a) => a.Animation));
 			builder.Entity<NovelLibrary>().HasOne<ApplicationUser>((Expression<Func<NovelLibrary, ApplicationUser>>)((NovelLibrary a) => a.User));
 			builder.Entity<NovelLibrary>().HasOne<Novel>((Expression<Func<NovelLibrary, Novel>>)((NovelLibrary a) => a.Novel));
-			builder.Entity<NovelLibrary>().HasOne<Chapter>((Expression<Func<NovelLibrary, Chapter>>)((NovelLibrary a) => a.Chapter));
+	
 			builder.Entity<ComicLibrary>().HasOne<ApplicationUser>((Expression<Func<ComicLibrary, ApplicationUser>>)((ComicLibrary a) => a.User));
 			builder.Entity<ComicLibrary>().HasOne<Comic>((Expression<Func<ComicLibrary, Comic>>)((ComicLibrary a) => a.Comic));
 			builder.Entity<ComicLibrary>().HasOne<Episode>((Expression<Func<ComicLibrary, Episode>>)((ComicLibrary a) => a.Episode));
@@ -280,6 +297,29 @@ namespace Webnovel.Data
 			builder.Entity<PaidChapterHistory>().HasOne<Chapter>((Expression<Func<PaidChapterHistory, Chapter>>)((PaidChapterHistory a) => a.Chapter));
 			builder.Entity<AuthorEarning>().HasOne<PaidChapterHistory>((Expression<Func<AuthorEarning, PaidChapterHistory>>)((AuthorEarning a) => a.PaidChapterHistory));
 			builder.Entity<AuthorIncome>().HasOne<Author>((Expression<Func<AuthorIncome, Author>>)((AuthorIncome a) => a.Author));
-		}
+
+         
+            builder.Entity<Referral>().HasOne(a => a.User);
+            builder.Entity<Referral>().HasOne(a => a.Country);
+            builder.Entity<Referral>().HasMany(a => a.referreds);
+
+
+            builder.Entity<Referred>().HasOne(a => a.User).WithOne(a=>a.Referred);
+            builder.Entity<Referred>().HasOne(a => a.Referral);
+
+            builder.Entity<NovelChapterHistory>().HasOne(a => a.User);
+            builder.Entity<NovelChapterHistory>().HasOne(a => a.Novel);
+            builder.Entity<NovelChapterHistory>().HasOne(a => a.Chapter);
+
+            builder.Entity<ChapterComment>().HasOne(a => a.User);
+            builder.Entity<ChapterComment>().HasOne(a => a.Chapter);
+            builder.Entity<ChapterComment>().HasMany(a => a.ChapterCommentReplies).WithOne(a=>a.ChapterComment);
+           
+            builder.Entity<ChapterCommentReply>().HasOne(a => a.User);
+            builder.Entity<ChapterCommentReply>().HasOne(a => a.ChapterComment);
+
+            builder.Entity<NovelRating>().HasOne(a => a.RatingType);
+            builder.Entity<NovelComment>().HasOne(a => a.NovelRating);
+        }
 	}
 }

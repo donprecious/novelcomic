@@ -389,6 +389,50 @@ namespace Webnovel.Migrations
                     b.ToTable("Chapters");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.ChapterComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ChapterId");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<DateTime?>("DateTime");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapterId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChapterComments");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.ChapterCommentReply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ChapterCommentId");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<DateTime?>("DateTime");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapterCommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChapterCommentReplies");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Comic", b =>
                 {
                     b.Property<int>("Id")
@@ -564,6 +608,36 @@ namespace Webnovel.Migrations
                     b.ToTable("ComicTags");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("alpha2Code");
+
+                    b.Property<string>("alpha3Code");
+
+                    b.Property<string>("capital");
+
+                    b.Property<string>("demonym");
+
+                    b.Property<string>("name");
+
+                    b.Property<string>("nativeName");
+
+                    b.Property<string>("numericCode");
+
+                    b.Property<int>("population");
+
+                    b.Property<string>("region");
+
+                    b.Property<string>("subregion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Episode", b =>
                 {
                     b.Property<int>("Id")
@@ -647,6 +721,32 @@ namespace Webnovel.Migrations
                     b.ToTable("Novels");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.NovelChapterHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ChapterId");
+
+                    b.Property<DateTime>("DateAdded");
+
+                    b.Property<DateTime>("LastOpened");
+
+                    b.Property<int>("NovelId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapterId");
+
+                    b.HasIndex("NovelId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NovelChapterHistories");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.NovelComment", b =>
                 {
                     b.Property<int>("Id")
@@ -655,13 +755,19 @@ namespace Webnovel.Migrations
                     b.Property<string>("Comment")
                         .IsRequired();
 
+                    b.Property<DateTime?>("DateTime");
+
                     b.Property<int>("NovelId");
+
+                    b.Property<int>("RateId");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NovelId");
+
+                    b.HasIndex("RateId");
 
                     b.HasIndex("UserId");
 
@@ -673,17 +779,11 @@ namespace Webnovel.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ChapterId");
-
-                    b.Property<int>("LastViewedChapterId");
-
                     b.Property<int>("NovelId");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ChapterId");
 
                     b.HasIndex("NovelId");
 
@@ -699,6 +799,8 @@ namespace Webnovel.Migrations
 
                     b.Property<int>("NovelId");
 
+                    b.Property<int>("RatingTypeId");
+
                     b.Property<string>("UserId");
 
                     b.Property<double>("Value");
@@ -706,6 +808,8 @@ namespace Webnovel.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NovelId");
+
+                    b.HasIndex("RatingTypeId");
 
                     b.HasIndex("UserId");
 
@@ -810,6 +914,69 @@ namespace Webnovel.Migrations
                     b.ToTable("PaidChapterHistories");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.RatingType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RatingTypes");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.Referral", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AdditonalInformation");
+
+                    b.Property<int>("CountryId");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("InformationFrom");
+
+                    b.Property<string>("MinimumReferral");
+
+                    b.Property<string>("Occupation");
+
+                    b.Property<string>("ProgramType");
+
+                    b.Property<string>("ShortUrl");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Referrals");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.Referred", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<DateTime>("DateRegistered");
+
+                    b.Property<int>("ReferralId");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("ReferralId");
+
+                    b.ToTable("Referreds");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -850,12 +1017,16 @@ namespace Webnovel.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<DateTime?>("DateOfBirth");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName");
+
+                    b.Property<string>("Gender");
 
                     b.Property<string>("LastName");
 
@@ -1077,6 +1248,30 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.ChapterComment", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Chapter", "Chapter")
+                        .WithMany("ChapterComments")
+                        .HasForeignKey("ChapterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.ChapterCommentReply", b =>
+                {
+                    b.HasOne("Webnovel.Entities.ChapterComment", "ChapterComment")
+                        .WithMany("ChapterCommentReplies")
+                        .HasForeignKey("ChapterCommentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Comic", b =>
                 {
                     b.HasOne("Webnovel.Entities.Author", "Author")
@@ -1209,19 +1404,7 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Webnovel.Entities.NovelComment", b =>
-                {
-                    b.HasOne("Webnovel.Entities.Novel", "Novel")
-                        .WithMany()
-                        .HasForeignKey("NovelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Webnovel.Entities.NovelLibrary", b =>
+            modelBuilder.Entity("Webnovel.Entities.NovelChapterHistory", b =>
                 {
                     b.HasOne("Webnovel.Entities.Chapter", "Chapter")
                         .WithMany()
@@ -1238,11 +1421,45 @@ namespace Webnovel.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.NovelComment", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Novel", "Novel")
+                        .WithMany()
+                        .HasForeignKey("NovelId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Entities.NovelRating", "NovelRating")
+                        .WithMany()
+                        .HasForeignKey("RateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.NovelLibrary", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Novel", "Novel")
+                        .WithMany()
+                        .HasForeignKey("NovelId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.NovelRating", b =>
                 {
                     b.HasOne("Webnovel.Entities.Novel", "Novel")
                         .WithMany("NovelRatings")
                         .HasForeignKey("NovelId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Entities.RatingType", "RatingType")
+                        .WithMany()
+                        .HasForeignKey("RatingTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
@@ -1305,6 +1522,31 @@ namespace Webnovel.Migrations
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.Referral", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.Referred", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Referral", "Referral")
+                        .WithMany("referreds")
+                        .HasForeignKey("ReferralId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithOne("Referred")
+                        .HasForeignKey("Webnovel.Entities.Referred", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Webnovel.Entities.UserFund", b =>

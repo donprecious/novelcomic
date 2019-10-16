@@ -8,11 +8,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
+using ReflectionIT.Mvc.Paging;
 using Webnovel.Data;
 using Webnovel.Entities;
+using Webnovel.Hubs;
 using Webnovel.Models;
 using Webnovel.Repository;
 using Webnovel.Services;
+using NovelComment = Webnovel.Repository.NovelComment;
 
 namespace Webnovel
 {
@@ -26,13 +30,21 @@ namespace Webnovel
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
-		}
+       
+        }
 
 		public void ConfigureServices(IServiceCollection services)
 		{
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
             services.AddIdentity<ApplicationUser, IdentityRole>(o =>
                 {
                     o.Password.RequireDigit = false;
@@ -52,9 +64,29 @@ namespace Webnovel
             services.AddScoped<IComic, Repository.Comic>();
             services.AddScoped<IAnimation, Repository.Animation>();
             services.AddScoped<IUser, Repository.User>();
+            services.AddScoped<IReferral, Repository.Referral>();
+            services.AddScoped<INovelHistory, NovelHistory>();
+            services.AddScoped<INovelComment, NovelComment>();
+            services.AddScoped<IAppConfig, AppConfig>();
 
+            services.AddAsyncInitializer<MyAppInitializer>();
+            services.AddPaging();
 
-            services.AddMvc();
+            services.AddMvc(); 
+            services.AddCors(options => options.AddPolicy("CorsPolicy", 
+                builder => 
+                {
+                    builder.AllowAnyMethod().AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowCredentials();
+                }));
+
+        
+
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -119,14 +151,21 @@ namespace Webnovel
 
                 map.CreateMap<Entities.NovelComment, Models.NovelCommentVm>();
                 map.CreateMap<Models.NovelCommentVm, Entities.NovelComment>();
+
+                map.CreateMap<Entities.ChapterComment, Models.NovelChapterCommentVm>();
+                map.CreateMap<Models.NovelChapterCommentVm, Entities.ChapterComment>();
             });
 
             app.UseStaticFiles();
 
             app.UseAuthentication();
 
-
-
+            app.UseSession();
+          //  app.UseHttpContextItemsMiddleware();
+          app.UseSignalR(routes => 
+          {
+              routes.MapHub<NovelCommentHub>("/novelCommentHub");
+          });
             app.UseMvc(routes =>
             {
                 routes.MapAreaRoute(

@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Webnovel.Data;
-using Webnovel.Entities;
 using Webnovel.Models;
+using Webnovel.Repository;
+using Author = Webnovel.Entities.Author;
 
 namespace Webnovel.Controllers
 {
@@ -16,13 +17,14 @@ namespace Webnovel.Controllers
 	{
         private UserManager<ApplicationUser> _userManager;
         private ApplicationDbContext _context;
+        private IReferral _referral;
 
         private string userId;
-        public UserController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public UserController(UserManager<ApplicationUser> userManager, ApplicationDbContext context, IReferral referral)
         {
             _userManager = userManager;
             _context = context;
-
+            _referral = referral;
 
         }
         public ActionResult Dashboard()
@@ -40,55 +42,7 @@ namespace Webnovel.Controllers
 			return View();
 		}
 
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
-
-		public ActionResult Create()
-		{
-			return View();
-		}
-
-     
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
-		{
-			try
-			{
-				return (ActionResult)(object)((ControllerBase)this).RedirectToAction("Dashboard");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
-
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
-		{
-			try
-			{
-				return (ActionResult)(object)((ControllerBase)this).RedirectToAction("Dashboard");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
-
+		
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, IFormCollection collection)
@@ -176,6 +130,18 @@ namespace Webnovel.Controllers
                 }
             }
            return Json(new { status = 200, message = "Changes Saved Successfully" });
+        }
+
+        public async Task<ActionResult> ReferralHub()
+        {
+            var referral = (await _referral.GetReferral(_userManager.GetUserId(User)));
+            if (referral != null)
+            {
+                ViewBag.referralId = referral.Id;
+
+            }
+            var refers = await _referral.Refers(_userManager.GetUserId(User));
+            return View(refers);
         }
     }
 }

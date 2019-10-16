@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Webnovel.Entities;
 using Webnovel.Models;
@@ -9,7 +10,7 @@ namespace Webnovel.Repository
 	{
 		Task CreateComic(Webnovel.Entities.Comic comic);
 
-		Task<List<Webnovel.Entities.Comic>> GetAllComics();
+        Task<List<Webnovel.Entities.Comic>> GetAllComics(bool? hasImage = null, bool? hasEpisode = null);
 
 		Task<Webnovel.Entities.Comic> GetComic(int comicId);
 
@@ -35,7 +36,7 @@ namespace Webnovel.Repository
 
 		Task<bool> FindEpisode(int episodeId);
 
-        Task<IEnumerable<Episode>> GetEpisodes(int comicId);
+        Task<IOrderedQueryable<Episode>> GetEpisodes(int comicId);
 
 
         Task<Episode> GetEpisode(int episodeId);

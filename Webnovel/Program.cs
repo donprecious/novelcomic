@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
@@ -5,9 +6,13 @@ namespace Webnovel
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
-			WebHostExtensions.Run(BuildWebHost(args));
+            var host = BuildWebHost(args);
+           await host.InitAsync();
+            host.Run();
+
+			//WebHostExtensions.Run(host);
 		}
 
 		public static IWebHost BuildWebHost(string[] args)

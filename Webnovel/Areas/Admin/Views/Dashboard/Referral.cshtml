@@ -1,0 +1,146 @@
+﻿@using Sentry.Protocol
+@using Webnovel.Repository
+@model Webnovel.Entities.Referral
+
+@{
+    ViewBag.Title = "Referrals - " + @Model.User.Email;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@inject IReferral _Referral
+@{
+    var refreeds = await _Referral.Refers(@Model.UserId);
+}
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Referrals">Referrals</a>
+                            </li>
+                            <li class="breadcrumb-item"> 
+                                <a href="javascript:void(0);">Referral</a>
+                            </li>
+                      
+
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Referral Detail</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mt-0 header-title">Referral's  Detail</h4>
+                        <p class="text-muted"> Status :@Model.Status</p>
+
+                        <p class="text-muted"> Referral url :  <a href="http://alkebulania.com/account/register/?referralId==@Model.Id"> http://alkebulania.com/account/register/?referralId=@Model.Id </a> </p>
+                        <p class="text-muted"> Short url : <a href="@Model.ShortUrl"> @Model.ShortUrl </a> </p>
+
+                        <div>
+                            <a class="btn btn-xs  text-white btn-primary" href="@Url.Action("ApproveReferral", new {id = Model.Id})">Approve (Generate Short Link)</a>
+                            @*<a class="btn btn-xs  text-white btn-primary">Delete</a>*@
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <ul class="list-unstyled faq-qa">
+                                    <li class="mb-5">
+                                        <h6 class="">Full Name</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.User.FirstName @Model.User.LastName</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">Phone</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.User.PhoneNumber</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">Email</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.User.Email</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">No of Clicks</h6>
+                                        <p class="font-14 text-muted ml-3"></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <ul class="list-unstyled faq-qa">
+                                    <li class="mb-5">
+                                        <h6 class="">Country</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.Country.name</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">Gender</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.User.Gender</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">Date of birth</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.User.DateOfBirth</p>
+                                    </li>
+                                  
+                                    <li class="mb-5">
+                                        <h6 class="">No Refrered</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.referreds.Count()</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <ul class="list-unstyled faq-qa">
+                                    <li class="mb-5">
+                                        <h6 class="">Occupation</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.Occupation</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">Program Known From</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.InformationFrom</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">Program Type</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.ProgramType</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">Possible Number of Referrals</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.MinimumReferral</p>
+                                    </li>
+                                    <li class="mb-5">
+                                        <h6 class="">Additional Information</h6>
+                                        <p class="font-14 text-muted ml-3">@Model.AdditonalInformation</p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div><!--end row-->
+                        
+                        <h4 class="mt-0 header-title">User Referred (@Model.referreds.Count)</h4> 
+                        <table class="table table-responsive table-borderless table-bordered table-responsive-sm"><tr>
+                                <th>Email</th>
+                                <th>Date Registered</th>
+
+                            </tr>
+                            @foreach (var i in refreeds)
+                            {
+                                <tr>
+                                    <td>@i.User.Email</td>
+                                    <td>@i.DateRegistered.ToString("f")</td>
+                                </tr>
+
+                            }
+                        </table>
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div><!--end col-->
+
+        </div>
+    </div>
+</div>
+

@@ -27,14 +27,49 @@ namespace Webnovel.Repository
 			await _context.Comics.AddAsync(comic, default(CancellationToken));
 		}
 
-		public async Task<List<Webnovel.Entities.Comic>> GetAllComics()
-		{
-			return await EntityFrameworkQueryableExtensions.ToListAsync<Webnovel.Entities.Comic>((IQueryable<Webnovel.Entities.Comic>)_context.Comics, default(CancellationToken));
-		}
+        public async Task<List<Entities.Comic>> GetAllComics(bool? hasImage = null, bool? hasEpisode = null )
+        {
+            var comic = await _context.Comics.Include(a => a.Tags)
+                .Include(a => a.Category)
+                .Include(a=>a.Episodes)
+                .ToListAsync();
+            if (hasImage == true)
+            {
+                comic = comic.Where(a => a.CoverPageImageUrl != null).ToList();
+            }
+            if (hasEpisode == true)
+            {
+                comic = comic.Where(a => a.Episodes.Any()).ToList();
+            }
+            return comic;
+        }
+
+        //public async Task<List<Webnovel.Entities.Comic>> GetAllComics(bool? hasImage = null, bool? hasEpisode = null )
+        //{
+        //    var comic = await _context.Comics.Include(a => a.Tags)
+        //        .Include(a => a.Category)
+        //        .Include(a=>a.Episodes)
+        //        .ToListAsync();
+        //    if (hasImage == true)
+        //    {
+        //        comic = comic.Where(a => a.CoverPageImageUrl != null).ToList();
+        //    }
+        //    if (hasEpisode == true)
+        //    {
+        //        comic = comic.Where(a => a.Episodes.Any()).ToList();
+        //    }
+
+        //    return comic;
+        //}
 
 		public async Task<Webnovel.Entities.Comic> GetComic(int comicId)
 		{
-			return await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Webnovel.Entities.Comic>(((IQueryable<Webnovel.Entities.Comic>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Comic, ICollection<ComicScene>>((IQueryable<Webnovel.Entities.Comic>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Comic, ICollection<Episode>>((IQueryable<Webnovel.Entities.Comic>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Comic, Webnovel.Entities.Category>((IQueryable<Webnovel.Entities.Comic>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Comic, Webnovel.Entities.Author>((IQueryable<Webnovel.Entities.Comic>)_context.Comics, (Expression<Func<Webnovel.Entities.Comic, Webnovel.Entities.Author>>)((Webnovel.Entities.Comic a) => a.Author)), (Expression<Func<Webnovel.Entities.Comic, Webnovel.Entities.Category>>)((Webnovel.Entities.Comic a) => a.Category)), (Expression<Func<Webnovel.Entities.Comic, ICollection<Episode>>>)((Webnovel.Entities.Comic a) => a.Episodes)), (Expression<Func<Webnovel.Entities.Comic, ICollection<ComicScene>>>)((Webnovel.Entities.Comic a) => a.ComicScenes))).Where((Webnovel.Entities.Comic a) => a.Id == comicId), default(CancellationToken));
+            return await _context.Comics.Where(a=>a.Id ==comicId).Include(a=>a.Tags).
+                Include(a=>a.Author).
+                Include(a=>a.Category).
+                Include(a=>a.ComicScenes).
+                Include(a=>a.Episodes).SingleOrDefaultAsync();
+		//	return await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Webnovel.Entities.Comic>(((IQueryable<Webnovel.Entities.Comic>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Comic, ICollection<ComicScene>>((IQueryable<Webnovel.Entities.Comic>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Comic, ICollection<Episode>>((IQueryable<Webnovel.Entities.Comic>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Comic, Webnovel.Entities.Category>((IQueryable<Webnovel.Entities.Comic>)EntityFrameworkQueryableExtensions.Include<Webnovel.Entities.Comic, Webnovel.Entities.Author>((IQueryable<Webnovel.Entities.Comic>)_context.Comics, (Expression<Func<Webnovel.Entities.Comic, Webnovel.Entities.Author>>)((Webnovel.Entities.Comic a) => a.Author)), (Expression<Func<Webnovel.Entities.Comic, Webnovel.Entities.Category>>)((Webnovel.Entities.Comic a) => a.Category)), (Expression<Func<Webnovel.Entities.Comic, ICollection<Episode>>>)((Webnovel.Entities.Comic a) => a.Episodes)), (Expression<Func<Webnovel.Entities.Comic, ICollection<ComicScene>>>)((Webnovel.Entities.Comic a) => a.ComicScenes))).Where((Webnovel.Entities.Comic a) => a.Id == comicId), default(CancellationToken));
 		}
 
 		public async Task AddUpdateToLibrary(ComicLibrary comicLibrary)
@@ -141,9 +176,10 @@ namespace Webnovel.Repository
 		}
 
 	
-		public async Task<IEnumerable<Episode>> GetEpisodes(int comicId)
+		public async Task<IOrderedQueryable<Episode>> GetEpisodes(int comicId)
         {
-            return await _context.Episodes.Where(a=>a.ComicId== comicId).ToListAsync();
+           return _context.Episodes.AsNoTracking().OrderBy(a=>a.Preference);
+          //  return await _context.Episodes.Where(a=>a.ComicId== comicId).ToListAsync();
         }
 
 		public async Task<Episode> GetEpisode(int episodeId)

@@ -6405,7 +6405,7 @@ ul {
   margin-bottom: 10px;
 }
 .form-style-1 input,
-.form-style-1 select {
+.form-style-1 select, textarea {
   font-family: 'Nunito', sans-serif;
   font-size: 12px;
   color: #abb7c4;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Webnovel.Entities;
 using Webnovel.Models;
 
 namespace Webnovel.Repository
@@ -18,6 +19,14 @@ namespace Webnovel.Repository
         Task<IEnumerable<ApplicationUser>> List();
         Task<bool> HasPhoneNumber(string phone);
         Task Delete(string userId);
+        Task<bool> AddUserToRole(string UserId, string RoleName);
+        Task CreateDefaultAdminUser();
+        Task<bool> CreateRole(string role);
+
+        Task<string> CreateUser(string email, string password);
+        Task<ICollection<Country>> Countries();
+
+        Task<bool> UpdateUser(ApplicationUser user);
         Task<bool> Save();
     }
 }

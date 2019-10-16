@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Webnovel.Data;
+using Webnovel.Entities;
 using Webnovel.Models;
 
 namespace Webnovel.Repository
@@ -46,6 +47,11 @@ namespace Webnovel.Repository
                 return true;
             }
             return false;
+        }
+
+        public async Task<bool> AddRole(string UserId, string RoleId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task Delete(string userId)
@@ -97,6 +103,18 @@ namespace Webnovel.Repository
             return false;
         }
 
+        public async Task<bool> AddToRole(string userId, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var add = await _userManager.AddToRoleAsync(user, role);
+            if (add.Succeeded)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
     
 
         public async Task<bool> Save()
@@ -111,16 +129,79 @@ namespace Webnovel.Repository
             return false;
         }
 
-        public async Task<bool> AddRole(string UserId, string RoleName)
+        public async Task<bool> UpdateUser(ApplicationUser user)
+        {
+            _context.Entry(user).State = EntityState.Modified;
+            return await Save();
+        }
+
+        public async Task<bool> AddUserToRole(string UserId, string RoleName)
         {
            var user = await _userManager.FindByIdAsync(UserId);
-          
-           var added = await _userManager.AddToRoleAsync(user,RoleName);
-            if (added.Succeeded)
+           if (!(await _userManager.IsInRoleAsync(user, RoleName)))
+           {
+               var added = await _userManager.AddToRoleAsync(user,RoleName);
+               if (added.Succeeded)
+               {
+                   return true;
+               }
+           }
+           return false;
+        }
+
+
+        string superRole = "SuperAdmin";
+        string adminRole = "Admin";
+        public async Task CreateDefaultAdminUser()
+        {
+            //create role 
+          await  CreateRole(adminRole);
+          var userId = await CreateUser("Don0@gmail.com", "Don0@gmail.com");
+
+          if (userId != null)
+          {
+              await AddUserToRole(userId, adminRole);
+          }
+        }
+
+        public async Task<bool> CreateRole(string role)
+        {
+            if (! await _roleManager.RoleExistsAsync(role))
             {
-                return true;
+                // first we create Admin rool   
+              var create =  await _roleManager.CreateAsync(new IdentityRole(role));
+              if (create.Succeeded)
+              {
+                  return true;
+              }
             }
+
             return false;
         }
+
+        public async Task<string> CreateUser(string email, string password)
+        {
+            var user = new ApplicationUser()
+            {
+                Email = email,
+                UserName = email, 
+                
+            };
+            var user1 = await _userManager.FindByEmailAsync(email);
+            if (user1== null)
+            {
+                var create = await _userManager.CreateAsync(user, password);
+                if (create.Succeeded)
+                {
+                    return user.Id;
+                }
+            }
+            return null;
+        }
+
+        public async Task<ICollection<Country>> Countries()
+        {
+            return await _context.Countries.ToListAsync();
+        } 
     }
 }

@@ -107,53 +107,53 @@
     	});
     	return false;
 	});
-	jQuery(".postinate a").live('click',function() {    
-		var thisLink = jQuery(this),
-			url = thisLink.attr('href'),
-			entryContainer = jQuery("#entryContainer"),
-			entry = jQuery(".entry"),
-			height = entryContainer.outerHeight(),
-			entryTop = entryContainer.position().top;
+	//jQuery(".postinate a").live('click',function() {    
+	//	var thisLink = jQuery(this),
+	//		url = thisLink.attr('href'),
+	//		entryContainer = jQuery("#entryContainer"),
+	//		entry = jQuery(".entry"),
+	//		height = entryContainer.outerHeight(),
+	//		entryTop = entryContainer.position().top;
 		
-		entryContainer.css({height:height});	
+	//	entryContainer.css({height:height});	
 		
-		htmlBody.animate({scrollTop:entryTop},500);
+	//	htmlBody.animate({scrollTop:entryTop},500);
 		
-    	entry.fadeOut(500,function(){
-    		entryContainer.html("<div id='loading'>Loading</div>").load(url + " .entry",'', function() {
-        		entry.hide().fadeIn(500);
-        		jQuery(this).css({height:"auto"});
-       		});
+ //   	entry.fadeOut(500,function(){
+ //   		entryContainer.html("<div id='loading'>Loading</div>").load(url + " .entry",'', function() {
+ //       		entry.hide().fadeIn(500);
+ //       		jQuery(this).css({height:"auto"});
+ //      		});
        		
-       		//ADD / REMOVE PAGINATING
-       		if(thisLink.index() > 0){
-				jQuery('body').addClass('paginating');
-			} else {
-				jQuery('body').removeClass('paginating');
-			}
-    	});
-    	return false;
-	});
+ //      		//ADD / REMOVE PAGINATING
+ //      		if(thisLink.index() > 0){
+	//			jQuery('body').addClass('paginating');
+	//		} else {
+	//			jQuery('body').removeClass('paginating');
+	//		}
+ //   	});
+ //   	return false;
+	//});
 	
-	//KEYS PRESS...
-	jQuery(document).keydown(function(e){
-		//LEFT KEY...
-		if (e.keyCode == 37) {
-			jQuery('.postinate > span').prev('a').click();
-			jQuery('a.previouspostslink').click();
-		}
-		//UP KEY...
-		if (e.keyCode == 38) {}
-		//RIGHT KEY...
-		if (e.keyCode == 39) {
-			jQuery('.postinate > span').next('a').click();
-			jQuery('a.nextpostslink').click();
-		}
-   		//DOWN KEY...
-		if (e.keyCode == 40) {}
-		//SPACEBAR...
-		if (e.keyCode == 32) {}
-	});
+	////KEYS PRESS...
+	//jQuery(document).keydown(function(e){
+	//	//LEFT KEY...
+	//	if (e.keyCode == 37) {
+	//		jQuery('.postinate > span').prev('a').click();
+	//		jQuery('a.previouspostslink').click();
+	//	}
+	//	//UP KEY...
+	//	if (e.keyCode == 38) {}
+	//	//RIGHT KEY...
+	//	if (e.keyCode == 39) {
+	//		jQuery('.postinate > span').next('a').click();
+	//		jQuery('a.nextpostslink').click();
+	//	}
+ //  		//DOWN KEY...
+	//	if (e.keyCode == 40) {}
+	//	//SPACEBAR...
+	//	if (e.keyCode == 32) {}
+	//});
 	
 	//MESH BACKGROUND STUFF
 	function docHeight(){

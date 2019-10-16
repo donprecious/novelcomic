@@ -14,384 +14,703 @@
     {
         ApiKey = CloudinaryUpload.apiKey,
         ApiSecret = CloudinaryUpload.apiSecret,
-        Cloud = CloudinaryUpload.cloud,
+        Cloud = CloudinaryUpload.cloud
     });
-    var img = cloudinary.Api.UrlImgFetch.
-        Transform(new Transformation()
-            .Height(500).Width(500).Crop("fill")).BuildUrl(Model.CoverPageImageUrl);
-
+    var img = Model.CoverPageImageUrl;
+    if (Model.CoverPageImageUrl != null)
+    {
+        img =  cloudinary.Api.UrlImgFetch.
+           Transform(new Transformation()
+               .Height(500).Width(350).Crop("fill")).BuildUrl(Model.CoverPageImageUrl);
+    } else
+    {
+        img =  cloudinary.Api.UrlImgFetch.
+            Transform(new Transformation()
+                .Height(500).Width(350).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png") ;
+    }
     var Novels = await Novel.GetAllNovels();
-
 }
 
-<div class="container">
-    <div class="site-content__inner">
-        <div id="primary" class="content-area">
-            <div id="movie-718" class="post-718 movie type-movie status-publish has-post-thumbnail hentry movie_genre-action movie_genre-mystery movie_tag-brother movie_tag-hero movie_tag-premieres movie_tag-viking">
-                <div class="single-movie__player-container stretch-full-width" style="background-image: url();">
-                    <div class="single-movie__player-container--inner container">
-                        <nav class="masvideos-breadcrumb">
-                            <a href="@Url.Action("Index", "Home")">Home</a>
-                            <span class="delimiter"><svg width="4px" height="7px"><path fill-rule="evenodd" d="M3.978,3.702 C3.986,3.785 3.966,3.868 3.903,3.934 L1.038,6.901 C0.920,7.022 0.724,7.029 0.598,6.916 L0.143,6.506 C0.017,6.393 0.010,6.203 0.127,6.082 L2.190,3.945 C2.276,3.829 2.355,3.690 2.355,3.548 C2.355,3.214 1.947,2.884 1.947,2.884 L1.963,2.877 L0.080,0.905 C-0.037,0.783 -0.029,0.593 0.095,0.479 L0.547,0.068 C0.671,-0.045 0.866,-0.039 0.983,0.083 L3.823,3.056 C3.866,3.102 3.875,3.161 3.885,3.218 C3.945,3.267 3.988,3.333 3.988,3.415 L3.988,3.681 C3.988,3.689 3.979,3.694 3.978,3.702 Z"></path></svg></span>
-                            <a href="@Url.Action("Novels", "Home")">Novels</a>
-
-                            <span class="delimiter"><svg width="4px" height="7px"><path fill-rule="evenodd" d="M3.978,3.702 C3.986,3.785 3.966,3.868 3.903,3.934 L1.038,6.901 C0.920,7.022 0.724,7.029 0.598,6.916 L0.143,6.506 C0.017,6.393 0.010,6.203 0.127,6.082 L2.190,3.945 C2.276,3.829 2.355,3.690 2.355,3.548 C2.355,3.214 1.947,2.884 1.947,2.884 L1.963,2.877 L0.080,0.905 C-0.037,0.783 -0.029,0.593 0.095,0.479 L0.547,0.068 C0.671,-0.045 0.866,-0.039 0.983,0.083 L3.823,3.056 C3.866,3.102 3.875,3.161 3.885,3.218 C3.945,3.267 3.988,3.333 3.988,3.415 L3.988,3.681 C3.988,3.689 3.979,3.694 3.978,3.702 Z"></path></svg></span>Black Mirror
-                        </nav>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="movie__head">
-                                    <div class="movie__player">
-                                        <div class="wp-video">
-                                            <img class="img img-fluid" src="@img" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="summary entry-summary">
-                                    <h1 class="movie_title entry-title">@Model.Name</h1>
-                                    <div class="movie__info--head">
-                                        <div class="movie__meta">
-                                            <span class="movie__meta--release-year">By @Model.Author.Title</span>
-                                            <span class="movie__meta--genre"><a href="#" rel="tag">@Model.Category.Name</a> </span>
-                                        </div>
-                                        <div class="movie__rating-with-playlist">
-                                            <span class="pr-2">
-                                                <i class="fa fa-star fa-2x " style="color: gold"></i><i class="fa fa-star fa-2x " style="color: gold"></i> <i class="fa fa-star fa-2x " style="color: gold"></i> 3.5 rating
-                                            </span>
-                                            <a href="@Url.Action("SaveNovel", new{NovelId = Model.Id})" style="color: #00bfff"> <i class="fa fa-2x fa-heart"></i> Save</a>
-                                            <a href="@Url.Action("ReadNovel","Novel", new{id=Model.Id})" class="link pr-2" ata-toggle="dropdown"> <i class="fa fa-2x fa-envelope-open"></i> Read</a>
-
-                                        </div>
-                                    </div>
-                                    <div class="vodi-views-likes p-3">
-                                        <div class="vodi-jetpack-views">
-                                            <span>343 views</span>
-                                        </div>
-
-                                    </div>
-                                    <div class="movie__description">
-                                        <div style="height: auto; max-height: none;">
-                                            @Model.Title;
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<div class="hero sr-single-hero sr-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <h1> movie listing - list</h1>
+                <ul class="breadcumb">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single movie-single movie_single">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="movie-img">
+                    <img src="@img" alt="">
+                    <div class="movie-btn">
+                        <div class="btn-transform transform-vertical red">
+                            <div><a href="@Url.Action("ReadNovel", "Novel", new {id = Model.Id })" class="item item-1 redbtn"> <i class="ion-ios-book"></i> Read Now</a></div>
+                            <div><a href="@Url.Action("ReadNovel", "Novel", new {id = Model.Id })" class="item item-2 redbtn hvr-grow"><i class="ion-ios-book"></i></a></div>
                         </div>
-
+                        <div class="btn-transform transform-vertical">
+                            <div><a href="#" class="item item-1 yellowbtn"> <i class="ion-card"></i> Save</a></div>
+                            <div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div>
+                        </div>
                     </div>
-
-
                 </div>
             </div>
-            @{
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="movie-single-ct main-content">
+                    <h1 class="bd-hd">@Model.Name <span style="text-transform: capitalize;">- @Model.Category.Name</span></h1>
 
-            }
+                    <div class="social-btn">
+                        <a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>
+                        <div class="hover-bnt">
+                            <a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>Share</a>
+                            <div class="hvr-item">
+                                <a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
+                                <a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
+                                <a href="#" class="hvr-grow"><i class="ion-social-whatsapp"></i></a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="movie-rate">
+                        <div class="rate">
+                            <i class="ion-android-star"></i>
+                            <p>
+                                <span>0</span> /5<br>
+                                <span class="rv">0 Reviews</span>
+                            </p>
+                        </div>
+                        <div class="rate-star">
+                            <p>Rate This Movie:  </p>
+                            @*<i class="ion-ios-star"></i>
+        <i class="ion-ios-star"></i>
+        <i class="ion-ios-star"></i>
+        <i class="ion-ios-star"></i>
+        <i class="ion-ios-star"></i>
+        <i class="ion-ios-star"></i>
+        <i class="ion-ios-star"></i>
+        <i class="ion-ios-star"></i>*@
+                            <i class="ion-ios-star-outline"></i>
+                            <i class="ion-ios-star-outline"></i>
+                            <i class="ion-ios-star-outline"></i>
+                            <i class="ion-ios-star-outline"></i>
+                            <i class="ion-ios-star-outline"></i>
 
-            <section class="movie__related">
-                <div class="movie__related--inner">
-                    <h2 class="movie__related--title">You Also May Like</h2>
-                    <div class="masvideos masvideos-movies ">
-                        <div class="movies columns-8">
-                            <div class="movies__inner">
-                                @foreach (var c in Novels.Where(a => a.CategoryId == Model.CategoryId).TakeLast(8).ToList())
-                                {
-                                    var img2 = cloudinary.Api.UrlImgFetch.
-                                        Transform(new Transformation()
-                                            .Height(450).Width(300).Crop("fill")).BuildUrl(Model.CoverPageImageUrl);
-                                    <div class="post-278 movie type-movie status-publish has-post-thumbnail hentry movie_genre-action movie_genre-biography movie_tag-4k-ultra movie_tag-brother movie_tag-king movie_tag-viking">
-                                        <div class="movie__poster">
-                                            <a href="@Url.Action("Novel","Home", new {id=c.Id})" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                <img width="300" height="450" src="@img2" class="movie__poster--image lazyloaded" alt="" data-was-processed="true">
-                                            </a>
-                                        </div>
-                                        <div class="movie__body">
-                                            <div class="movie__info">
-                                                <div class="movie__info--head">
-                                                    <div class="movie__meta">
-                                                        @*<span class="movie__meta--release-year">2018</span>*@
-                                                        <span class="movie__meta--genre"><a href="@Url.Action("Novels", new{categoryId = c.CategoryId})" rel="tag">@c.Category.Name</a>, <a href="@Url.Action("AuthorNovels", new{authorId = c.AuthorId})" rel="tag">@*@c.Author.Title*@</a></span>
-                                                    </div>
-                                                    <a href="@Url.Action("Novel", new{id =c.Id })" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                        <h3 class="masvideos-loop-movie__title  movie__title">@c.Name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="movie__short-description">
-                                                    <div>
-                                                        <p>@c.Title</p>
-                                                    </div>
-                                                </div>
-                                                <div class="movie__actions">
-                                                    <a href="@Url.Action("ReadNovel","Novel", new{id=c.Id})" class="movie-actions--link_watch">Read Now</a>
-                                                    <div class="movie-actions--link_add-to-playlist dropdown">
-                                                        <a href="@Url.Action("SaveNovel", new{NovelId = c.Id})" class="link pr-2" style="color: #00bfff" data-toggle="dropdown"> <i class="fa fa-heart"></i>+ Save</a>
+                        </div>
+                    </div>
+                    <div class="movie-tabs">
+                        <div class="tabs">
+                            <ul class="tab-links tabs-mv tabs-series">
+                                <li class="active"><a href="#overview">Overview</a></li>
+                                <li><a href="#reviews"> Reviews</a></li>
+                                <li><a href="#cast">  Chapters </a></li>
+                                <li><a href="#media">Authors</a></li>
+                                @*<li><a href="#season"> Season</a></li>*@
+                                <li><a href="#moviesrelated"> Related Shows</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="overview" class="tab active">
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-12 col-xs-12">
+                                            <p>@Model.Title</p>
+                                            <div class="title-hd-sm">
+                                                <h4>Details</h4>
 
-
+                                            </div>
+                                            <!-- movie cast -->
+                                            <div class="mvcast-item">
+                                                <div class="cast-it">
+                                                    <div class="cast-left series-it">
+                                                        <div>
+                                                            <p><b>Audience :</b> @Model.AudienceAge </p> 
+                                                            <p><b>Leading Gender :</b> @Model.LeadingGender </p>
+                                                           
+                                                            <p><b>Language :</b> @Model.Language </p>
+                                                         
+                                                            <p><b>Warning :</b> @Model.WariningNotice </p>
+                                                        </div>
+                                                    
                                                     </div>
                                                 </div>
                                             </div>
-                                            @*<div class="movie__review-info">
-                                                    <a href="#" class="avg-rating"> <span class="rating-with-count"> <svg class="vodi-svg" width="40px" height="39px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 39"><title>play</title><path fill-rule="evenodd" d="M19.633,-0.000 C21.509,0.035 21.530,1.174 22.167,2.414 C23.329,4.679 24.406,7.067 25.572,9.338 C25.853,9.886 26.431,11.640 26.918,11.834 C27.486,12.203 29.345,12.109 30.165,12.316 C32.170,12.825 34.489,12.860 36.500,13.364 C37.516,13.618 38.689,13.413 39.430,13.927 C39.689,14.107 39.770,14.504 39.984,14.732 C40.047,16.499 39.096,16.843 38.163,17.792 C36.473,19.509 34.784,21.227 33.095,22.944 C32.585,23.462 31.092,24.543 31.036,25.359 C31.423,25.951 31.307,27.455 31.511,28.258 C32.138,30.727 32.213,33.522 32.857,35.987 C33.142,37.078 33.016,38.241 32.303,38.724 C31.108,39.533 29.632,38.193 28.819,37.758 C26.695,36.623 24.601,35.624 22.483,34.457 C21.979,34.179 20.607,33.178 20.108,33.088 C19.748,33.023 18.163,34.107 17.812,34.296 C15.557,35.505 13.340,36.640 11.080,37.839 C10.548,38.120 9.180,39.226 8.309,38.966 C6.955,38.558 6.874,36.993 7.280,35.423 C7.716,33.733 7.697,31.880 8.151,30.109 C8.527,28.642 8.907,26.529 9.022,24.957 C8.092,24.344 7.202,23.107 6.408,22.300 C4.760,20.625 3.059,18.990 1.340,17.389 C0.646,16.742 -0.578,15.515 0.311,14.249 C0.915,13.388 2.364,13.656 3.557,13.364 C6.678,12.599 10.114,12.468 13.298,11.834 C14.186,9.747 15.306,7.711 16.307,5.716 C16.954,4.426 17.496,3.163 18.128,1.931 C18.334,1.531 18.358,1.093 18.603,0.724 C18.845,0.362 19.299,0.273 19.633,-0.000 Z"></path></svg> <span class="avg-rating-number"> 8.0</span> </span> <span class="rating-number-with-text"> <span class="avg-rating-number"> 8.0</span> <span class="avg-rating-text"> <span>1</span> Vote </span> </span> </a>
-                                                    <div class="viewers-count"></div>
-                                                </div>*@
-                                        </div>
-                                    </div>
+                                            <div class="title-hd-sm">
+                                                @*<h4>Videos & Photos</h4>
+                                                <a href="#" class="time">All 5 Videos & 245 Photos <i class="ion-ios-arrow-right"></i></a>*@
+                                                <div class="sb-tags sb-it">
+                                                    <h4 class="sb-title">tags</h4>
+                                                    <ul class="tag-items">
+                                                        @foreach (var i in Model.Tags)
+                                                        {
+                                                            <li><a href="#">@i.Tag.Name</a></li>
 
-                                }
+
+                                                        }
+                                                    
+                                                    </ul>
+                                                </div>
+                                            </div> 
+                                            <!---->
+                                            @*<div class="mvsingle-item ov-item">
+                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image41.jpg"><img src="images/uploads/image4.jpg" alt=""></a>
+                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image51.jpg"><img src="images/uploads/image5.jpg" alt=""></a>
+                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image61.jpg"><img src="images/uploads/image6.jpg" alt=""></a>
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/image7.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                            </div>
+                                            <div class="title-hd-sm">
+                                                <h4>cast</h4>
+                                                <a href="#" class="time">Full Cast & Crew  <i class="ion-ios-arrow-right"></i></a>
+                                            </div>
+                                            <!-- movie cast -->
+                                            <div class="mvcast-item">
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="images/uploads/cast1.jpg" alt="">
+                                                        <a href="#">Robert Downey Jr.</a>
+                                                    </div>
+                                                    <p>...  Robert Downey Jr.</p>
+                                                </div>
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="images/uploads/cast2.jpg" alt="">
+                                                        <a href="#">Chris Hemsworth</a>
+                                                    </div>
+                                                    <p>...  Thor</p>
+                                                </div>
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="images/uploads/cast3.jpg" alt="">
+                                                        <a href="#">Mark Ruffalo</a>
+                                                    </div>
+                                                    <p>...  Bruce Banner/ Hulk</p>
+                                                </div>
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="images/uploads/cast4.jpg" alt="">
+                                                        <a href="#">Chris Evans</a>
+                                                    </div>
+                                                    <p>...  Steve Rogers/ Captain America</p>
+                                                </div>
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="images/uploads/cast5.jpg" alt="">
+                                                        <a href="#">Scarlett Johansson</a>
+                                                    </div>
+                                                    <p>...  Natasha Romanoff/ Black Widow</p>
+                                                </div>
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="images/uploads/cast6.jpg" alt="">
+                                                        <a href="#">Jeremy Renner</a>
+                                                    </div>
+                                                    <p>...  Clint Barton/ Hawkeye</p>
+                                                </div>
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="images/uploads/cast7.jpg" alt="">
+                                                        <a href="#">James Spader</a>
+                                                    </div>
+                                                    <p>...  Ultron</p>
+                                                </div>
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="images/uploads/cast9.jpg" alt="">
+                                                        <a href="#">Don Cheadle</a>
+                                                    </div>
+                                                    <p>...  James Rhodes/ War Machine</p>
+                                                </div>
+                                            </div>
+                                            <div class="title-hd-sm">
+                                                <h4>User reviews</h4>
+                                                <a href="#" class="time">See All 56 Reviews <i class="ion-ios-arrow-right"></i></a>
+                                            </div>
+                                            <!-- movie user review -->
+                                            <div class="mv-user-review-item">
+                                                <h3>Best Marvel movie in my opinion</h3>
+                                                <div class="no-star">
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star"></i>
+                                                    <i class="ion-android-star last"></i>
+                                                </div>
+                                                <p class="time">
+                                                    17 December 2016 by <a href="#"> hawaiipierson</a>
+                                                </p>
+                                                <p>This is by far one of my favorite movies from the MCU. The introduction of new Characters both good and bad also makes the movie more exciting. giving the characters more of a back story can also help audiences relate more to different characters better, and it connects a bond between the audience and actors or characters. Having seen the movie three times does not bother me here as it is as thrilling and exciting every time I am watching it. In other words, the movie is by far better than previous movies (and I do love everything Marvel), the plotting is splendid (they really do out do themselves in each film, there are no problems watching it more than once.</p>
+                                            </div>*@
+
+                                        </div>
+                                        @*<div class="col-md-4 col-xs-12 col-sm-12">
+                                            <div class="sb-it">
+                                                <h6>Director: </h6>
+                                                <p><a href="#">Mark Cendrowski</a></p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>Writer: </h6>
+                                                <p><a href="#"> Chuck Lorre,</a> <a href="#">Bill Prady</a></p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>Stars: </h6>
+                                                <p><a href="#">Robert Downey Jr,</a> <a href="#">Chris Evans,</a> <a href="#">Mark Ruffalo,</a><a href="#"> Scarlett Johansson</a></p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>Genres:</h6>
+                                                <p><a href="#">Action, </a> <a href="#"> Sci-Fi,</a> <a href="#">Adventure</a></p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>Release Date:</h6>
+                                                <p>1 May 2006 (U.S.A)</p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>Run Time:</h6>
+                                                <p>22 min</p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>MMPA Rating:</h6>
+                                                <p>TV-14</p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>Plot Keywords:</h6>
+                                                <p class="tags">
+                                                    <span class="time"><a href="#">superhero</a></span>
+                                                    <span class="time"><a href="#">marvel universe</a></span>
+                                                    <span class="time"><a href="#">comic</a></span>
+                                                    <span class="time"><a href="#">blockbuster</a></span>
+                                                    <span class="time"><a href="#">final battle</a></span>
+                                                </p>
+                                            </div>
+                                            <div class="ads">
+                                                <img src="images/uploads/ads1.png" alt="">
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                                <div id="reviews" class="tab review">
+                                    <div class="row">
+                                        @*<div class="rv-hd">
+                                            <div class="div">
+                                                <h3>Related Movies To</h3>
+                                                <h2>Skyfall: Quantum of Spectre</h2>
+                                            </div>
+                                            <a href="#" class="redbtn">Write Review</a>
+                                        </div>
+                                        <div class="topbar-filter">
+                                            <p>Found <span>56 reviews</span> in total</p>
+                                            <label>Filter by:</label>
+                                            <select>
+                                                <option value="range">-- Choose option --</option>
+                                                <option value="saab">-- Choose option 2--</option>
+                                            </select>
+                                        </div>
+                                        <div class="mv-user-review-item">
+                                            <div class="user-infor">
+                                                <img src="images/uploads/userava1.jpg" alt="">
+                                                <div>
+                                                    <h3>Best Marvel movie in my opinion</h3>
+                                                    <div class="no-star">
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                    </div>
+                                                    <p class="time">
+                                                        17 December 2016 by <a href="#"> hawaiipierson</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p>This is by far one of my favorite movies from the MCU. The introduction of new Characters both good and bad also makes the movie more exciting. giving the characters more of a back story can also help audiences relate more to different characters better, and it connects a bond between the audience and actors or characters. Having seen the movie three times does not bother me here as it is as thrilling and exciting every time I am watching it. In other words, the movie is by far better than previous movies (and I do love everything Marvel), the plotting is splendid (they really do out do themselves in each film, there are no problems watching it more than once.</p>
+                                        </div>
+                                        <div class="mv-user-review-item">
+                                            <div class="user-infor">
+                                                <img src="images/uploads/userava2.jpg" alt="">
+                                                <div>
+                                                    <h3>Just about as good as the first one!</h3>
+                                                    <div class="no-star">
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                    </div>
+                                                    <p class="time">
+                                                        17 December 2016 by <a href="#"> hawaiipierson</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p>Avengers Age of Ultron is an excellent sequel and a worthy MCU title! There are a lot of good and one thing that feels off in my opinion. </p>
+
+                                            <p>THE GOOD:</p>
+
+                                            <p>First off the action in this movie is amazing, to buildings crumbling, to evil blue eyed robots tearing stuff up, this movie has the action perfectly handled. And with that action comes visuals. The visuals are really good, even though you can see clearly where they are through the movie, but that doesn't detract from the experience. While all the CGI glory is taking place, there are lovable characters that are in the mix. First off the original characters, Iron Man, Captain America, Thor, Hulk, Black Widow, and Hawkeye, are just as brilliant as they are always. And Joss Whedon fixed my main problem in the first Avengers by putting in more Hawkeye and him more fleshed out. Then there is the new Avengers, Quicksilver, Scarletwich, and Vision, they are pretty cool in my opinion. Vision in particular is pretty amazing in all his scenes.</p>
+
+                                            <p>THE BAD:</p>
+
+                                            <p>The beginning of the film it's fine until towards the second act and there is when it starts to feel a little rushed. Also I do feel like there are scenes missing but there was talk of an extended version on Blu-Ray so that's cool.</p>
+                                        </div>
+                                        <div class="mv-user-review-item">
+                                            <div class="user-infor">
+                                                <img src="images/uploads/userava3.jpg" alt="">
+                                                <div>
+                                                    <h3>One of the most boring exepirences from watching a movie</h3>
+                                                    <div class="no-star">
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                    </div>
+                                                    <p class="time">
+                                                        26 March 2017 by<a href="#"> christopherfreeman</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p>I can't right much... it's just so forgettable...Okay, from what I remember, I remember just sitting down on my seat and waiting for the movie to begin. 5 minutes into the movie, boring scene of Tony Stark just talking to his "dead" friends saying it's his fault. 10 minutes in: Boring scene of Ultron and Jarvis having robot space battles(I dunno:/). 15 minutes in: I leave the theatre.2nd attempt at watching it: I fall asleep. What woke me up is the next movie on Netflix when the movie was over.</p>
+
+                                            <p>Bottemline: It's boring...</p>
+
+                                            <p>10/10 because I'm a Marvel Fanboy</p>
+                                        </div>
+                                        <div class="mv-user-review-item ">
+                                            <div class="user-infor">
+                                                <img src="images/uploads/userava4.jpg" alt="">
+                                                <div>
+                                                    <h3>That spirit of fun</h3>
+                                                    <div class="no-star">
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                    </div>
+                                                    <p class="time">
+                                                        26 March 2017 by <a href="#"> juliawest</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p>If there were not an audience for Marvel comic heroes than clearly these films would not be made, to answer one other reviewer although I sympathize with him somewhat. The world is indeed an infinitely more complex place than the world of Marvel comics with clearly identifiable heroes and villains. But I get the feeling that from Robert Downey, Jr. on down the organizer and prime mover as Iron Man behind the Avengers these players do love doing these roles because it's a lot of fun. If they didn't show that spirit of fun to the audience than these films would never be made.</p>
+
+                                            <p>So in that spirit of fun Avengers: Age Of Ultron comes before us and everyone looks like they're having a good time saving the world. A computer program got loose and took form in this dimension named Ultron and James Spader who is completely unrecognizable is running amuck in the earth. No doubt Star Trek fans took notice that this guy's mission is to cleanse the earth much like that old earth probe NOMAD which got its programming mixed up in that classic Star Trek prime story. Wouldst Captain James T. Kirk of the Enterprise had a crew like Downey has at his command.</p>
+                                            <p>My favorite is always Chris Evans because of the whole cast he best gets into the spirit of being a superhero. Of all of them, he's already played two superheroes, Captain America and Johnny Storm the Human Torch. I'll be before he's done Evans will play a couple of more as long as the money's good and he enjoys it.</p>
+
+                                            <p>Pretend you're a kid again and enjoy, don't take it so seriously.</p>
+                                        </div>
+                                        <div class="mv-user-review-item last">
+                                            <div class="user-infor">
+                                                <img src="images/uploads/userava5.jpg" alt="">
+                                                <div>
+                                                    <h3>Impressive Special Effects and Cast</h3>
+                                                    <div class="no-star">
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                        <i class="ion-android-star last"></i>
+                                                    </div>
+                                                    <p class="time">
+                                                        26 March 2017 by <a href="#"> johnnylee</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p>The Avengers raid a Hydra base in Sokovia commanded by Strucker and they retrieve Loki's scepter. They also discover that Strucker had been conducting experiments with the orphan twins Pietro Maximoff (Aaron Taylor-Johnson), who has super speed, and Wanda Maximoff (Elizabeth Olsen), who can control minds and project energy. Tony Stark (Robert Downey Jr.) discovers an Artificial Intelligence in the scepter and convinces Bruce Banner (Mark Ruffalo) to secretly help him to transfer the A.I. to his Ultron defense system. However, the Ultron understands that is necessary to annihilate mankind to save the planet, attacks the Avengers and flees to Sokovia with the scepter. He builds an armature for self-protection and robots for his army and teams up with the twins. The Avengers go to Clinton Barton's house to recover, but out of the blue, Nick Fury (Samuel L. Jackson) arrives and convinces them to fight against Ultron. Will they succeed? </p>
+
+                                            <p>"Avengers: Age of Ultron" is an entertaining adventure with impressive special effects and cast. The storyline might be better, since most of the characters do not show any chemistry. However, it is worthwhile watching this film since the amazing special effects are not possible to be described in words. Why Pietro has to die is also not possible to be explained. My vote is eight.</p>
+                                        </div>
+                                        <div class="topbar-filter">
+                                            <label>Reviews per page:</label>
+                                            <select>
+                                                <option value="range">5 Reviews</option>
+                                                <option value="saab">10 Reviews</option>
+                                            </select>
+                                            <div class="pagination2">
+                                                <span>Page 1 of 6:</span>
+                                                <a class="active" href="#">1</a>
+                                                <a href="#">2</a>
+                                                <a href="#">3</a>
+                                                <a href="#">4</a>
+                                                <a href="#">5</a>
+                                                <a href="#">6</a>
+                                                <a href="#"><i class="ion-arrow-right-b"></i></a>
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                                <div id="cast" class="tab">
+                                    <div class="row">
+                                        <h3>@Model.Chapters.Count Chapters</h3>
+
+                                        <!-- //== -->
+                                        @*<div class="title-hd-sm">
+                                            <h4>Directors & Credit Writers</h4>
+                                        </div>*@
+                                        @foreach (var i in Model.Chapters)
+                                        {
+
+                                            <div class="mvcast-item">
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        @*<h4>JW</h4>*@
+                                                        <a href="#">@i.Name</a>
+                                                    </div>
+                                                    @*<p>...  Director</p>*@
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                <div id="media" class="tab">
+                                    @*<div class="row">
+                                        <div class="rv-hd">
+                                            <div>
+                                                <h3>Videos & Photos of</h3>
+                                                <h2>The Big Bang Theory</h2>
+                                            </div>
+                                        </div>
+                                        <div class="title-hd-sm">
+                                            <h4>Videos <span>(8)</span></h4>
+                                        </div>
+                                        <div class="mvsingle-item media-item">
+                                            <div class="vd-item">
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/vd-item1.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                                <div class="vd-infor">
+                                                    <h6> <a href="#">Trailer:  Watch New Scenes</a></h6>
+                                                    <p class="time"> 1: 31</p>
+                                                </div>
+                                            </div>
+                                            <div class="vd-item">
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/vd-item2.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                                <div class="vd-infor">
+                                                    <h6> <a href="#">Featurette: “Avengers Re-Assembled</a></h6>
+                                                    <p class="time"> 1: 03</p>
+                                                </div>
+                                            </div>
+                                            <div class="vd-item">
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/vd-item3.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                                <div class="vd-infor">
+                                                    <h6> <a href="#">Interview: Robert Downey Jr</a></h6>
+                                                    <p class="time"> 3:27</p>
+                                                </div>
+                                            </div>
+                                            <div class="vd-item">
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/vd-item4.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                                <div class="vd-infor">
+                                                    <h6> <a href="#">Interview: Scarlett Johansson</a></h6>
+                                                    <p class="time"> 3:27</p>
+                                                </div>
+                                            </div>
+                                            <div class="vd-item">
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/vd-item1.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                                <div class="vd-infor">
+                                                    <h6> <a href="#">Featurette: Meet Quicksilver & The Scarlet Witch</a></h6>
+                                                    <p class="time"> 1: 31</p>
+                                                </div>
+                                            </div>
+                                            <div class="vd-item">
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/vd-item2.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                                <div class="vd-infor">
+                                                    <h6> <a href="#">Interview: Director Joss Whedon</a></h6>
+                                                    <p class="time"> 1: 03</p>
+                                                </div>
+                                            </div>
+                                            <div class="vd-item">
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/vd-item3.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                                <div class="vd-infor">
+                                                    <h6> <a href="#">Interview: Mark Ruffalo</a></h6>
+                                                    <p class="time"> 3:27</p>
+                                                </div>
+                                            </div>
+                                            <div class="vd-item">
+                                                <div class="vd-it">
+                                                    <img class="vd-img" src="images/uploads/vd-item4.jpg" alt="">
+                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
+                                                </div>
+                                                <div class="vd-infor">
+                                                    <h6> <a href="#">Official Trailer #2</a></h6>
+                                                    <p class="time"> 3:27</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="title-hd-sm">
+                                            <h4>Photos <span> (21)</span></h4>
+                                        </div>
+                                        <div class="mvsingle-item">
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image11.jpg"><img src="images/uploads/image1.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image21.jpg"><img src="images/uploads/image2.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image31.jpg"><img src="images/uploads/image3.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image41.jpg"><img src="images/uploads/image4.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image51.jpg"><img src="images/uploads/image5.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image61.jpg"><img src="images/uploads/image6.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image71.jpg"><img src="images/uploads/image7.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image81.jpg"><img src="images/uploads/image8.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image91.jpg"><img src="images/uploads/image9.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image101.jpg"><img src="images/uploads/image10.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image111.jpg"><img src="images/uploads/image1-1.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image121.jpg"><img src="images/uploads/image12.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image131.jpg"><img src="images/uploads/image13.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image141.jpg"><img src="images/uploads/image14.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image151.jpg"><img src="images/uploads/image15.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image161.jpg"><img src="images/uploads/image16.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image171.jpg"><img src="images/uploads/image17.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image181.jpg"><img src="images/uploads/image18.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image191.jpg"><img src="images/uploads/image19.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image201.jpg"><img src="images/uploads/image20.jpg" alt=""></a>
+                                            <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image211.jpg"><img src="images/uploads/image2-1.jpg" alt=""></a>
+                                        </div>
+                                    </div>*@
+                                </div>
+                             
+                                <div id="moviesrelated" class="tab">
+                                    @*<div class="row">
+                                        <h3>Related Movies To</h3>
+                                        <h2>Skyfall: Quantum of Spectre</h2>
+                                        <div class="topbar-filter">
+                                            <p>Found <span>12 movies</span> in total</p>
+                                            <label>Sort by:</label>
+                                            <select>
+                                                <option value="popularity">Popularity Descending</option>
+                                                <option value="popularity">Popularity Ascending</option>
+                                                <option value="rating">Rating Descending</option>
+                                                <option value="rating">Rating Ascending</option>
+                                                <option value="date">Release date Descending</option>
+                                                <option value="date">Release date Ascending</option>
+                                            </select>
+                                        </div>
+                                        <div class="movie-item-style-2">
+                                            <img src="images/uploads/mv1.jpg" alt="">
+                                            <div class="mv-item-infor">
+                                                <h6><a href="#">oblivion <span>(2012)</span></a></h6>
+                                                <p class="rate"><i class="ion-android-star"></i><span>8.1</span> /10</p>
+                                                <p class="describe">Earth's mightiest heroes must come together and learn to fight as a team if they are to stop the mischievous Loki and his alien army from enslaving humanity...</p>
+                                                <p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+                                                <p>Director: <a href="#">Joss Whedon</a></p>
+                                                <p>Stars: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
+                                            </div>
+                                        </div>
+                                        <div class="movie-item-style-2">
+                                            <img src="images/uploads/mv2.jpg" alt="">
+                                            <div class="mv-item-infor">
+                                                <h6><a href="#">into the wild <span>(2014)</span></a></h6>
+                                                <p class="rate"><i class="ion-android-star"></i><span>7.8</span> /10</p>
+                                                <p class="describe">As Steve Rogers struggles to embrace his role in the modern world, he teams up with a fellow Avenger and S.H.I.E.L.D agent, Black Widow, to battle a new threat...</p>
+                                                <p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+                                                <p>Director: <a href="#">Anthony Russo,</a><a href="#">Joe Russo</a></p>
+                                                <p>Stars: <a href="#">Chris Evans,</a> <a href="#">Samuel L. Jackson,</a> <a href="#">  Scarlett Johansson</a></p>
+                                            </div>
+                                        </div>
+                                        <div class="movie-item-style-2">
+                                            <img src="images/uploads/mv3.jpg" alt="">
+                                            <div class="mv-item-infor">
+                                                <h6><a href="#">blade runner  <span>(2015)</span></a></h6>
+                                                <p class="rate"><i class="ion-android-star"></i><span>7.3</span> /10</p>
+                                                <p class="describe">Armed with a super-suit with the astonishing ability to shrink in scale but increase in strength, cat burglar Scott Lang must embrace his inner hero and help...</p>
+                                                <p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+                                                <p>Director: <a href="#">Peyton Reed</a></p>
+                                                <p>Stars: <a href="#">Paul Rudd,</a> <a href="#"> Michael Douglas</a></p>
+                                            </div>
+                                        </div>
+                                        <div class="movie-item-style-2">
+                                            <img src="images/uploads/mv4.jpg" alt="">
+                                            <div class="mv-item-infor">
+                                                <h6><a href="#">Mulholland pride<span> (2013)  </span></a></h6>
+                                                <p class="rate"><i class="ion-android-star"></i><span>7.2</span> /10</p>
+                                                <p class="describe">When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.</p>
+                                                <p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+                                                <p>Director: <a href="#">Shane Black</a></p>
+                                                <p>Stars: <a href="#">Robert Downey Jr., </a> <a href="#">  Guy Pearce,</a><a href="#">Don Cheadle</a></p>
+                                            </div>
+                                        </div>
+                                        <div class="movie-item-style-2">
+                                            <img src="images/uploads/mv5.jpg" alt="">
+                                            <div class="mv-item-infor">
+                                                <h6><a href="#">skyfall: evil of boss<span> (2013)  </span></a></h6>
+                                                <p class="rate"><i class="ion-android-star"></i><span>7.0</span> /10</p>
+                                                <p class="describe">When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.</p>
+                                                <p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+                                                <p>Director: <a href="#">Alan Taylor</a></p>
+                                                <p>Stars: <a href="#">Chris Hemsworth,  </a> <a href="#">  Natalie Portman,</a><a href="#">Tom Hiddleston</a></p>
+                                            </div>
+                                        </div>
+                                        <div class="topbar-filter">
+                                            <label>Movies per page:</label>
+                                            <select>
+                                                <option value="range">5 Movies</option>
+                                                <option value="saab">10 Movies</option>
+                                            </select>
+                                            <div class="pagination2">
+                                                <span>Page 1 of 2:</span>
+                                                <a class="active" href="#">1</a>
+                                                <a href="#">2</a>
+                                                <a href="#"><i class="ion-arrow-right-b"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-            <div class="masvideos-tabs movie-tabs">
-                <ul class="nav">
-
-                    <li class="nav-item">
-                        <a href="#tab-5cf3c4ee2de34reviews" data-toggle="tab" class="nav-link"> Review </a>
-                    </li>
-                </ul>
-                <div id="reviews" class="masvideos-Reviews">
-                    <div id="review_form_wrapper">
-                        <div id="review_form">
-                            <div id="respond" class="comment-respond">
-                                <span id="reply-title" class="comment-reply-title">Add a review <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display:none;">Cancel reply</a></small></span>
-                                <form action="https://demo2.madrasthemes.com/vodi-demos/main/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
-                                    <p class="comment-notes">
-                                        <span id="email-notes">Your email address will not be published.</span> Required fields are marked
-                                        <span class="required">*</span>
-                                    </p>
-                                    <p class="comment-form-comment">
-                                        <label for="comment">Your review&nbsp;<span class="required">*</span></label>
-                                        <textarea id="comment" name="comment" cols="45" rows="8" required=""></textarea>
-                                    </p>
-                                    <p class="comment-form-author">
-                                        <label for="author">Name&nbsp;<span class="required">*</span></label>
-                                        <input id="author" name="author" type="text" value="" size="30" required="">
-                                    </p>
-                                    <p class="comment-form-email">
-                                        <label for="email">Email&nbsp;<span class="required">*</span></label>
-                                        <input id="email" name="email" type="email" value="" size="30" required="">
-                                    </p>
-                                    <p class="comment-form-cookies-consent">
-                                        <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
-                                        <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label>
-                                    </p>
-                                    <p class="form-submit">
-                                        <input name="submit" type="submit" id="submit" class="submit" value="Submit">
-                                        <input type="hidden" name="comment_post_ID" value="718" id="comment_post_ID">
-                                        <input type="hidden" name="comment_parent" id="comment_parent" value="0">
-                                    </p>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="comments">
-                        <ol class="commentlist">
-                            <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="li-comment-54">
-                                <div id="comment-54" class="comment_container">
-                                    <img alt="" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2060%2060'%3E%3C/svg%3E" data-lazy-srcset="https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=120&amp;d=mm&amp;r=g 2x" class="avatar avatar-60 photo" height="60" width="60" data-lazy-src="https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=60&amp;d=mm&amp;r=g">
-                                    <noscript><img alt='' src='https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=60&amp;d=mm&amp;r=g' srcset='https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=120&#038;d=mm&#038;r=g 2x' class='avatar avatar-60 photo' height='60' width='60' /></noscript>
-                                    <div class="comment-text">
-                                        <p class="meta">
-                                            <strong class="masvideos-review__author">abbas </strong>
-                                            <time class="masvideos-review__published-date" datetime="2019-03-01T05:18:47+05:30">March 1, 2019</time>
-                                        </p>
-                                        <div class="description">
-                                            <p>8 star</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-55">
-                                <div id="comment-55" class="comment_container">
-                                    <img alt="" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2060%2060'%3E%3C/svg%3E" data-lazy-srcset="https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=120&amp;d=mm&amp;r=g 2x" class="avatar avatar-60 photo" height="60" width="60" data-lazy-src="https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=60&amp;d=mm&amp;r=g">
-                                    <noscript><img alt='' src='https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=60&amp;d=mm&amp;r=g' srcset='https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=120&#038;d=mm&#038;r=g 2x' class='avatar avatar-60 photo' height='60' width='60' /></noscript>
-                                    <div class="comment-text">
-                                        <p class="meta">
-                                            <strong class="masvideos-review__author">imran </strong>
-                                            <time class="masvideos-review__published-date" datetime="2019-03-21T08:04:38+05:30">March 21, 2019</time>
-                                        </p>
-                                        <div class="description">
-                                            <p>Good</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="li-comment-56">
-                                <div id="comment-56" class="comment_container">
-                                    <img alt="" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2060%2060'%3E%3C/svg%3E" data-lazy-srcset="https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=120&amp;d=mm&amp;r=g 2x" class="avatar avatar-60 photo" height="60" width="60" data-lazy-src="https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=60&amp;d=mm&amp;r=g">
-                                    <noscript><img alt='' src='https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=60&amp;d=mm&amp;r=g' srcset='https://secure.gravatar.com/avatar/8ef62a38ce69806ea7691f0724a7e968?s=120&#038;d=mm&#038;r=g 2x' class='avatar avatar-60 photo' height='60' width='60' /></noscript>
-                                    <div class="comment-text">
-                                        <p class="meta">
-                                            <strong class="masvideos-review__author">nilofer </strong>
-                                            <time class="masvideos-review__published-date" datetime="2019-03-21T08:24:26+05:30">March 21, 2019</time>
-                                        </p>
-                                        <div class="description">
-                                            <p>Must Watch .</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ol>
-                    </div>
-                    <div class="clear"></div>
                 </div>
             </div>
-            <section class="movie__recommended">
-                <h2 class="movie__recommended--title">We Recommend</h2>
-                <div class="masvideos masvideos-movies ">
-                    <div class="movies columns-4">
-                        <div class="movies__inner">
-                            <div class="post-314 movie type-movie status-publish has-post-thumbnail hentry movie_genre-action movie_genre-documentary movie_tag-4k-ultra movie_tag-king movie_tag-premieres movie_tag-viking">
-                                <div class="movie__poster">
-                                    <a href="../my-generation/index.html" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link"><img width="600" height="900" src="../../wp-content/uploads/sites/2/2019/04/32-a-long-way-down-600x900.jpg" class="movie__poster--image lazyloaded" alt="" data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-150x225.jpg 150w" data-lazy-sizes="(max-width: 600px) 100vw, 600px" data-lazy-src="../../wp-content/uploads/sites/2/2019/04/32-a-long-way-down-600x900.jpg" sizes="(max-width: 600px) 100vw, 600px" srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-150x225.jpg 150w" data-was-processed="true"><noscript><img width="600" height="900" src="../../wp-content/uploads/sites/2/2019/04/32-a-long-way-down-600x900.jpg" class="movie__poster--image" alt="" srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/32-a-long-way-down-150x225.jpg 150w" sizes="(max-width: 600px) 100vw, 600px" /></noscript></a>
-                                </div>
-                                <div class="movie__body">
-                                    <div class="movie__info">
-                                        <div class="movie__info--head">
-                                            <div class="movie__meta">
-                                                <span class="movie__meta--release-year">2018</span>
-                                                <span class="movie__meta--genre"><a href="../../movie-genre/action/index.html" rel="tag">Action</a>, <a href="../../movie-genre/documentary/index.html" rel="tag">Documentary</a></span>
-                                            </div>
-                                            <a href="../my-generation/index.html" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                <h3 class="masvideos-loop-movie__title  movie__title">My Generation</h3>
-                                            </a>
-                                        </div>
-                                        <div class="movie__short-description">
-                                            <div>
-                                                <p>The cultural revolution that occurred in the 1960s England is explored in this documentary.</p>
-                                            </div>
-                                        </div>
-                                        <div class="movie__actions">
-                                            <a href="../my-generation/index.html" class="movie-actions--link_watch">Watch Now</a>
-                                            <div class="movie-actions--link_add-to-playlist dropdown">
-                                                <a class="dropdown-toggle" href="../my-generation/index.html" data-toggle="dropdown">+ Playlist</a>
-                                                <div class="dropdown-menu">
-                                                    <a class="login-link" href="../../my-account/movie-playlists/index.html">Sign in to add this movie to a playlist.</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="movie__review-info">
-                                        <a href="../my-generation/index.html#reviews" class="avg-rating"> <span class="rating-with-count"> <svg class="vodi-svg" width="40px" height="39px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 39"><title>play</title><path fill-rule="evenodd" d="M19.633,-0.000 C21.509,0.035 21.530,1.174 22.167,2.414 C23.329,4.679 24.406,7.067 25.572,9.338 C25.853,9.886 26.431,11.640 26.918,11.834 C27.486,12.203 29.345,12.109 30.165,12.316 C32.170,12.825 34.489,12.860 36.500,13.364 C37.516,13.618 38.689,13.413 39.430,13.927 C39.689,14.107 39.770,14.504 39.984,14.732 C40.047,16.499 39.096,16.843 38.163,17.792 C36.473,19.509 34.784,21.227 33.095,22.944 C32.585,23.462 31.092,24.543 31.036,25.359 C31.423,25.951 31.307,27.455 31.511,28.258 C32.138,30.727 32.213,33.522 32.857,35.987 C33.142,37.078 33.016,38.241 32.303,38.724 C31.108,39.533 29.632,38.193 28.819,37.758 C26.695,36.623 24.601,35.624 22.483,34.457 C21.979,34.179 20.607,33.178 20.108,33.088 C19.748,33.023 18.163,34.107 17.812,34.296 C15.557,35.505 13.340,36.640 11.080,37.839 C10.548,38.120 9.180,39.226 8.309,38.966 C6.955,38.558 6.874,36.993 7.280,35.423 C7.716,33.733 7.697,31.880 8.151,30.109 C8.527,28.642 8.907,26.529 9.022,24.957 C8.092,24.344 7.202,23.107 6.408,22.300 C4.760,20.625 3.059,18.990 1.340,17.389 C0.646,16.742 -0.578,15.515 0.311,14.249 C0.915,13.388 2.364,13.656 3.557,13.364 C6.678,12.599 10.114,12.468 13.298,11.834 C14.186,9.747 15.306,7.711 16.307,5.716 C16.954,4.426 17.496,3.163 18.128,1.931 C18.334,1.531 18.358,1.093 18.603,0.724 C18.845,0.362 19.299,0.273 19.633,-0.000 Z"></path></svg> <span class="avg-rating-number"> 10.0</span> </span> <span class="rating-number-with-text"> <span class="avg-rating-number"> 10.0</span> <span class="avg-rating-text"> <span>1</span> Vote </span> </span> </a>
-                                        <div class="viewers-count"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="post-280 movie type-movie status-publish has-post-thumbnail hentry movie_genre-action movie_genre-adventure movie_tag-brother movie_tag-king movie_tag-premieres movie_tag-viking">
-                                <span class="movie__badge"><span class="movie__badge--featured">Featured</span></span>
-                                <div class="movie__poster">
-                                    <a href="../game-night/index.html" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link"><img width="600" height="900" src="../../wp-content/uploads/sites/2/2019/04/15-600x900.jpg" class="movie__poster--image lazyloaded" alt="" data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-200x300.jpg 200w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-150x225.jpg 150w" data-lazy-sizes="(max-width: 600px) 100vw, 600px" data-lazy-src="../../wp-content/uploads/sites/2/2019/04/15-600x900.jpg" sizes="(max-width: 600px) 100vw, 600px" srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-200x300.jpg 200w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-150x225.jpg 150w" data-was-processed="true"><noscript><img width="600" height="900" src="../../wp-content/uploads/sites/2/2019/04/15-600x900.jpg" class="movie__poster--image" alt="" srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-200x300.jpg 200w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/15-150x225.jpg 150w" sizes="(max-width: 600px) 100vw, 600px" /></noscript></a>
-                                </div>
-                                <div class="movie__body">
-                                    <div class="movie__info">
-                                        <div class="movie__info--head">
-                                            <div class="movie__meta">
-                                                <span class="movie__meta--release-year">2018</span>
-                                                <span class="movie__meta--genre"><a href="../../movie-genre/action/index.html" rel="tag">Action</a>, <a href="../../movie-genre/adventure/index.html" rel="tag">Adventure</a></span>
-                                            </div>
-                                            <a href="../game-night/index.html" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                <h3 class="masvideos-loop-movie__title  movie__title">Game Night</h3>
-                                            </a>
-                                        </div>
-                                        <div class="movie__short-description">
-                                            <div>
-                                                <p>A group of friends who meet regularly for game nights find themselves entangled in a real-life mystery when the shady brother of one of them is seemingly kidnapped by dangerous gangsters.</p>
-                                            </div>
-                                        </div>
-                                        <div class="movie__actions">
-                                            <a href="../game-night/index.html" class="movie-actions--link_watch">Watch Now</a>
-                                            <div class="movie-actions--link_add-to-playlist dropdown">
-                                                <a class="dropdown-toggle" href="../game-night/index.html" data-toggle="dropdown">+ Playlist</a>
-                                                <div class="dropdown-menu">
-                                                    <a class="login-link" href="../../my-account/movie-playlists/index.html">Sign in to add this movie to a playlist.</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="movie__review-info">
-                                        <a href="../game-night/index.html#reviews" class="avg-rating"> <span class="rating-with-count"> <svg class="vodi-svg" width="40px" height="39px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 39"><title>play</title><path fill-rule="evenodd" d="M19.633,-0.000 C21.509,0.035 21.530,1.174 22.167,2.414 C23.329,4.679 24.406,7.067 25.572,9.338 C25.853,9.886 26.431,11.640 26.918,11.834 C27.486,12.203 29.345,12.109 30.165,12.316 C32.170,12.825 34.489,12.860 36.500,13.364 C37.516,13.618 38.689,13.413 39.430,13.927 C39.689,14.107 39.770,14.504 39.984,14.732 C40.047,16.499 39.096,16.843 38.163,17.792 C36.473,19.509 34.784,21.227 33.095,22.944 C32.585,23.462 31.092,24.543 31.036,25.359 C31.423,25.951 31.307,27.455 31.511,28.258 C32.138,30.727 32.213,33.522 32.857,35.987 C33.142,37.078 33.016,38.241 32.303,38.724 C31.108,39.533 29.632,38.193 28.819,37.758 C26.695,36.623 24.601,35.624 22.483,34.457 C21.979,34.179 20.607,33.178 20.108,33.088 C19.748,33.023 18.163,34.107 17.812,34.296 C15.557,35.505 13.340,36.640 11.080,37.839 C10.548,38.120 9.180,39.226 8.309,38.966 C6.955,38.558 6.874,36.993 7.280,35.423 C7.716,33.733 7.697,31.880 8.151,30.109 C8.527,28.642 8.907,26.529 9.022,24.957 C8.092,24.344 7.202,23.107 6.408,22.300 C4.760,20.625 3.059,18.990 1.340,17.389 C0.646,16.742 -0.578,15.515 0.311,14.249 C0.915,13.388 2.364,13.656 3.557,13.364 C6.678,12.599 10.114,12.468 13.298,11.834 C14.186,9.747 15.306,7.711 16.307,5.716 C16.954,4.426 17.496,3.163 18.128,1.931 C18.334,1.531 18.358,1.093 18.603,0.724 C18.845,0.362 19.299,0.273 19.633,-0.000 Z"></path></svg> <span class="avg-rating-number"> 8.0</span> </span> <span class="rating-number-with-text"> <span class="avg-rating-number"> 8.0</span> <span class="avg-rating-text"> <span>1</span> Vote </span> </span> </a>
-                                        <div class="viewers-count"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="post-306 movie type-movie status-publish has-post-thumbnail hentry movie_genre-action movie_genre-thriller movie_tag-4k-ultra movie_tag-brother movie_tag-premieres movie_tag-viking">
-                                <div class="movie__poster">
-                                    <a href="../black-water/index.html" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link"><img width="600" height="900" src="../../wp-content/uploads/sites/2/2019/04/28-600x900.jpg" class="movie__poster--image lazyloaded" alt="" data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-200x300.jpg 200w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-150x225.jpg 150w" data-lazy-sizes="(max-width: 600px) 100vw, 600px" data-lazy-src="../../wp-content/uploads/sites/2/2019/04/28-600x900.jpg" sizes="(max-width: 600px) 100vw, 600px" srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-200x300.jpg 200w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-150x225.jpg 150w" data-was-processed="true"><noscript><img width="600" height="900" src="../../wp-content/uploads/sites/2/2019/04/28-600x900.jpg" class="movie__poster--image" alt="" srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-200x300.jpg 200w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/28-150x225.jpg 150w" sizes="(max-width: 600px) 100vw, 600px" /></noscript></a>
-                                </div>
-                                <div class="movie__body">
-                                    <div class="movie__info">
-                                        <div class="movie__info--head">
-                                            <div class="movie__meta">
-                                                <span class="movie__meta--release-year">2018</span>
-                                                <span class="movie__meta--genre"><a href="../../movie-genre/action/index.html" rel="tag">Action</a>, <a href="../../movie-genre/thriller/index.html" rel="tag">Thriller</a></span>
-                                            </div>
-                                            <a href="../black-water/index.html" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                <h3 class="masvideos-loop-movie__title  movie__title">Black Water</h3>
-                                            </a>
-                                        </div>
-                                        <div class="movie__short-description">
-                                            <div>
-                                                <p>A deep cover operative awakens to find himself imprisoned in a CIA black site on a submarine.</p>
-                                            </div>
-                                        </div>
-                                        <div class="movie__actions">
-                                            <a href="../black-water/index.html" class="movie-actions--link_watch">Watch Now</a>
-                                            <div class="movie-actions--link_add-to-playlist dropdown">
-                                                <a class="dropdown-toggle" href="../black-water/index.html" data-toggle="dropdown">+ Playlist</a>
-                                                <div class="dropdown-menu">
-                                                    <a class="login-link" href="../../my-account/movie-playlists/index.html">Sign in to add this movie to a playlist.</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="movie__review-info">
-                                        <a href="../black-water/index.html#reviews" class="avg-rating"> <span class="rating-with-count"> <svg class="vodi-svg" width="40px" height="39px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 39"><title>play</title><path fill-rule="evenodd" d="M19.633,-0.000 C21.509,0.035 21.530,1.174 22.167,2.414 C23.329,4.679 24.406,7.067 25.572,9.338 C25.853,9.886 26.431,11.640 26.918,11.834 C27.486,12.203 29.345,12.109 30.165,12.316 C32.170,12.825 34.489,12.860 36.500,13.364 C37.516,13.618 38.689,13.413 39.430,13.927 C39.689,14.107 39.770,14.504 39.984,14.732 C40.047,16.499 39.096,16.843 38.163,17.792 C36.473,19.509 34.784,21.227 33.095,22.944 C32.585,23.462 31.092,24.543 31.036,25.359 C31.423,25.951 31.307,27.455 31.511,28.258 C32.138,30.727 32.213,33.522 32.857,35.987 C33.142,37.078 33.016,38.241 32.303,38.724 C31.108,39.533 29.632,38.193 28.819,37.758 C26.695,36.623 24.601,35.624 22.483,34.457 C21.979,34.179 20.607,33.178 20.108,33.088 C19.748,33.023 18.163,34.107 17.812,34.296 C15.557,35.505 13.340,36.640 11.080,37.839 C10.548,38.120 9.180,39.226 8.309,38.966 C6.955,38.558 6.874,36.993 7.280,35.423 C7.716,33.733 7.697,31.880 8.151,30.109 C8.527,28.642 8.907,26.529 9.022,24.957 C8.092,24.344 7.202,23.107 6.408,22.300 C4.760,20.625 3.059,18.990 1.340,17.389 C0.646,16.742 -0.578,15.515 0.311,14.249 C0.915,13.388 2.364,13.656 3.557,13.364 C6.678,12.599 10.114,12.468 13.298,11.834 C14.186,9.747 15.306,7.711 16.307,5.716 C16.954,4.426 17.496,3.163 18.128,1.931 C18.334,1.531 18.358,1.093 18.603,0.724 C18.845,0.362 19.299,0.273 19.633,-0.000 Z"></path></svg> <span class="avg-rating-number"> 10.0</span> </span> <span class="rating-number-with-text"> <span class="avg-rating-number"> 10.0</span> <span class="avg-rating-text"> <span>1</span> Vote </span> </span> </a>
-                                        <div class="viewers-count"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="post-2930 movie type-movie status-publish has-post-thumbnail hentry movie_genre-action">
-                                <div class="movie__poster">
-                                    <a href="../delta-bravo/index.html" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link"><img width="600" height="900" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20900'%3E%3C/svg%3E" class="movie__poster--image" alt="" data-lazy-srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-200x300.jpg 200w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-150x225.jpg 150w" data-lazy-sizes="(max-width: 600px) 100vw, 600px" data-lazy-src="../../wp-content/uploads/sites/2/2019/04/3-600x900.jpg"><noscript><img width="600" height="900" src="../../wp-content/uploads/sites/2/2019/04/3-600x900.jpg" class="movie__poster--image" alt="" srcset="https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-600x900.jpg 600w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-66x98.jpg 66w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-200x300.jpg 200w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-300x450.jpg 300w, https://demo2.madrasthemes.com/vodi-demos/main/wp-content/uploads/sites/2/2019/04/3-150x225.jpg 150w" sizes="(max-width: 600px) 100vw, 600px" /></noscript></a>
-                                </div>
-                                <div class="movie__body">
-                                    <div class="movie__info">
-                                        <div class="movie__info--head">
-                                            <div class="movie__meta">
-                                                <span class="movie__meta--release-year">2017</span>
-                                                <span class="movie__meta--genre"><a href="../../movie-genre/action/index.html" rel="tag">Action</a></span>
-                                            </div>
-                                            <a href="../delta-bravo/index.html" class="masvideos-LoopMovie-link masvideos-loop-movie__link movie__link">
-                                                <h3 class="masvideos-loop-movie__title  movie__title">Delta Bravo</h3>
-                                            </a>
-                                        </div>
-                                        <div class="movie__short-description">
-                                            <div>
-                                                <p>strange black entity from another world bonds with Peter Parker and causes inner turmoil as he contends with new villains, temptations, and revenge.</p>
-                                            </div>
-                                        </div>
-                                        <div class="movie__actions">
-                                            <a href="../delta-bravo/index.html" class="movie-actions--link_watch">Watch Now</a>
-                                            <div class="movie-actions--link_add-to-playlist dropdown">
-                                                <a class="dropdown-toggle" href="../delta-bravo/index.html" data-toggle="dropdown">+ Playlist</a>
-                                                <div class="dropdown-menu">
-                                                    <a class="login-link" href="../../my-account/movie-playlists/index.html">Sign in to add this movie to a playlist.</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="movie__review-info">
-                                        <a href="../delta-bravo/index.html#reviews" class="avg-rating"> <span class="rating-with-count"> <svg class="vodi-svg" width="40px" height="39px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 39"><title>play</title><path fill-rule="evenodd" d="M19.633,-0.000 C21.509,0.035 21.530,1.174 22.167,2.414 C23.329,4.679 24.406,7.067 25.572,9.338 C25.853,9.886 26.431,11.640 26.918,11.834 C27.486,12.203 29.345,12.109 30.165,12.316 C32.170,12.825 34.489,12.860 36.500,13.364 C37.516,13.618 38.689,13.413 39.430,13.927 C39.689,14.107 39.770,14.504 39.984,14.732 C40.047,16.499 39.096,16.843 38.163,17.792 C36.473,19.509 34.784,21.227 33.095,22.944 C32.585,23.462 31.092,24.543 31.036,25.359 C31.423,25.951 31.307,27.455 31.511,28.258 C32.138,30.727 32.213,33.522 32.857,35.987 C33.142,37.078 33.016,38.241 32.303,38.724 C31.108,39.533 29.632,38.193 28.819,37.758 C26.695,36.623 24.601,35.624 22.483,34.457 C21.979,34.179 20.607,33.178 20.108,33.088 C19.748,33.023 18.163,34.107 17.812,34.296 C15.557,35.505 13.340,36.640 11.080,37.839 C10.548,38.120 9.180,39.226 8.309,38.966 C6.955,38.558 6.874,36.993 7.280,35.423 C7.716,33.733 7.697,31.880 8.151,30.109 C8.527,28.642 8.907,26.529 9.022,24.957 C8.092,24.344 7.202,23.107 6.408,22.300 C4.760,20.625 3.059,18.990 1.340,17.389 C0.646,16.742 -0.578,15.515 0.311,14.249 C0.915,13.388 2.364,13.656 3.557,13.364 C6.678,12.599 10.114,12.468 13.298,11.834 C14.186,9.747 15.306,7.711 16.307,5.716 C16.954,4.426 17.496,3.163 18.128,1.931 C18.334,1.531 18.358,1.093 18.603,0.724 C18.845,0.362 19.299,0.273 19.633,-0.000 Z"></path></svg> <span class="avg-rating-number"> 8.0</span> </span> <span class="rating-number-with-text"> <span class="avg-rating-number"> 8.0</span> <span class="avg-rating-text"> <span>1</span> Vote </span> </span> </a>
-                                        <div class="viewers-count"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     </div>
 </div>

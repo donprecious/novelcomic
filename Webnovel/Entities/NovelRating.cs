@@ -18,6 +18,10 @@ namespace Webnovel.Entities
 			set;
 		}
 
+        public int RatingTypeId { get; set; }
+
+        [ForeignKey("RatingTypeId")]
+        public RatingType RatingType { get; set; } 
 		public string UserId
 		{
 			get;
@@ -43,5 +47,20 @@ namespace Webnovel.Entities
 			get;
 			set;
 		}
+
+      
 	}
+    public class RatingType
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id
+        {
+            get;
+            set;
+        }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
+
 }

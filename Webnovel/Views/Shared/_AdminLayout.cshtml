@@ -2,752 +2,638 @@
 @{
     Layout = null;
 }
-
-
-
-
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
+<!-- Mirrored from mannatthemes.com/metrica/light/crm/crm-index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 18 Aug 2019 09:44:56 GMT -->
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewData["Title"]</title>
+    <meta charset="utf-8">
+    <title> Dashboard</title>
+    @*<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta content="A premium admin dashboard template by Mannatthemes" name="description">
+    <meta content="Mannatthemes" name="author">*@<!-- App favicon -->
+    <link rel="shortcut icon" href="~/light/assets/images/favicon.ico">
+    <link href="~/light/assets/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"><!-- App css -->
+    <link href="~/light/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/light/assets/css/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/light/assets/css/metisMenu.min.css" rel="stylesheet" type="text/css">
+    <link href="~/light/assets/css/style.css" rel="stylesheet" type="text/css"> 
+    <script>
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+            analytics.load("gRP8d200MDDD7Y5E0hzIDkk4u0TZmGbx");
+            analytics.page();
+        }}();
+    </script>
+    <style>
+        .topbar .topbar-left {
+            margin-left: 0 !important;
+        }
+    </style>
+    
+    @RenderSection("css", required: false)
+
 </head>
 <body>
-    <!DOCTYPE html>
-    <html dir="ltr" lang="en">
+    <!-- Top Bar Start -->
+    <div class="topbar">
+        <!-- LOGO -->
+        <div class="topbar-left">
+            <a href="crm-index.html" class="logo"><span><img src="~/images/logo_white.png" alt="logo-small" class="logo-sm"> </span><span><img src="~/images/logo_white.png" alt="logo-large" class="logo-lg"></span></a>
+        </div><!--end logo--><!-- Navbar -->
+        <nav class="navbar-custom">
+            <ul class="list-unstyled topbar-nav float-right mb-0">
+                <li class="hidden-sm">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="javascript: void(0);" role="button" aria-haspopup="false" aria-expanded="false">English <img src="~/light/assets/images/flags/us_flag.jpg" class="ml-2" height="16" alt=""> <i class="mdi mdi-chevron-down"></i></a>
+                    @*<div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="javascript: void(0);"><span>German </span><img src="~/light/assets/images/flags/germany_flag.jpg" alt="" class="ml-2 float-right" height="14"></a>
+                        <a class="dropdown-item" href="javascript: void(0);"><span>Italian </span><img src="~/light/assets/images/flags/italy_flag.jpg" alt="" class="ml-2 float-right" height="14"></a>
+                        <a class="dropdown-item" href="javascript: void(0);"><span>French </span><img src="~/light/assets/images/flags/french_flag.jpg" alt="" class="ml-2 float-right" height="14"></a>
+                        <a class="dropdown-item" href="javascript: void(0);"><span>Spanish </span><img src="~/light/assets/images/flags/spain_flag.jpg" alt="" class="ml-2 float-right" height="14"></a>
+                        <a class="dropdown-item" href="javascript: void(0);"><span>Russian </span><img src="~/light/assets/images/flags/russia_flag.jpg" alt="" class="ml-2 float-right" height="14"></a>
+                    </div>*@
+                </li>
+                <li class="dropdown notification-list">
+                    <a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false"><i class="dripicons-bell noti-icon"></i> <span class="badge badge-danger badge-pill noti-icon-badge">2</span></a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-lg">
+                        <!-- item-->
+                        <h6 class="dropdown-item-text">Notifications (0)</h6>
+                        <div class="slimscroll notification-list">
+                            <!-- item-->
+                            @*<a href="javascript:void(0);" class="dropdown-item notify-item active">
+                                <div class="notify-icon bg-success">
+                                    <i class="mdi mdi-cart-outline"></i>
+                                </div>
+                                <p class="notify-details">
+                                    Your order is placed
+                                    <small class="text-muted">Dummy text of the printing and typesetting industry.</small>
+                                </p>
+                            </a><!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-warning">
+                                    <i class="mdi mdi-message"></i>
+                                </div>
+                                <p class="notify-details">
+                                    New Message received
+                                    <small class="text-muted">You have 87 unread messages</small>
+                                </p>
+                            </a><!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-info">
+                                    <i class="mdi mdi-glass-cocktail"></i>
+                                </div>
+                                <p class="notify-details">
+                                    Your item is shipped
+                                    <small class="text-muted">It is a long established fact that a reader will</small>
+                                </p>
+                            </a><!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-primary">
+                                    <i class="mdi mdi-cart-outline"></i>
+                                </div>
+                                <p class="notify-details">
+                                    Your order is placed
+                                    <small class="text-muted">Dummy text of the printing and typesetting industry.</small>
+                                </p>
+                            </a><!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-danger">
+                                    <i class="mdi mdi-message"></i>
+                                </div>
+                                <p class="notify-details">
+                                    New Message received
+                                    <small class="text-muted">You have 87 unread messages</small>
+                                </p>
+                            </a>*@
+                        </div><!-- All-->
+                        @*<a href="javascript:void(0);" class="dropdown-item text-center text-primary">View all <i class="fi-arrow-right"></i></a>*@
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false"><img src="~/light/assets/images/users/user-4.jpg" alt="profile-user" class="rounded-circle"> <span class="ml-1 nav-user-name hidden-sm">Amelia <i class="mdi mdi-chevron-down"></i></span></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#"><i class="dripicons-user text-muted mr-2"></i> Profile</a>
+                        @*<a class="dropdown-item" href="#"><i class="dripicons-wallet text-muted mr-2"></i> My Wallet</a>
+                        <a class="dropdown-item" href="#"><i class="dripicons-gear text-muted mr-2"></i> Settings</a>
+                        <a class="dropdown-item" href="#"><i class="dripicons-lock text-muted mr-2"></i> Lock screen</a>*@
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="dripicons-exit text-muted mr-2"></i> Logout</a>
+                    </div>
+                </li>
+            </ul><!--end topbar-nav-->
+            <ul class="list-unstyled topbar-nav mb-0">
+                <li>
+                    <button class="button-menu-mobile nav-link waves-effect waves-light"><i class="dripicons-menu nav-icon"></i></button>
+                </li>
+                <li class="hide-phone app-search">
+                    <form role="search" class=""><input type="text" placeholder="Search..." class="form-control"> <a href="#"><i class="fas fa-search"></i></a></form>
+                </li>
+            </ul>
+        </nav><!-- end navbar-->
+    </div><!-- Top Bar End -->
+    <div class="page-wrapper">
+    <!-- Left Sidenav --> 
+   
+    <div class="left-sidenav">
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <!-- Tell the browser to be responsive to screen width -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <!-- Favicon icon -->
-        <link rel="icon" type="image/png" sizes="16x16" href="~/admin/assets/images/favicon.png">
-        <title>Bebert - Multipurpose Admin Template</title>
-        <!-- Custom CSS -->
-        <link href="~/admin/assets/libs/morris.js/morris.css" rel="stylesheet">
-        <link href="~/admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-        <!-- Custom CSS -->
-        <link href="~/admin/assets/css/theme.css" rel="stylesheet">
-        <link href="~/admin/assets/css/responsive.css" rel="stylesheet">
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="~/admin/https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="~/admin/https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body>
-        <!-- ============================================================== -->
-        <!-- Preloader - style you can find in spinners.css -->
-        <!-- ============================================================== -->
-        <div class="preloader">
-            <div class="lds-ripple">
-                <div class="lds-pos"></div>
-                <div class="lds-pos"></div>
-            </div>
+    <div class="main-icon-menu">
+            <nav class="nav">
+                <a href="#MetricaAnalytic" class="nav-link active" data-toggle="tooltip-custom" data-placement="top" title="" data-original-title="Analytics">
+                    <svg class="nav-svg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><path d="M184,448h48c4.4,0,8-3.6,8-8V72c0-4.4-3.6-8-8-8h-48c-4.4,0-8,3.6-8,8v368C176,444.4,179.6,448,184,448z" /><path class="svg-primary" d="M88,448H136c4.4,0,8-3.6,8-8V296c0-4.4-3.6-8-8-8H88c-4.4,0-8,3.6-8,8V440C80,444.4,83.6,448,88,448z" /><path class="svg-primary" d="M280.1,448h47.8c4.5,0,8.1-3.6,8.1-8.1V232.1c0-4.5-3.6-8.1-8.1-8.1h-47.8c-4.5,0-8.1,3.6-8.1,8.1v207.8
+                                        C272,444.4,275.6,448,280.1,448z" /><path d="M368,136.1v303.8c0,4.5,3.6,8.1,8.1,8.1h47.8c4.5,0,8.1-3.6,8.1-8.1V136.1c0-4.5-3.6-8.1-8.1-8.1h-47.8
+                                        C371.6,128,368,131.6,368,136.1z" /></g></svg>
+                </a><!--end MetricaAnalytic-->
+                @*<a href="#MetricaCrypto" class="nav-link" data-toggle="tooltip-custom" data-placement="top" title="" data-original-title="Crypto"><svg class="nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path class="svg-primary" d="M410.5 279.2c-5-11.5-12.7-21.6-28.1-30.1-8.2-4.5-16.1-7.8-25.4-10 5.4-2.5 10-5.4 16.3-11 7.5-6.6 13.1-15.7 15.6-23.3 2.6-7.5 4.1-18 3.5-28.2-1.1-16.8-4.4-33.1-13.2-44.8-8.8-11.7-21.2-20.7-37.6-27-12.6-4.8-25.5-7.8-45.5-8.9V32h-40v64h-32V32h-41v64H96v48h27.9c8.7 0 14.6.8 17.6 2.3 3.1 1.5 5.3 3.5 6.5 6 1.3 2.5 1.9 8.4 1.9 17.5V343c0 9-.6 14.8-1.9 17.4-1.3 2.6-2 4.9-5.1 6.3-3.1 1.4-3.2 1.3-11.8 1.3h-26.4L96 416h87v64h41v-64h32v64h40v-64.4c26-1.3 44.5-4.7 59.4-10.3 19.3-7.2 34.1-17.7 44.7-31.5 10.6-13.8 14.9-34.9 15.8-51.2.7-14.5-.9-33.2-5.4-43.4zM224 150h32v74h-32v-74zm0 212v-90h32v90h-32zm72-208.1c6 2.5 9.9 7.5 13.8 12.7 4.3 5.7 6.5 13.3 6.5 21.4 0 7.8-2.9 14.5-7.5 20.5-3.8 4.9-6.8 8.3-12.8 11.1v-65.7zm28.8 186.7c-7.8 6.9-12.3 10.1-22.1 13.8-2 .8-4.7 1.4-6.7 1.9v-82.8c5 .8 7.6 1.8 11.3 3.4 7.8 3.3 15.2 6.9 19.8 13.2 4.6 6.3 8 15.6 8 24.7 0 10.9-2.8 19.2-10.3 25.8z" /></svg> </a><!--end MetricaCrypto-->
+                <a href="#MetricaProject" class="nav-link" data-toggle="tooltip-custom" data-placement="top" title="" data-original-title="Projects"><svg class="nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path class="svg-primary" d="M256 32C132.288 32 32 132.288 32 256s100.288 224 224 224 224-100.288 224-224S379.712 32 256 32zm135.765 359.765C355.5 428.028 307.285 448 256 448s-99.5-19.972-135.765-56.235C83.972 355.5 64 307.285 64 256s19.972-99.5 56.235-135.765C156.5 83.972 204.715 64 256 64s99.5 19.972 135.765 56.235C428.028 156.5 448 204.715 448 256s-19.972 99.5-56.235 135.765z" /><path d="M200.043 106.067c-40.631 15.171-73.434 46.382-90.717 85.933H256l-55.957-85.933zM412.797 288A160.723 160.723 0 0 0 416 256c0-36.624-12.314-70.367-33.016-97.334L311 288h101.797zM359.973 134.395C332.007 110.461 295.694 96 256 96c-7.966 0-15.794.591-23.448 1.715L310.852 224l49.121-89.605zM99.204 224A160.65 160.65 0 0 0 96 256c0 36.639 12.324 70.394 33.041 97.366L201 224H99.204zM311.959 405.932c40.631-15.171 73.433-46.382 90.715-85.932H256l55.959 85.932zM152.046 377.621C180.009 401.545 216.314 416 256 416c7.969 0 15.799-.592 23.456-1.716L201.164 288l-49.118 89.621z" /></svg> </a><!--end MetricaProject-->
+                <a href="#MetricaEcommerce" class="nav-link" data-toggle="tooltip-custom" data-placement="top" title="" data-original-title="Ecommerce">
+                    <svg class="nav-svg" version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><ellipse class="svg-primary" transform="matrix(0.9998 -1.842767e-02 1.842767e-02 0.9998 -7.7858 3.0205)" cx="160" cy="424" rx="24" ry="24" /><ellipse class="svg-primary" transform="matrix(2.381651e-02 -0.9997 0.9997 2.381651e-02 -48.5107 798.282)" cx="384.5" cy="424" rx="24" ry="24" /><path d="M463.8,132.2c-0.7-2.4-2.8-4-5.2-4.2L132.9,96.5c-2.8-0.3-6.2-2.1-7.5-4.7c-3.8-7.1-6.2-11.1-12.2-18.6
+                                        c-7.7-9.4-22.2-9.1-48.8-9.3c-9-0.1-16.3,5.2-16.3,14.1c0,8.7,6.9,14.1,15.6,14.1c8.7,0,21.3,0.5,26,1.9c4.7,1.4,8.5,9.1,9.9,15.8
+                                        c0,0.1,0,0.2,0.1,0.3c0.2,1.2,2,10.2,2,10.3l40,211.6c2.4,14.5,7.3,26.5,14.5,35.7c8.4,10.8,19.5,16.2,32.9,16.2h236.6
+                                        c7.6,0,14.1-5.8,14.4-13.4c0.4-8-6-14.6-14-14.6H189h-0.1c-2,0-4.9,0-8.3-2.8c-3.5-3-8.3-9.9-11.5-26l-4.3-23.7
+                                        c0-0.3,0.1-0.5,0.4-0.6l277.7-47c2.6-0.4,4.6-2.5,4.9-5.2l16-115.8C464,134,464,133.1,463.8,132.2z" /></g></svg>
+                </a><!--end MetricaEcommerce-->
+                <a href="#MetricaCRM" class="nav-link" data-toggle="tooltip-custom" data-placement="top" title="" data-original-title="CRM">
+                    <svg class="nav-svg" version="1.1" id="Layer_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><g><path d="M276,68.1v219c0,3.7-2.5,6.8-6,7.7L81.1,343.4c-2.3,0.6-3.6,3.1-2.7,5.4C109.1,426,184.9,480.6,273.2,480
+                                            C387.8,479.3,480,386.5,480,272c0-112.1-88.6-203.5-199.8-207.8C277.9,64.1,276,65.9,276,68.1z" /></g><path class="svg-primary" d="M32,239.3c0,0,0.2,48.8,15.2,81.1c0.8,1.8,2.8,2.7,4.6,2.2l193.8-49.7c3.5-0.9,6.4-4.6,6.4-8.2V36c0-2.2-1.8-4-4-4
+                                        C91,33.9,32,149,32,239.3z" /></g></svg>
+                </a><!--end MetricaCRM-->
+                <a href="#MetricaOthers" class="nav-link" data-toggle="tooltip-custom" data-placement="top" title="" data-original-title="UI Kit"><svg class="nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M70.7 164.5l169.2 81.7c4.4 2.1 10.3 3.2 16.1 3.2s11.7-1.1 16.1-3.2l169.2-81.7c8.9-4.3 8.9-11.3 0-15.6L272.1 67.2c-4.4-2.1-10.3-3.2-16.1-3.2s-11.7 1.1-16.1 3.2L70.7 148.9c-8.9 4.3-8.9 11.3 0 15.6z" /><path class="svg-primary" d="M441.3 248.2s-30.9-14.9-35-16.9-5.2-1.9-9.5.1S272 291.6 272 291.6c-4.5 2.1-10.3 3.2-16.1 3.2s-11.7-1.1-16.1-3.2c0 0-117.3-56.6-122.8-59.3-6-2.9-7.7-2.9-13.1-.3l-33.4 16.1c-8.9 4.3-8.9 11.3 0 15.6l169.2 81.7c4.4 2.1 10.3 3.2 16.1 3.2s11.7-1.1 16.1-3.2l169.2-81.7c9.1-4.2 9.1-11.2.2-15.5z" /><path d="M441.3 347.5s-30.9-14.9-35-16.9-5.2-1.9-9.5.1S272.1 391 272.1 391c-4.5 2.1-10.3 3.2-16.1 3.2s-11.7-1.1-16.1-3.2c0 0-117.3-56.6-122.8-59.3-6-2.9-7.7-2.9-13.1-.3l-33.4 16.1c-8.9 4.3-8.9 11.3 0 15.6l169.2 81.7c4.4 2.2 10.3 3.2 16.1 3.2s11.7-1.1 16.1-3.2l169.2-81.7c9-4.3 9-11.3.1-15.6z" /></svg> </a><!--end MetricaOthers-->
+                <a href="#MetricaPages" class="nav-link" data-toggle="tooltip-custom" data-placement="top" title="" data-original-title="Pages">
+                    <svg class="nav-svg" version="1.1" id="Layer_4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><path d="M462.5,352.3c-1.9-5.5-5.6-11.5-11.4-18.3c-10.2-12-30.8-29.3-54.8-47.2c-2.6-2-6.4-0.8-7.5,2.3l-4.7,13.4
+                                        c-0.7,2,0,4.3,1.7,5.5c15.9,11.6,35.9,27.9,41.8,35.9c2,2.8-0.5,6.6-3.9,5.8c-10-2.3-29-7.3-44.2-12.8c-8.6-3.1-17.7-6.7-27.2-10.6
+                                        c16-20.8,24.7-46.3,24.7-72.6c0-32.8-13.2-63.6-37.1-86.4c-22.9-21.9-53.8-34.1-85.7-33.7c-25.7,0.3-50.1,8.4-70.7,23.5
+                                        c-18.3,13.4-32.2,31.3-40.6,52c-8.3-6-16.1-11.9-23.2-17.6c-13.7-10.9-28.4-22-38.7-34.7c-2.2-2.8,0.9-6.7,4.4-5.9
+                                        c11.3,2.6,35.4,10.9,56.4,18.9c1.5,0.6,3.2,0.3,4.5-0.8l11.1-10.1c2.4-2.1,1.7-6-1.3-7.2C121,137.4,89.2,128,73.2,128
+                                        c-11.5,0-19.3,3.5-23.3,10.4c-7.6,13.3,7.1,35.2,45.1,66.8c34.1,28.5,82.6,61.8,136.5,92c87.5,49.1,171.1,81,208,81
+                                        c11.2,0,18.7-3.1,22.1-9.1C464.4,364.4,464.7,358.7,462.5,352.3z" /><path class="svg-primary" d="M312,354c-29.1-12.8-59.3-26-92.6-44.8c-30.1-16.9-59.4-36.5-84.4-53.6c-1-0.7-2.2-1.1-3.4-1.1c-0.9,0-1.9,0.2-2.8,0.7
+                                        c-2,1-3.3,3-3.3,5.2c0,1.2-0.1,2.4-0.1,3.5c0,32.1,12.6,62.3,35.5,84.9c22.9,22.7,53.4,35.2,85.8,35.2c23.6,0,46.5-6.7,66.2-19.5
+                                        c1.9-1.2,2.9-3.3,2.7-5.5C315.5,356.8,314.1,354.9,312,354z" /></g></svg>
+                </a><!--end MetricaPages-->
+                <a href="#MetricaAuthentication" class="nav-link" data-toggle="tooltip-custom" data-placement="top" title="" data-original-title="Authentication">
+                    <svg class="nav-svg" version="1.1" id="Layer_5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><path class="svg-primary" d="M376,192h-24v-46.7c0-52.7-42-96.5-94.7-97.3c-53.4-0.7-97.3,42.8-97.3,96v48h-24c-22,0-40,18-40,40v192c0,22,18,40,40,40
+                                        h240c22,0,40-18,40-40V232C416,210,398,192,376,192z M270,316.8v68.8c0,7.5-5.8,14-13.3,14.4c-8,0.4-14.7-6-14.7-14v-69.2
+                                        c-11.5-5.6-19.1-17.8-17.9-31.7c1.4-15.5,14.1-27.9,29.6-29c18.7-1.3,34.3,13.5,34.3,31.9C288,300.7,280.7,311.6,270,316.8z
+                                            M324,192H188v-48c0-18.1,7.1-35.1,20-48s29.9-20,48-20s35.1,7.1,48,20s20,29.9,20,48V192z" /></g></svg>
+                </a>*@<!--end MetricaAuthentication-->
+            </nav><!--end nav-->
         </div>
-        <!-- ============================================================== -->
-        <!-- Main wrapper - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <div id="main-wrapper">
-            <!-- ============================================================== -->
-            <!-- Topbar header - style you can find in pages.scss -->
-            <!-- ============================================================== -->
-            <header class="topbar">
-                <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-                    <div class="navbar-header">
-                        <!-- This is for the sidebar toggle which is visible on mobile only -->
-                        <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-                        <!-- ============================================================== -->
-                        <!-- Logo -->
-                        <!-- ============================================================== -->
-                        <a class="navbar-brand" href="~/admin/index-2.html">
-                            <!-- Logo icon -->
-                            <b class="logo-icon">
-                                <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                                <!-- Dark Logo icon -->
-                                <img src="~/admin/assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
-                                <!-- Light Logo icon -->
-                                <img src="~/admin/assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
-                            </b>
-                            <!--End Logo icon -->
-                            <!-- Logo text -->
-                            <span class="logo-text">
-                                <!-- dark Logo text -->
-                                <img src="~/admin/assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-                                <!-- Light Logo text -->
-                                <img src="~/admin/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
-                            </span>
-                        </a>
-                        <!-- ============================================================== -->
-                        <!-- End Logo -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- Toggle which is visible on mobile only -->
-                        <!-- ============================================================== -->
-                        <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
-                    </div>
-                    <!-- ============================================================== -->
-                    <!-- End Logo -->
-                    <!-- ============================================================== -->
-                    <div class="navbar-collapse collapse" id="navbarSupportedContent">
-                        <!-- ============================================================== -->
-                        <!-- toggle and nav items -->
-                        <!-- ============================================================== -->
-                        <ul class="navbar-nav float-left mr-auto">
-                            <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
-
-                            <!-- ============================================================== -->
-                            <!-- create new -->
-                            <!-- ============================================================== -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="d-none d-md-block">Drop down <i class="fa fa-angle-down"></i></span>
-                                    <span class="d-block d-md-none"><i class="fa fa-plus"></i></span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </li>
-
-                        </ul>
-                        <!-- ============================================================== -->
-                        <!-- Right side toggle and nav items -->
-                        <!-- ============================================================== -->
-                        <ul class="navbar-nav float-right">
-
-                            <!-- ============================================================== -->
-                            <!-- Search -->
-                            <!-- ============================================================== -->
-                            <li class="nav-item search-box">
-                                <div class="m-header-search m-header-search--expandable">
-                                    <form class="m-header-search__form">
-                                        <div class="m-header-search__wrapper">
-                                            <span class="m-header-search__icon-search">
-                                                <i class="ti-search"></i>
-                                            </span>
-                                            <span class="s">
-                                                <input autocomplete="off" type="text" name="q" class="m-header-search__input" value="" placeholder="Search...">
-                                            </span>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link waves-effect waves-light" href="javascript:void(0);" id="btn-fullscreen"><i class="mdi mdi-fullscreen font-24"></i></a>
-                            </li>
-
-                            <!-- ============================================================== -->
-                            <!-- Comment -->
-                            <!-- ============================================================== -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="mdi mdi-bell font-24"></i>
-
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
-                                    <span class="with-arrow"><span class="bg-primary"></span></span>
-                                    <ul class="list-style-none">
-                                        <li>
-                                            <div class="drop-title bg-primary text-white">
-                                                <h4 class="m-b-0 m-t-5">4 New</h4>
-                                                <span class="font-light">Notifications</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="message-center notifications">
-                                                <!-- Message -->
-                                                <a href="javascript:void(0)" class="message-item">
-                                                    <span class="btn btn-danger btn-circle"><i class="fa fa-link"></i></span>
-                                                    <div class="mail-contnet">
-                                                        <h5 class="message-title">Luanch Admin</h5> <span class="mail-desc">Just see the my new admin!</span> <span class="time">9:30 AM</span>
-                                                    </div>
-                                                </a>
-                                                <!-- Message -->
-                                                <a href="javascript:void(0)" class="message-item">
-                                                    <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
-                                                    <div class="mail-contnet">
-                                                        <h5 class="message-title">Event today</h5> <span class="mail-desc">Just a reminder that you have event</span> <span class="time">9:10 AM</span>
-                                                    </div>
-                                                </a>
-                                                <!-- Message -->
-                                                <a href="javascript:void(0)" class="message-item">
-                                                    <span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>
-                                                    <div class="mail-contnet">
-                                                        <h5 class="message-title">Settings</h5> <span class="mail-desc">You can customize this template as you want</span> <span class="time">9:08 AM</span>
-                                                    </div>
-                                                </a>
-                                                <!-- Message -->
-                                                <a href="javascript:void(0)" class="message-item">
-                                                    <span class="btn btn-primary btn-circle"><i class="ti-user"></i></span>
-                                                    <div class="mail-contnet">
-                                                        <h5 class="message-title">Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a class="nav-link text-center m-b-5 text-dark" href="javascript:void(0);"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <!-- ============================================================== -->
-                            <!-- End Comment -->
-                            <!-- ============================================================== -->
-                            <!-- ============================================================== -->
-                            <!-- Messages -->
-                            <!-- ============================================================== -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="font-24 mdi mdi-comment-processing"></i>
-
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown" aria-labelledby="2">
-                                    <span class="with-arrow"><span class="bg-danger"></span></span>
-                                    <ul class="list-style-none">
-                                        <li>
-                                            <div class="drop-title text-white bg-danger">
-                                                <h4 class="m-b-0 m-t-5">5 New</h4>
-                                                <span class="font-light">Messages</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="message-center message-body">
-                                                <!-- Message -->
-                                                <a href="javascript:void(0)" class="message-item">
-                                                    <span class="user-img"> <img src="~/admin/assets/images/users/1.jpg" alt="user" class="rounded-circle"> <span class="profile-status online pull-right"></span> </span>
-                                                    <div class="mail-contnet">
-                                                        <h5 class="message-title">Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span>
-                                                    </div>
-                                                </a>
-                                                <!-- Message -->
-                                                <a href="javascript:void(0)" class="message-item">
-                                                    <span class="user-img"> <img src="~/admin/assets/images/users/2.jpg" alt="user" class="rounded-circle"> <span class="profile-status busy pull-right"></span> </span>
-                                                    <div class="mail-contnet">
-                                                        <h5 class="message-title">Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span>
-                                                    </div>
-                                                </a>
-                                                <!-- Message -->
-                                                <a href="javascript:void(0)" class="message-item">
-                                                    <span class="user-img"> <img src="~/admin/assets/images/users/3.jpg" alt="user" class="rounded-circle"> <span class="profile-status away pull-right"></span> </span>
-                                                    <div class="mail-contnet">
-                                                        <h5 class="message-title">Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span class="time">9:08 AM</span>
-                                                    </div>
-                                                </a>
-                                                <!-- Message -->
-                                                <a href="javascript:void(0)" class="message-item">
-                                                    <span class="user-img"> <img src="~/admin/assets/images/users/4.jpg" alt="user" class="rounded-circle"> <span class="profile-status offline pull-right"></span> </span>
-                                                    <div class="mail-contnet">
-                                                        <h5 class="message-title">Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a class="nav-link text-center link text-dark" href="javascript:void(0);"> <b>See all e-Mails</b> <i class="fa fa-angle-right"></i> </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <!-- ============================================================== -->
-                            <!-- End Messages -->
-                            <!-- ============================================================== -->
-                            <!-- ============================================================== -->
-                            <!-- User profile and search -->
-                            <!-- ============================================================== -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="~/admin/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"><b>Steave Jobs <i class="fa fa-angle-down"></i></b>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                                    <span class="with-arrow"><span class="bg-primary"></span></span>
-                                    <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
-                                        <div class=""><img src="~/admin/assets/images/users/1.jpg" alt="user" class="img-circle" width="60"></div>
-                                        <div class="m-l-10">
-                                            <h4 class="m-b-0">Steave Jobs</h4>
-                                            <p class=" m-b-0">varun@gmail.com</p>
-                                        </div>
-                                    </div>
-                                    <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
-                                    <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
-                                    <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="authentication-login1.html"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
-                                </div>
-                            </li>
-                            <!-- ============================================================== -->
-                            <!-- User profile and search -->
-                            <!-- ============================================================== -->
-                        </ul>
-                    </div>
-                </nav>
-            </header>
-            <!-- ============================================================== -->
-            <!-- End Topbar header -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Left Sidebar - style you can find in sidebar.scss  -->
-            <!-- ============================================================== -->
-            <aside class="left-sidebar">
-                <!-- Sidebar scroll-->
-                <div class="scroll-sidebar">
-                    <!-- Sidebar navigation-->
-                    <nav class="sidebar-nav">
-                        <ul id="sidebarnav">
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard </span></a>
-                                <ul aria-expanded="false" class="collapse  first-level">
-                                    <li class="sidebar-item"><a href="~/admin/index1.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 01 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index2.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 02 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index3.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 03 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index4.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 04 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index5.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 05 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index6.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 06 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index7.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 07 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index8.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 08 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index9.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 09 </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/index10.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Dashboard 10 </span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-tune-vertical"></i><span class="hide-menu">Sidebar Type </span></a>
-                                <ul aria-expanded="false" class="collapse  first-level">
-                                    <li class="sidebar-item"><a href="~/admin/sidebar-type-minisidebar.html" class="sidebar-link"><i class="mdi mdi-view-quilt"></i><span class="hide-menu"> Minisidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/sidebar-type-iconsidebar.html" class="sidebar-link"><i class="mdi mdi-view-parallel"></i><span class="hide-menu"> Icon Sidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/sidebar-type-overlaysidebar.html" class="sidebar-link"><i class="mdi mdi-view-day"></i><span class="hide-menu"> Overlay Sidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/sidebar-type-fullsidebar.html" class="sidebar-link"><i class="mdi mdi-view-array"></i><span class="hide-menu"> Full Sidebar </span></a></li>
-
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-content-copy"></i><span class="hide-menu">Page Layouts </span></a>
-                                <ul aria-expanded="false" class="collapse  first-level">
-                                    <li class="sidebar-item"><a href="~/admin/layout-inner-fixed-left-sidebar.html" class="sidebar-link"><i class="mdi mdi-format-align-left"></i><span class="hide-menu"> Inner Fixed Left Sidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/layout-inner-fixed-right-sidebar.html" class="sidebar-link"><i class="mdi mdi-format-align-right"></i><span class="hide-menu"> Inner Fixed Right Sidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/layout-inner-left-sidebar.html" class="sidebar-link"><i class="mdi mdi-format-float-left"></i><span class="hide-menu"> Inner Left Sidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/layout-inner-right-sidebar.html" class="sidebar-link"><i class="mdi mdi-format-float-right"></i><span class="hide-menu"> Inner Right Sidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/page-layout-fixed-header.html" class="sidebar-link"><i class="mdi mdi-view-quilt"></i><span class="hide-menu"> Fixed Header </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/page-layout-fixed-sidebar.html" class="sidebar-link"><i class="mdi mdi-view-parallel"></i><span class="hide-menu"> Fixed Sidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/page-layout-fixed-header-sidebar.html" class="sidebar-link"><i class="mdi mdi-view-column"></i><span class="hide-menu"> Fixed Header &amp; Sidebar </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/page-layout-boxed-layout.html" class="sidebar-link"><i class="mdi mdi-view-carousel"></i><span class="hide-menu"> Box Layout </span></a></li>
-                                </ul>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-inbox-arrow-down"></i><span class="hide-menu">Email </span></a>
-                                <ul aria-expanded="false" class="collapse  first-level">
-                                    <li class="sidebar-item"><a href="~/admin/inbox-email.html" class="sidebar-link"><i class="mdi mdi-email"></i><span class="hide-menu"> Email </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/inbox-email-detail.html" class="sidebar-link"><i class="mdi mdi-email-alert"></i><span class="hide-menu"> Email Detail </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/inbox-email-compose.html" class="sidebar-link"><i class="mdi mdi-email-secure"></i><span class="hide-menu"> Email Compose </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/email-templete-basic.html" class="sidebar-link"><i class="mdi mdi-message-bulleted"></i><span class="hide-menu">Template Basic</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/email-templete-billing.html" class="sidebar-link"><i class="mdi mdi-message-draw"></i><span class="hide-menu">Template Billing</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/email-templete-password-reset.html" class="sidebar-link"><i class="mdi mdi-message-bulleted-off"></i><span class="hide-menu">Template Password-Reset</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-gradient"></i><span class="hide-menu">Extra </span></a>
-                                <ul aria-expanded="false" class="collapse  first-level">
-                                    <li class="sidebar-item"><a href="~/admin/app-chats.html" class="sidebar-link"><i class="mdi mdi-comment-processing-outline"></i><span class="hide-menu"> Chats Apps </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/app-calendar.html" class="sidebar-link"><i class="mdi mdi-calendar"></i><span class="hide-menu"> Calender </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/app-taskboard.html" class="sidebar-link"><i class="mdi mdi-bulletin-board"></i><span class="hide-menu"> Taskboard </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ticket-list.html" class="sidebar-link"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> Ticket List </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ticket-detail.html" class="sidebar-link"><i class="mdi mdi-book-plus"></i><span class="hide-menu"> Ticket Detail </span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Ui Elements </span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="~/admin/ui-buttons.html" class="sidebar-link"><i class="mdi mdi-toggle-switch"></i><span class="hide-menu"> Buttons</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-modals.html" class="sidebar-link"><i class="mdi mdi-tablet"></i><span class="hide-menu"> Modals</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-tab.html" class="sidebar-link"><i class="mdi mdi-sort-variant"></i><span class="hide-menu"> Tab</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-tooltip-popover.html" class="sidebar-link"><i class="mdi mdi-image-filter-vintage"></i><span class="hide-menu"> Tooltip &amp; Popover</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-notification.html" class="sidebar-link"><i class="mdi mdi-message-bulleted"></i><span class="hide-menu"> Notification</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-progressbar.html" class="sidebar-link"><i class="mdi mdi-poll"></i><span class="hide-menu"> Progressbar</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-typography.html" class="sidebar-link"><i class="mdi mdi-format-line-spacing"></i><span class="hide-menu"> Typography</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-bootstrap.html" class="sidebar-link"><i class="mdi mdi-bootstrap"></i><span class="hide-menu"> Bootstrap Ui</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-breadcrumb.html" class="sidebar-link"><i class="mdi mdi-equal"></i><span class="hide-menu"> Breadcrumb</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-list-media.html" class="sidebar-link"><i class="mdi mdi-file-video"></i><span class="hide-menu"> List Media</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-grid.html" class="sidebar-link"><i class="mdi mdi-view-module"></i><span class="hide-menu"> Grid</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-carousel.html" class="sidebar-link"><i class="mdi mdi-view-carousel"></i><span class="hide-menu"> Carousel</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-cards.html" class="sidebar-link"><i class="mdi mdi-layers"></i><span class="hide-menu"> Basic Cards</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-card-customs.html" class="sidebar-link"><i class="mdi mdi-credit-card-scan"></i><span class="hide-menu">Custom Cards</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-card-weather.html" class="sidebar-link"><i class="mdi mdi-weather-fog"></i><span class="hide-menu">Weather Cards</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-card-draggable.html" class="sidebar-link"><i class="mdi mdi-bandcamp"></i><span class="hide-menu">Draggable Cards</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-credit-card-multiple"></i><span class="hide-menu">Components</span></a>
-                                <ul aria-expanded="false" class="collapse  first-level">
-                                    <li class="sidebar-item"><a href="~/admin/component-sweetalert.html" class="sidebar-link"><i class="mdi mdi-layers"></i><span class="hide-menu"> Sweet Alert</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/component-nestable.html" class="sidebar-link"><i class="mdi mdi-credit-card-scan"></i><span class="hide-menu">Nestable</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/component-noui-slider.html" class="sidebar-link"><i class="mdi mdi-weather-fog"></i><span class="hide-menu">Noui slider</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/component-rating.html" class="sidebar-link"><i class="mdi mdi-bandcamp"></i><span class="hide-menu">Rating</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/component-toastr.html" class="sidebar-link"><i class="mdi mdi-poll"></i><span class="hide-menu">Toastr</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-gradient"></i><span class="hide-menu">Widgets </span></a>
-                                <ul aria-expanded="false" class="collapse  first-level">
-                                    <li class="sidebar-item"><a href="~/admin/widgets-apps.html" class="sidebar-link"><i class="mdi mdi-comment-processing-outline"></i><span class="hide-menu"> Apps Widgets  </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/widgets-data.html" class="sidebar-link"><i class="mdi mdi-calendar"></i><span class="hide-menu"> Data Widgets  </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/widgets-charts.html" class="sidebar-link"><i class="mdi mdi-bulletin-board"></i><span class="hide-menu"> Charts Widgets</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span class="hide-menu">Form Layouts</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="~/admin/form-inputs.html" class="sidebar-link"><i class="mdi mdi-priority-low"></i><span class="hide-menu"> Forms Input</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-input-groups.html" class="sidebar-link"><i class="mdi mdi-rounded-corner"></i><span class="hide-menu"> Input Groups</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-input-grid.html" class="sidebar-link"><i class="mdi mdi-select-all"></i><span class="hide-menu"> Input Grid</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-checkbox-radio.html" class="sidebar-link"><i class="mdi mdi-shape-plus"></i><span class="hide-menu"> Checkboxes &amp; Radios</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-bootstrap-touchspin.html" class="sidebar-link"><i class="mdi mdi-switch"></i><span class="hide-menu"> Bootstrap Touchspin</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-bootstrap-switch.html" class="sidebar-link"><i class="mdi mdi-toggle-switch-off"></i><span class="hide-menu"> Bootstrap Switch</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-select2.html" class="sidebar-link"><i class="mdi mdi-relative-scale"></i><span class="hide-menu"> Select2</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-dual-listbox.html" class="sidebar-link"><i class="mdi mdi-tab-unselected"></i><span class="hide-menu"> Dual Listbox</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-basic.html" class="sidebar-link"><i class="mdi mdi-vector-difference-ba"></i><span class="hide-menu"> Basic Forms</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-horizontal.html" class="sidebar-link"><i class="mdi mdi-file-document-box"></i><span class="hide-menu"> Form Horizontal</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-actions.html" class="sidebar-link"><i class="mdi mdi-code-greater-than"></i><span class="hide-menu"> Form Actions</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-row-separator.html" class="sidebar-link"><i class="mdi mdi-code-equal"></i><span class="hide-menu"> Row Separator</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-bordered.html" class="sidebar-link"><i class="mdi mdi-flip-to-front"></i><span class="hide-menu"> Form Bordered</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-striped-row.html" class="sidebar-link"><i class="mdi mdi-content-duplicate"></i><span class="hide-menu"> Striped Rows</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-detail.html" class="sidebar-link"><i class="mdi mdi-cards-outline"></i><span class="hide-menu"> Form Detail</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-paginator.html" class="sidebar-link"><i class="mdi mdi-export"></i><span class="hide-menu"> Paginator</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-img-cropper.html" class="sidebar-link"><i class="mdi mdi-crop"></i><span class="hide-menu"> Image Cropper</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-dropzone.html" class="sidebar-link"><i class="mdi mdi-crosshairs-gps"></i><span class="hide-menu"> Dropzone</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-mask.html" class="sidebar-link"><i class="mdi mdi-box-shadow"></i><span class="hide-menu"> Form Mask</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-typeahead.html" class="sidebar-link"><i class="mdi mdi-cards-variant"></i><span class="hide-menu"> Form Typehead</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-bootstrap-validation.html" class="sidebar-link"><i class="mdi mdi-credit-card-scan"></i><span class="hide-menu"> Bootstrap Validation</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-custom-validation.html" class="sidebar-link"><i class="mdi mdi-credit-card-plus"></i><span class="hide-menu"> Custom Validation</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-picker-colorpicker.html" class="sidebar-link"><i class="mdi mdi-calendar-plus"></i><span class="hide-menu"> Form Colorpicker</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-picker-datetimepicker.html" class="sidebar-link"><i class="mdi mdi-calendar-clock"></i><span class="hide-menu"> Form Datetimepicker</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-picker-bootstrap-rangepicker.html" class="sidebar-link"><i class="mdi mdi-calendar-range"></i><span class="hide-menu"> Form Bootstrap Rangepicker</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-picker-bootstrap-datepicker.html" class="sidebar-link"><i class="mdi mdi-calendar-check"></i><span class="hide-menu"> Form Bootstrap Datepicker</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-picker-material-datepicker.html" class="sidebar-link"><i class="mdi mdi-calendar-text"></i><span class="hide-menu"> Form Material Datepicker</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-editor-ckeditor.html" class="sidebar-link"><i class="mdi mdi-drawing"></i><span class="hide-menu">Ck Editor</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-editor-quill.html" class="sidebar-link"><i class="mdi mdi-drupal"></i><span class="hide-menu">Quill Editor</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-editor-summernote.html" class="sidebar-link"><i class="mdi mdi-brightness-6"></i><span class="hide-menu">Summernote Editor</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/form-editor-tinymce.html" class="sidebar-link"><i class="mdi mdi-bowling"></i><span class="hide-menu">Tinymce Edtor</span></a></li>
-                                    <li class="sidebar-item"> <a href="~/admin/form-wizard.html" aria-expanded="false" class="sidebar-link"><i class="mdi mdi-cube-send"></i><span class="hide-menu">Form Wizard</span></a></li>
-                                    <li class="sidebar-item"> <a href="~/admin/form-repeater.html" aria-expanded="false" class="sidebar-link"><i class="mdi mdi-creation"></i><span class="hide-menu">Form Repeater</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-border-none"></i><span class="hide-menu">Bootstrap Tables</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="~/admin/table-basic.html" class="sidebar-link"><i class="mdi mdi-border-all"></i><span class="hide-menu">Basic Table </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-dark-basic.html" class="sidebar-link"><i class="mdi mdi-border-left"></i><span class="hide-menu">Dark Basic Table </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-sizing.html" class="sidebar-link"><i class="mdi mdi-border-outside"></i><span class="hide-menu">Sizing Table </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-layout-coloured.html" class="sidebar-link"><i class="mdi mdi-border-bottom"></i><span class="hide-menu">Coloured Table Layout</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-datatable-basic.html" class="sidebar-link"><i class="mdi mdi-border-vertical"></i><span class="hide-menu"> Basic Initialisation</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-datatable-api.html" class="sidebar-link"><i class="mdi mdi-blur-linear"></i><span class="hide-menu"> API</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-datatable-advanced.html" class="sidebar-link"><i class="mdi mdi-border-style"></i><span class="hide-menu"> Advanced Initialisation</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-jsgrid.html" class="sidebar-link"><i class="mdi mdi-border-top"></i><span class="hide-menu">Table Jsgrid</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-responsive.html" class="sidebar-link"><i class="mdi mdi-border-style"></i><span class="hide-menu">Table Responsive</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/table-footable.html" class="sidebar-link"><i class="mdi mdi-tab-unselected"></i><span class="hide-menu">Table Footable</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-chemical-weapon"></i><span class="hide-menu">Charts</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="~/admin/chart-c3-axis.html" class="sidebar-link"><i class="mdi mdi-arrange-bring-to-front"></i> <span class="hide-menu">Axis Chart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-c3-bar.html" class="sidebar-link"><i class="mdi mdi-arrange-send-to-back"></i> <span class="hide-menu">Bar Chart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-c3-data.html" class="sidebar-link"><i class="mdi mdi-backup-restore"></i> <span class="hide-menu">Data Chart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-c3-line.html" class="sidebar-link"><i class="mdi mdi-backburger"></i> <span class="hide-menu">Line Chart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-morris.html" class="sidebar-link"><i class="mdi mdi-image-filter-tilt-shift"></i><span class="hide-menu"> Morris Chart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-chart-js.html" class="sidebar-link"><i class="mdi mdi-svg"></i><span class="hide-menu">Chartjs</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-sparkline.html" class="sidebar-link"><i class="mdi mdi-chart-histogram"></i><span class="hide-menu">Sparkline Chart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-chartist.html" class="sidebar-link"><i class="mdi mdi-blur"></i><span class="hide-menu">Chartis Chart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-echart-basic.html" class="sidebar-link"><i class="mdi mdi-chart-line"></i> <span class="hide-menu">Basic Charts</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-echart-bar.html" class="sidebar-link"><i class="mdi mdi-chart-scatterplot-hexbin"></i> <span class="hide-menu">Bar Chart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/chart-echart-pie-doughnut.html" class="sidebar-link"><i class="mdi mdi-chart-pie"></i> <span class="hide-menu">Pie &amp; Doughnut Chart</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-cart-outline"></i><span class="hide-menu">Ecommerce Pages</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="~/admin/eco-products.html" class="sidebar-link"><i class="mdi mdi-cards-variant"></i> <span class="hide-menu">Products</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/eco-products-cart.html" class="sidebar-link"><i class="mdi mdi-cart"></i> <span class="hide-menu">Products Cart</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/eco-products-edit.html" class="sidebar-link"><i class="mdi mdi-cart-plus"></i> <span class="hide-menu">Products Edit</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/eco-products-detail.html" class="sidebar-link"><i class="mdi mdi-camera-burst"></i> <span class="hide-menu">Product Details</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/eco-products-orders.html" class="sidebar-link"><i class="mdi mdi-chart-pie"></i> <span class="hide-menu">Product Orders</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/eco-products-checkout.html" class="sidebar-link"><i class="mdi mdi-clipboard-check"></i> <span class="hide-menu">Products Checkout</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Sample Pages </span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="~/admin/starter-kit.html" class="sidebar-link"><i class="mdi mdi-crop-free"></i> <span class="hide-menu">Starter Kit</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-animation.html" class="sidebar-link"><i class="mdi mdi-debug-step-over"></i> <span class="hide-menu">Animation</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-search-result.html" class="sidebar-link"><i class="mdi mdi-search-web"></i> <span class="hide-menu">Search Result</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-gallery.html" class="sidebar-link"><i class="mdi mdi-camera-iris"></i> <span class="hide-menu">Gallery</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-treeview.html" class="sidebar-link"><i class="mdi mdi-file-tree"></i> <span class="hide-menu">Treeview</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-block-ui.html" class="sidebar-link"><i class="mdi mdi-codepen"></i> <span class="hide-menu">Block UI</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-session-timeout.html" class="sidebar-link"><i class="mdi mdi-timer-off"></i> <span class="hide-menu">Session Timeout</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-session-idle-timeout.html" class="sidebar-link"><i class="mdi mdi-timer-sand-empty"></i> <span class="hide-menu">Session Idle Timeout</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-utility-classes.html" class="sidebar-link"><i class="mdi mdi-tune"></i> <span class="hide-menu">Helper Classes</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-maintenance.html" class="sidebar-link"><i class="mdi mdi-camera-iris"></i> <span class="hide-menu">Maintenance Page</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Users</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="~/admin/authentication-login1.html" class="sidebar-link"><i class="mdi mdi-account-key"></i><span class="hide-menu"> Login </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/authentication-register1.html" class="sidebar-link"><i class="mdi mdi-account-plus"></i><span class="hide-menu"> Register</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/authentication-lockscreen.html" class="sidebar-link"><i class="mdi mdi-account-off"></i><span class="hide-menu"> Lockscreen</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/authentication-recover-password.html" class="sidebar-link"><i class="mdi mdi-account-convert"></i><span class="hide-menu"> Recover password</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-user-card.html" class="sidebar-link"><i class="mdi mdi-account-box"></i> <span class="hide-menu"> User Card </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-profile.html" class="sidebar-link"><i class="mdi mdi-account-network"></i><span class="hide-menu"> User Profile</span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/ui-user-contacts.html" class="sidebar-link"><i class="mdi mdi-account-star-variant"></i><span class="hide-menu"> User Contact</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="~/admin/javascript:void(0)" aria-expanded="false"><i class="mdi mdi-ungroup"></i><span class="hide-menu">Invoice</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="~/admin/pages-invoice.html" class="sidebar-link"><i class="mdi mdi-vector-triangle"></i><span class="hide-menu"> Invoice Layout </span></a></li>
-                                    <li class="sidebar-item"><a href="~/admin/pages-invoice-list.html" class="sidebar-link"><i class="mdi mdi-vector-rectangle"></i><span class="hide-menu"> Invoice List</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-map"></i><span class="hide-menu">Maps</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="map-google.html" class="sidebar-link"><i class="mdi mdi-google-maps"></i><span class="hide-menu"> Google Map </span></a></li>
-                                    <li class="sidebar-item"><a href="map-vector.html" class="sidebar-link"><i class="mdi mdi-map-marker-radius"></i><span class="hide-menu"> Vector Map</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">Icons</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="icon-material.html" class="sidebar-link"><i class="mdi mdi-emoticon"></i> <span class="hide-menu"> Material Icons </span></a></li>
-                                    <li class="sidebar-item"><a href="icon-fontawesome.html" class="sidebar-link"><i class="mdi mdi-emoticon-cool"></i><span class="hide-menu"> Fontawesome Icons</span></a></li>
-                                    <li class="sidebar-item"><a href="icon-themify.html" class="sidebar-link"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu"> Themify Icons</span></a></li>
-                                    <li class="sidebar-item"><a href="icon-weather.html" class="sidebar-link"><i class="mdi mdi-weather-cloudy"></i><span class="hide-menu"> Weather Icons</span></a></li>
-                                    <li class="sidebar-item"><a href="icon-simple-lineicon.html" class="sidebar-link"><i class="mdi mdi mdi-image-broken-variant"></i> <span class="hide-menu"> Simple Line icons</span></a></li>
-                                    <li class="sidebar-item"><a href="icon-flag.html" class="sidebar-link"><i class="mdi mdi-flag-triangle"></i><span class="hide-menu"> Flag Icons</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-apple-safari"></i><span class="hide-menu">Timeline</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="timeline-center.html" class="sidebar-link"><i class="mdi mdi-clock-fast"></i> <span class="hide-menu"> Center Timeline </span></a></li>
-                                    <li class="sidebar-item"><a href="timeline-horizontal.html" class="sidebar-link"><i class="mdi mdi-clock-end"></i><span class="hide-menu"> Horizontal Timeline</span></a></li>
-                                    <li class="sidebar-item"><a href="timeline-left.html" class="sidebar-link"><i class="mdi mdi-clock-in"></i><span class="hide-menu"> Left Timeline</span></a></li>
-                                    <li class="sidebar-item"><a href="timeline-right.html" class="sidebar-link"><i class="mdi mdi-clock-start"></i><span class="hide-menu"> Right Timeline</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-alert-box"></i><span class="hide-menu">Error Pages</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="error-400.html" class="sidebar-link"><i class="mdi mdi-alert-outline"></i> <span class="hide-menu"> Error 400 </span></a></li>
-                                    <li class="sidebar-item"><a href="error-403.html" class="sidebar-link"><i class="mdi mdi-alert-outline"></i><span class="hide-menu"> Error 403</span></a></li>
-                                    <li class="sidebar-item"><a href="error-404.html" class="sidebar-link"><i class="mdi mdi-alert-outline"></i><span class="hide-menu"> Error 404</span></a></li>
-                                    <li class="sidebar-item"><a href="error-500.html" class="sidebar-link"><i class="mdi mdi-alert-outline"></i><span class="hide-menu"> Error 500</span></a></li>
-                                    <li class="sidebar-item"><a href="error-503.html" class="sidebar-link"><i class="mdi mdi-alert-outline"></i><span class="hide-menu"> Error 503</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-notification-clear-all"></i><span class="hide-menu">Multi level dd</span></a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item"><a href="javascript:void(0)" class="sidebar-link"><i class="mdi mdi-octagram"></i><span class="hide-menu"> item 1.1</span></a></li>
-                                    <li class="sidebar-item"><a href="javascript:void(0)" class="sidebar-link"><i class="mdi mdi-octagram"></i><span class="hide-menu"> item 1.2</span></a></li>
-                                    <li class="sidebar-item">
-                                        <a class="has-arrow sidebar-link" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-playlist-plus"></i> <span class="hide-menu">Menu 1.3</span></a>
-                                        <ul aria-expanded="false" class="collapse second-level">
-                                            <li class="sidebar-item"><a href="javascript:void(0)" class="sidebar-link"><i class="mdi mdi-octagram"></i><span class="hide-menu"> item 1.3.1</span></a></li>
-                                            <li class="sidebar-item"><a href="javascript:void(0)" class="sidebar-link"><i class="mdi mdi-octagram"></i><span class="hide-menu"> item 1.3.2</span></a></li>
-                                            <li class="sidebar-item"><a href="javascript:void(0)" class="sidebar-link"><i class="mdi mdi-octagram"></i><span class="hide-menu"> item 1.3.3</span></a></li>
-                                            <li class="sidebar-item"><a href="javascript:void(0)" class="sidebar-link"><i class="mdi mdi-octagram"></i><span class="hide-menu"> item 1.3.4</span></a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="sidebar-item"><a href="javascript:void(0)" class="sidebar-link"><i class="mdi mdi-playlist-check"></i><span class="hide-menu"> item 1.4</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="authentication-login1.html" aria-expanded="false"><i class="mdi mdi-directions"></i><span class="hide-menu">Log Out</span></a></li>
-                        </ul>
-                    </nav>
-                    <!-- End Sidebar navigation -->
+    
+    <!--end main-icon-menu-->
+    <div class="main-menu-inner active">
+        <div class="menu-body slimscroll">
+            <div id="MetricaAnalytic" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title">Dashboard</h6>
                 </div>
-                <!-- End Sidebar scroll-->
-            </aside>
-            <!-- ============================================================== -->
-            <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Page wrapper  -->
-            <!-- ============================================================== -->
-            <div class="page-wrapper">
-                <!-- ============================================================== -->
-                <!-- Container fluid  -->
-                <!-- ============================================================== -->
-                <div class="container-fluid">
-                    <!-- ============================================================== -->
-                    <!-- Bread crumb and right sidebar toggle -->
-                    <!-- ============================================================== -->
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="page-breadcrumb">
-                                <h4 class="page-title">Dashboard</h4>
-                                <div class="d-flex align-items-center">
-                                    <nav aria-label="breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                            <li class="breadcrumb-item active">Library</li>
-                                        </ol>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ============================================================== -->
-                    <!-- End Bread crumb and right sidebar toggle -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- Start Page Content -->
-                    <!-- ============================================================== -->
-                    @RenderBody()
-
-                </div>
-                <!-- ============================================================== -->
-                <!-- End Container fluid  -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- footer -->
-                <!-- ============================================================== -->
-                <footer class="footer text-left">
-                    All Rights Reserved by Bebert admin. Designed and Developed by <a href="https://themeforest.net/user/expandtheme/portfolio">ExpandTheme</a>.
-                </footer>
-                <!-- ============================================================== -->
-                <!-- End footer -->
-                <!-- ============================================================== -->
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link"  asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="dripicons-meter"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  asp-area="Admin" asp-controller="Dashboard" asp-action="Users"><i class="dripicons-user-group"></i>Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Contents"><i class="dripicons-document"></i>Contents</a>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Referrals"><i class="dripicons-document"></i>Referrals</a>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="nav-link"  asp-area="Admin" asp-controller="Dashboard" asp-action="Settings"><i class="dripicons-gear"></i>Settings</a>
+                    </li>
+                </ul>
             </div>
-            <!-- ============================================================== -->
-            <!-- End Page wrapper  -->
-            <!-- ============================================================== -->
+            <!---
+    @*<div id="MetricaAnalytic" class="main-icon-menu-pane">
+        <div class="title-box">
+            <h6 class="menu-title">Analytics</h6>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Wrapper -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-  
-        <div class="chat-list-new">
-            <a class="nav-link" href="#" id="chatDropdown" data-toggle="dropdown">
-                <span class="d-none d-md-block"><i class="mdi mdi-comment-processing"></i> Chat(10)</span>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="chatDropdown">
-                <div id="chat">
-                    <div class="mailbox list-style-none">
-                        <div class="message-center chat-scroll">
-                            <a href="javascript:void(0)" class="message-item" id='chat_user_1' data-user-id='1'>
-                                <span class="user-img"> <img src="~/admin/assets/images/users/1.jpg" alt="user" class="rounded-circle"> <span class="profile-status online pull-right"></span> </span>
-                                <div class="mail-contnet">
-                                    <h5 class="message-title">Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span>
-                                </div>
-                            </a>
-                            <!-- Message -->
-                            <a href="javascript:void(0)" class="message-item" id='chat_user_2' data-user-id='2'>
-                                <span class="user-img"> <img src="~/admin/assets/images/users/2.jpg" alt="user" class="rounded-circle"> <span class="profile-status busy pull-right"></span> </span>
-                                <div class="mail-contnet">
-                                    <h5 class="message-title">Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span>
-                                </div>
-                            </a>
-                            <!-- Message -->
-                            <a href="javascript:void(0)" class="message-item" id='chat_user_3' data-user-id='3'>
-                                <span class="user-img"> <img src="~/admin/assets/images/users/3.jpg" alt="user" class="rounded-circle"> <span class="profile-status away pull-right"></span> </span>
-                                <div class="mail-contnet">
-                                    <h5 class="message-title">Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span class="time">9:08 AM</span>
-                                </div>
-                            </a>
-                            <!-- Message -->
-                            <a href="javascript:void(0)" class="message-item" id='chat_user_4' data-user-id='4'>
-                                <span class="user-img"> <img src="~/admin/assets/images/users/4.jpg" alt="user" class="rounded-circle"> <span class="profile-status offline pull-right"></span> </span>
-                                <div class="mail-contnet">
-                                    <h5 class="message-title">Nirav Joshi</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
-                                </div>
-                            </a>
-                            <!-- Message -->
-                            <!-- Message -->
-                            <a href="javascript:void(0)" class="message-item" id='chat_user_5' data-user-id='5'>
-                                <span class="user-img"> <img src="~/admin/assets/images/users/5.jpg" alt="user" class="rounded-circle"> <span class="profile-status offline pull-right"></span> </span>
-                                <div class="mail-contnet">
-                                    <h5 class="message-title">Sunil Joshi</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
-                                </div>
-                            </a>
-                            <!-- Message -->
-                            <!-- Message -->
-                            <a href="javascript:void(0)" class="message-item" id='chat_user_6' data-user-id='6'>
-                                <span class="user-img"> <img src="~/admin/assets/images/users/6.jpg" alt="user" class="rounded-circle"> <span class="profile-status offline pull-right"></span> </span>
-                                <div class="mail-contnet">
-                                    <h5 class="message-title">Akshay Kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
-                                </div>
-                            </a>
-                            <!-- Message -->
-                            <!-- Message -->
-                            <a href="javascript:void(0)" class="message-item" id='chat_user_7' data-user-id='7'>
-                                <span class="user-img"> <img src="~/admin/assets/images/users/7.jpg" alt="user" class="rounded-circle"> <span class="profile-status offline pull-right"></span> </span>
-                                <div class="mail-contnet">
-                                    <h5 class="message-title">Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
-                                </div>
-                            </a>
-                            <!-- Message -->
-                            <!-- Message -->
-                            <a href="javascript:void(0)" class="message-item" id='chat_user_8' data-user-id='8'>
-                                <span class="user-img"> <img src="~/admin/assets/images/users/8.jpg" alt="user" class="rounded-circle"> <span class="profile-status offline pull-right"></span> </span>
-                                <div class="mail-contnet">
-                                    <h5 class="message-title">Varun Dhavan</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
-                                </div>
-                            </a>
-                            <!-- Message -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/analytics/analytics-index.html"><i class="dripicons-meter"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/analytics/analytics-customers.html"><i class="dripicons-user-group"></i>Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/analytics/analytics-reports.html"><i class="dripicons-document"></i>Reports</a>
+            </li>
+        </ul>
+    </div><!-- end Analytic -->
+    <div id="MetricaCrypto" class="main-icon-menu-pane">
+        <div class="title-box">
+            <h6 class="menu-title">Crypto</h6>
         </div>
-        <div class="chat-windows"></div>
-        <!-- ============================================================== -->
-        <!-- All Jquery -->
-        <!-- ============================================================== -->
-        <script src="~/admin/assets/libs/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap tether Core JavaScript -->
-        <script src="~/admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
-        <script src="~/admin/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!-- apps -->
-        <script src="~/admin/assets/js/app.js"></script>
-        <!-- Theme settings -->
-        <script src="~/admin/assets/js/app.init.js"></script>
-        <script src="~/admin/assets/js/app-style-switcher.js"></script>
-        <!-- slimscrollbar scrollbar JavaScript -->
-        <script src="~/admin/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-        <script src="~/admin/assets/libs/sparkline/sparkline.js"></script>
-        <!--Wave Effects -->
-        <script src="~/admin/assets/js/waves.js"></script>
-        <!--Menu sidebar -->
-        <script src="~/admin/assets/js/sidebarmenu.js"></script>
-        <!--Theme JavaScript -->
-        <script src="~/admin/assets/js/theme.js"></script>
-        <!--This page JavaScript -->
-        <!--Morris JavaScript -->
-        <script src="~/admin/assets/libs/raphael/raphael.min.js"></script>
-        <script src="~/admin/assets/libs/morris.js/morris.min.js"></script>
-        <script src="~/admin/assets/libs/DataTables/datatables.min.js"></script>
-        <script src="~/admin/assets/js/pages/dashboards/dashboard3.js"></script>
-        <script>
-            $(function () {
-                $('#cc-table').DataTable({});
-            });
-        </script>
-    </body>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/crypto/crypto-index.html"><i class="dripicons-device-desktop"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/crypto/crypto-exchange.html"><i class="dripicons-swap"></i>Exchange</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/crypto/crypto-wallet.html"><i class="dripicons-wallet"></i>My Wallet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/crypto/crypto-calendar.html"><i class="dripicons-calendar"></i>Calendar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/crypto/crypto-news.html"><i class="dripicons-blog"></i>Crypto News</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/crypto/crypto-ico.html"><i class="dripicons-stack"></i>ICO List</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/crypto/crypto-settings.html"><i class="dripicons-gear"></i>Settings</a>
+            </li>
+        </ul>
+    </div><!-- end Crypto -->
+    <div id="MetricaProject" class="main-icon-menu-pane">
+        <div class="title-box">
+            <h6 class="menu-title">Projects</h6>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-index.html"><i class="dripicons-view-thumb"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-clients.html"><i class="dripicons-user-id"></i>Clients</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-calendar.html"><i class="dripicons-calendar"></i>Calendar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-team.html"><i class="dripicons-trophy"></i>Team</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-project.html"><i class="dripicons-jewel"></i>Project</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-task.html"><i class="dripicons-checklist"></i>Task</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-kanban-board.html"><i class="dripicons-move"></i>Kanban Board</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-invoice.html"><i class="dripicons-document"></i>Invoice</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-chat.html"><i class="dripicons-conversation"></i>Chat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/projects/projects-users.html"><i class="dripicons-user-group"></i>Users</a>
+            </li>
+        </ul>
+    </div><!-- end  Project-->
+    <div id="MetricaEcommerce" class="main-icon-menu-pane">
+        <div class="title-box">
+            <h6 class="menu-title">Ecommerce</h6>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/ecommerce/ecommerce-index.html"><i class="dripicons-device-desktop"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/ecommerce/ecommerce-products.html"><i class="dripicons-view-apps"></i>Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/ecommerce/ecommerce-product-list.html"><i class="dripicons-list"></i>Product List</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/ecommerce/ecommerce-product-detail.html"><i class="dripicons-article"></i>Product Detail</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/ecommerce/ecommerce-cart.html"><i class="dripicons-cart"></i>Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/ecommerce/ecommerce-checkout.html"><i class="dripicons-card"></i>Checkout</a>
+            </li>
+        </ul>
+    </div><!-- end Ecommerce -->
+    <div id="MetricaCRM" class="main-icon-menu-pane">
+        <div class="title-box">
+            <h6 class="menu-title">CRM</h6>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="crm-index.html"><i class="dripicons-monitor"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="crm-contacts.html"><i class="dripicons-user-id"></i>Contacts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="crm-opportunities.html"><i class="dripicons-lightbulb"></i>Opportunities</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="crm-leads.html"><i class="dripicons-toggles"></i>Leads</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="crm-customers.html"><i class="dripicons-user-group"></i>Customers</a>
+            </li>
+        </ul>
+    </div><!-- end CRM -->
+    <div id="MetricaOthers" class="main-icon-menu-pane">
+    <div class="title-box">
+        <h6 class="menu-title">Others</h6>
+    </div>
+    <ul class="nav metismenu" id="main_menu_side_nav">
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-mail"></i><span class="w-100">Email</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/email-inbox.html">Inbox</a>
+            </li>
+            <li>
+                <a href="~/light/others/email-read.html">Read Email</a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-view-thumb"></i><span class="w-100">UI Elements</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/ui-bootstrap.html">Bootstrap</a>
+            </li>
+            <li>
+                <a href="~/light/others/ui-animation.html">Animation</a>
+            </li>
+            <li>
+                <a href="~/light/others/ui-avatar.html">Avatar</a>
+            </li>
+            <li>
+                <a href="~/light/others/ui-clipboard.html">Clip Board</a>
+            </li>
+            <li>
+                <a href="~/light/others/ui-files.html">File Manager</a>
+            </li>
+            <li>
+                <a href="~/light/others/ui-ribbons.html">Ribbons</a>
+            </li>
+            <li>
+                <a href="~/light/others/ui-dragula.html"><span>Dragula</span></a>
+            </li>
+            <li>
+                <a href="~/light/others/ui-check-radio.html"><span>Check & Radio</span></a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-anchor"></i><span class="w-100">Advanced UI</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/advanced-rangeslider.html">Range Slider</a>
+            </li>
+            <li>
+                <a href="~/light/others/advanced-sweetalerts.html">Sweet Alerts</a>
+            </li>
+            <li>
+                <a href="~/light/others/advanced-nestable.html">Nestable List</a>
+            </li>
+            <li>
+                <a href="~/light/others/advanced-ratings.html">Ratings</a>
+            </li>
+            <li>
+                <a href="~/light/others/advanced-highlight.html">Highlight</a>
+            </li>
+            <li>
+                <a href="~/light/others/advanced-session.html">Session Timeout</a>
+            </li>
+            <li>
+                <a href="~/light/others/advanced-idle-timer.html">Idle Timer</a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-document"></i><span class="w-100">Forms</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/forms-elements.html">Basic Elements</a>
+            </li>
+            <li>
+                <a href="~/light/others/forms-advanced.html">Advance Elements</a>
+            </li>
+            <li>
+                <a href="~/light/others/forms-validation.html">Validation</a>
+            </li>
+            <li>
+                <a href="~/light/others/forms-wizard.html">Wizard</a>
+            </li>
+            <li>
+                <a href="~/light/others/forms-editors.html">Editors</a>
+            </li>
+            <li>
+                <a href="~/light/others/forms-repeater.html">Repeater</a>
+            </li>
+            <li>
+                <a href="~/light/others/forms-x-editable.html">X Editable</a>
+            </li>
+            <li>
+                <a href="~/light/others/forms-uploads.html">File Upload</a>
+            </li>
+            <li>
+                <a href="~/light/others/forms-img-crop.html">Image Crop</a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-graph-line"></i><span class="w-100">Charts</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/charts-apex.html">Apex</a>
+            </li>
+            <li>
+                <a href="~/light/others/charts-morris.html">Morris</a>
+            </li>
+            <li>
+                <a href="~/light/others/charts-chartist.html">Chartist</a>
+            </li>
+            <li>
+                <a href="~/light/others/charts-flot.html">Flot</a>
+            </li>
+            <li>
+                <a href="~/light/others/charts-peity.html">Peity</a>
+            </li>
+            <li>
+                <a href="~/light/others/charts-chartjs.html">Chartjs</a>
+            </li>
+            <li>
+                <a href="~/light/others/charts-sparkline.html">Sparkline</a>
+            </li>
+            <li>
+                <a href="~/light/others/charts-knob.html">Jquery Knob</a>
+            </li>
+            <li>
+                <a href="~/light/others/charts-justgage.html">JustGage</a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-view-list-large"></i><span class="w-100">Tables</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/tables-basic.html">Basic</a>
+            </li>
+            <li>
+                <a href="~/light/others/tables-datatable.html">Datatables</a>
+            </li>
+            <li>
+                <a href="~/light/others/tables-responsive.html">Responsive</a>
+            </li>
+            <li>
+                <a href="~/light/others/tables-footable.html">Footable</a>
+            </li>
+            <li>
+                <a href="~/light/others/tables-jsgrid.html">Jsgrid</a>
+            </li>
+            <li>
+                <a href="~/light/others/tables-editable.html">Editable</a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-headset"></i><span class="w-100">Icons</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/icons-materialdesign.html">Material Design</a>
+            </li>
+            <li>
+                <a href="~/light/others/icons-dripicons.html">Dripicons</a>
+            </li>
+            <li>
+                <a href="~/light/others/icons-fontawesome.html">Font awesome</a>
+            </li>
+            <li>
+                <a href="~/light/others/icons-themify.html">Themify</a>
+            </li>
+            <li>
+                <a href="~/light/others/icons-typicons.html">Typicons</a>
+            </li>
+            <li>
+                <a href="~/light/others/icons-emoji.html">Emoji <i class="em em-ok_hand"></i></a>
+            </li>
+            <li>
+                <a href="~/light/others/icons-svg.html">SVG</a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-map"></i><span class="w-100">Maps</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/maps-google.html">Google Maps</a>
+            </li>
+            <li>
+                <a href="~/light/others/maps-vector.html">Vector Maps</a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="dripicons-article"></i><span class="w-100">Email Templates</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+            <li>
+                <a href="~/light/others/email-templates-basic.html">Basic Action Email</a>
+            </li>
+            <li>
+                <a href="~/light/others/email-templates-alert.html">Alert Email</a>
+            </li>
+            <li>
+                <a href="~/light/others/email-templates-billing.html">Billing Email</a>
+            </li>
+        </ul>
+    </li><!--end nav-item-->
+    </ul><!--end nav-->
+    </div><!-- end Others -->
+    <div id="MetricaPages" class="main-icon-menu-pane">
+        <div class="title-box">
+            <h6 class="menu-title">Pages</h6>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-profile.html"><i class="dripicons-user"></i>Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-chat.html"><i class="dripicons-conversation"></i>Chat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-contact-list.html"><i class="dripicons-user-id"></i>Contact List</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-tour.html"><i class="dripicons-rocket"></i>Tour</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-timeline.html"><i class="dripicons-clock"></i>Timeline</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-invoice.html"><i class="dripicons-document"></i>Invoice</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-treeview.html"><i class="dripicons-network-3"></i>Treeview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-starter.html"><i class="dripicons-clipboard"></i>Starter Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-pricing.html"><i class="dripicons-article"></i>Pricing</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-blogs.html"><i class="dripicons-blog"></i>Blogs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-faq.html"><i class="dripicons-question"></i>FAQs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/pages/pages-gallery.html"><i class="dripicons-photo-group"></i>Gallery</a>
+            </li>
+        </ul>
+    </div><!-- end Pages -->
+    <div id="MetricaAuthentication" class="main-icon-menu-pane">
+        <div class="title-box">
+            <h6 class="menu-title">Authentication</h6>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/authentication/auth-login.html"><i class="dripicons-enter"></i>Log in</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/authentication/auth-register.html"><i class="dripicons-pencil"></i>Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/authentication/auth-recover-pw.html"><i class="dripicons-clockwise"></i>Recover Password</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/authentication/auth-lock-screen.html"><i class="dripicons-lock"></i>Lock Screen</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/authentication/auth-404.html"><i class="dripicons-warning"></i>Error 404</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/light/authentication/auth-500.html"><i class="dripicons-wrong"></i>Error 500</a>
+            </li>
+        </ul>
+    </div><!-- end Authentication-->*@
+    -->
+        </div><!--end menu-body-->
+    </div><!-- end main-menu-inner-->
+    </div><!-- end left-sidenav--><!-- Page Content-->
+    
+    @RenderBody()
+    <footer class="footer text-center text-sm-left">
+        &copy; @DateTime.Now.Year
+      
+    </footer><!--end footer-->
+    </div><!-- end page-wrapper --><!-- jQuery  -->
+    <script src="~/light/assets/js/jquery.min.js"></script>
+    <script src="~/light/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/light/assets/js/metisMenu.min.js"></script>
+    <script src="~/light/assets/js/waves.min.js"></script>
+    <script src="~/light/assets/js/jquery.slimscroll.min.js"></script>
+    <script src="~/light/assets/plugins/moment/moment.js"></script>
+    <script src="~/light/assets/plugins/apexcharts/apexcharts.min.js"></script>
+    <script src="~/light/assets/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="~/light/assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/light/assets/pages/jquery.crm_dashboard.init.js"></script><!-- App js -->
+<script src="~/light/assets/js/app.js"></script> 
 
-</html>
+@RenderSection("Scripts", required: false)
+
 </body>
+
 </html>

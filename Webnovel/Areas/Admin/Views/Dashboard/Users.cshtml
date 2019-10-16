@@ -1,0 +1,100 @@
+﻿@using Webnovel.Repository
+@inject IUser _user
+@inject IAuthor _author
+@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var users = await _user.List();
+
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0);">Users</a>
+                            </li>
+
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Dashboard</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div><!--end row--><!-- end page title end breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mt-0 mb-3">Users</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Email</th>
+                                        <th>Phone No</th>
+
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr><!--end tr-->
+                                </thead>
+                                <tbody>
+                                    @foreach (var i in users)
+                                    {
+                                        var img = "~/light/assets/images/users/user-9.jpg";
+                                        if (i.ProfileImage != null)
+                                        {
+                                            img = i.ProfileImage;
+                                        }
+                                        <tr>
+                                            <td>
+                                                <img src="@img" alt="" width="50" class="thumb-sm rounded-circle mr-2">@i.FirstName @i.LastName
+                                            </td>
+                                            <td>@i.Email</td>
+                                            <td>@i.PhoneNumber</td>
+
+                                            <td>
+                                                @{
+                                                    var isAuhtor = await _author.AuthorExist(i.Id);
+                                                    var userType = "";
+                                                    if (isAuhtor)
+                                                    {
+                                                        userType = "Creative User";
+                                                    }
+                                                    else
+                                                    {
+                                                        userType = "Reader";
+                                                    }
+                                                }
+                                                <span class="badge badge-soft-purple">@userType</span>
+                                            </td>
+                                            <td>
+                                                @*<a href="#" class="mr-2"><i class="fas fa-edit text-info font-16"></i></a>
+                                                    <a href="#"><i class="fas fa-trash-alt text-danger font-16"></i></a>*@
+                                            </td>
+                                        </tr><!--end tr-->
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div><!--end col-->
+
+        </div><!--end row-->
+    </div><!-- container -->
+
+</div>
+

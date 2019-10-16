@@ -9,8 +9,8 @@ namespace Webnovel.Repository
 	{
 		Task CreateNovel(Webnovel.Entities.Novel novel);
 
-		Task<List<Webnovel.Entities.Novel>> GetAllNovels();
-
+		Task<List<Webnovel.Entities.Novel>> GetAllNovels(bool? hasImage =null, bool? hasChapters=null);
+        
 		Task<Webnovel.Entities.Novel> GetNovel(int novelId);
 
 		Task<List<Webnovel.Entities.Novel>> GetAuthorNovels(int id);

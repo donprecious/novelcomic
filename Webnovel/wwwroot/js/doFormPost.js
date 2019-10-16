@@ -19,15 +19,17 @@
             },
             success: function (response) {
                 if (response.status == 200) {
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Created Successfully',
-                        type: 'success',
-                        confirmButtonText: 'Done!'
-                    });
+                    //Swal.fire({
+                    //    title: 'Success',
+                    //    text: 'Created Successfully',
+                    //    type: 'success',
+                    //    confirmButtonText: 'Done!'
+                    //});
+                    toastr.success('Created Successfully');
+
                     $("#sections").load("/Comic/SceneList/" + response.data.comicId); 
                     $("#display").load("/Comic/DisplayEpisode/" + response.data.id);
-                    $("#createChapterModal").modal("hide"); 
+                    $("#createChapterModal").modal('hide');
                 } else if (response.status == 400) {
                     var html = "<ul> ";
                     response.errors.forEach(a => {

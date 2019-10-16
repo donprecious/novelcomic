@@ -1,4 +1,6 @@
+using System;
 using Microsoft.AspNetCore.Identity;
+using Webnovel.Entities;
 
 namespace Webnovel.Models
 {
@@ -16,7 +18,12 @@ namespace Webnovel.Models
 			set;
 		}
 
+        public string Gender { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
         public string ProfileImage { get; set; }
+
+        public Referred Referred { get; set; }
 		public ApplicationUser()
         {
 		}
