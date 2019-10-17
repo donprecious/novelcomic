@@ -51,7 +51,7 @@ namespace Webnovel.Migrations
                 column: "RateId",
                 principalTable: "NovelRatings",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_NovelRatings_RatingTypes_RatingTypeId",
@@ -59,7 +59,7 @@ namespace Webnovel.Migrations
                 column: "RatingTypeId",
                 principalTable: "RatingTypes",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
