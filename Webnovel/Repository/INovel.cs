@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Webnovel.Entities;
 using Webnovel.Models;
@@ -36,7 +37,7 @@ namespace Webnovel.Repository
 		Task<bool> FindNovelChapter(int chapterId);
 
 		Task<IEnumerable<Chapter>> GetNovelChapters(int novelId);
-
+        Task<IOrderedQueryable<Chapter>> GetNovelChaptersNoTracking(int novelId);
 		Task<Chapter> GetNovelChapter(int chapterId);
 
 		Task EditNovelChapter(ChapterVm chapter);

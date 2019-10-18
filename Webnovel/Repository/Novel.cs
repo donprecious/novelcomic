@@ -141,6 +141,12 @@ namespace Webnovel.Repository
             //return await _context.SingleOrDefaultAsync<Chapter>((IQueryable<Chapter>)EntityFrameworkQueryableExtensions.Include<Chapter, NovelSection>(((IQueryable<Chapter>)_context.Chapters).Where((Chapter a) => a.Id == chapterId), (Expression<Func<Chapter, NovelSection>>)((Chapter a) => a.NovelSection)), default(CancellationToken));
           return await  _context.Chapters.Include(a => a.Novel).Include(a => a.NovelSection).Where(a=>a.NovelId == novelId).ToListAsync();
         }
+        public async Task<IOrderedQueryable<Chapter>> GetNovelChaptersNoTracking(int novelId)
+        {
+            //return await _context.SingleOrDefaultAsync<Chapter>((IQueryable<Chapter>)EntityFrameworkQueryableExtensions.Include<Chapter, NovelSection>(((IQueryable<Chapter>)_context.Chapters).Where((Chapter a) => a.Id == chapterId), (Expression<Func<Chapter, NovelSection>>)((Chapter a) => a.NovelSection)), default(CancellationToken));
+            return  _context.Chapters.Include(a => a.Novel).Include(a => a.NovelSection)
+                .Where(a => a.NovelId == novelId).AsNoTracking().OrderBy(a => a.DateCreated);
+        }
 
         public async Task<Chapter> GetNovelChapter(int chapterId)
 		{

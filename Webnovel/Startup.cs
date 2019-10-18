@@ -68,7 +68,7 @@ namespace Webnovel
             services.AddScoped<INovelHistory, NovelHistory>();
             services.AddScoped<INovelComment, NovelComment>();
             services.AddScoped<IAppConfig, AppConfig>();
-
+            services.AddScoped<IRate, Rate>();
             services.AddAsyncInitializer<MyAppInitializer>();
             services.AddPaging();
 

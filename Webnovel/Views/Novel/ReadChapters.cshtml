@@ -1,0 +1,199 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<Webnovel.Entities.Chapter>
+
+@using Webnovel.Repository
+
+@*@model  Webnovel.Entities.Chapter*@
+@{
+    ViewData["Title"] = "ReadChapter";
+    Layout = "~/Views/Shared/_NovelLayout.cshtml";
+}
+@{
+//var data = Model.FirstOrDefault();
+}
+
+@inject UserManager<ApplicationUser> UserManager
+@inject INovelComment NovelComment
+
+<div id="content">
+    @foreach (var a in Model)
+    {
+        <div id="main">
+            <div class="post-13 post type-post status-publish format-standard has-post-thumbnail hentry category-stories tag-another-tag-example tag-book tag-classic tag-england tag-fiction tag-non-fiction tag-novel tag-poetry tag-printed-word tag-short-story tag-tag-example tag-true-story tag-yet-another">
+                <h2 class="posttitle">@a.Name</h2>
+                <div class="postInfo">@a.Description</div>
+
+                <div id="entryContainer">
+                    <div class="entry">
+                        @Html.Raw(a.Content)
+
+                        @*<p class="postinate">
+                                Pages:
+                                <span>1</span>
+                                <a href="2/index.html"><span>2</span></a>
+                                <a href="3/index.html"><span>3</span></a>
+                                <a href="4/index.html"><span>4</span></a>
+                                <a href="5/index.html"><span>5</span></a>
+                                <a href="6/index.html"><span>6</span></a>
+                                <a href="7/index.html"><span>7</span></a>
+                                <a href="8/index.html"><span>8</span></a>
+                                <a href="9/index.html"><span>9</span></a>
+                            </p>*@
+                    </div><!--end entry-->
+                </div>
+
+
+                <!--IF COMMENTS ARE OPEN-->
+                <div id="commentToggle">
+                    <a href="#">~&nbsp;&nbsp; Thoughts? &nbsp;&nbsp;~</a>
+                </div>
+                <div id="commentsection">
+                    <div id="toggleComments">
+                        <!--IF THERE ARE COMMENTS-->
+                        <div id="respond">
+
+                            <h3>Leave a Reply</h3>
+                            <div class="cancel-comment-reply">
+                                <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display: none;">Click here to cancel reply.</a></small>
+                            </div>
+                            <!--IF USER MUST BE LOGGED IN-->
+                            <div action="#" method="post" id="commentform">
+                                <!--IF USER IS LOGGED IN-->
+                                <p>
+                                    <textarea name="comment" id="comment_@a.Id" cols="100%" rows="5" tabindex="4"></textarea>
+                                </p>
+                                <p>
+                                    <input name="submit" type="submit" data-chapterId ="@a.Id"  id="submitComment" tabindex="5" value="Submit Comment" />
+                                    <input type='hidden' name='userId' value='@UserManager.GetUserId(User)' id='userId' />
+                                </p>
+
+                            </div>
+                        </div><!--end respond-->
+                        <ol class="commentlist">
+
+                            @{
+                                var comments = await NovelComment.GetChapterComments(a.Id);
+                            }
+                            @foreach (var i in comments)
+                            {
+                                var img = "http://1.gravatar.com/avatar/7e1aa1c6c61d2a7dc589c0aef313facc?s=32&amp;d=mm&amp;r=g";
+                                if (i.User.ProfileImage != null)
+                                {
+                                    img = i.User.ProfileImage;
+                                }
+
+
+                                <li class="comment even thread-even depth-1" id="comment-15678">
+                                    <div id="div-comment-15678" class="comment-body">
+                                        <div class="comment-author vcard">
+                                            <img alt="" src="@img" class="avatar avatar-32 photo" height="32" width="32">
+                                            <cite class="fn">
+                                                <a href="http://dds" rel="external nofollow" class="url">@i.User.FirstName , @i.User.LastName</a>
+                                            </cite> <span class="says">says:</span>
+                                        </div>
+
+                                        <div class="comment-meta commentmetadata">
+                                            <a href="#">
+                                                @{
+                                                    var date = i.DateTime;
+                                                    var date2 = DateTime.Now;
+                                                    if (date != null)
+                                                    {
+                                                        date2 = Convert.ToDateTime(date);
+                                                    }
+                                                    ;
+                                                    ;
+                                                }
+
+                                                @date2.ToString("F")
+
+                                            </a>
+                                        </div>
+
+                                        <p>@i.Comment</p>
+
+                                        <div class="reply">
+                                            @*<a rel="nofollow" class="comment-reply-link" href="http://themes.themolitor.com/wpnovelist/2011/09/01/romeo-juliet/?replytocom=15678#respond" aria-label="Reply to Donprecious">Reply</a>*@
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            <!-- #comment-## -->
+                        </ol>
+
+                    </div><!--end toggleComments-->
+                </div>
+
+            </div><!--end post-->
+
+        </div>
+    }
+
+    <div class="clear"></div>
+    <a href="#" rel="next"></a>
+    <a href="#" rel="prev"></a>
+</div>
+
+@section Scripts {
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/novelCommentHub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+     
+        connection.on("commentReceived",
+            function(data) {
+                var img = "http://1.gravatar.com/avatar/7e1aa1c6c61d2a7dc589c0aef313facc?s=32&amp;d=mm&amp;r=g";
+                if (data.user.profileImage != null) {
+                    img = data.user.profileImage;
+                }
+                var html = `<li class="comment even thread-even depth-1" id="comment-15678">
+                                <div id="div-comment-15678" class="comment-body">
+                                    <div class="comment-author vcard">
+                                        <img alt="" src="${img}"
+
+                                                     class="avatar avatar-32 photo" height="32" width="32">
+                                            <cite class="fn"><a href="#" rel="external nofollow" class="url">${data
+                    .user.firstName}, ${data.user.lastName}</a></cite>	</div>
+
+
+                                    <div class="comment-meta commentmetadata"><a href="#">
+                                        ${data.dateTime} </a>		</div>
+                                    <p>${data.comment}</p>
+                                </div>
+                            </li>`;
+
+                $(".commentlist").prepend(html);
+
+            });
+
+        $("#submitComment").click(function(event) {
+
+            @*var chapterCommentVm =  {
+
+                "chapterId": "@Model.Id",
+                "userId": $("#userId").val(),
+                "comment": $("#comment").val()
+            }*@
+            var @*chapterId = @;*@
+            var message = $("#comment").val();
+            var userId = $("#userId").val();
+            connection.invoke("SendChapterComment", chapterId, userId, message).then(function() {
+                console.log("comment sent");
+            }).catch(function(err) {
+                console.log(err);
+                return console.error(err.toString());
+
+            });
+            event.preventDefault();
+        });
+
+        connection.start().then(function() {
+            console.log("connected");
+        }).catch(function(err) {
+            console.log(err);
+            return console.error(err.toString());
+        });;
+    </script>
+}
