@@ -1,0 +1,32 @@
+﻿@model Webnovel.Entities.Chapter
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Edit Chapter</h4>
+
+        <form class="m-t-25" asp-controller="Novel" id="editChapterForm" asp-action="EditChapterDetail">
+            @Html.AntiForgeryToken()
+            <div class="alert alert-warning hide" id="alertNovelError"></div>
+            <input asp-for="NovelId" type="hidden" />
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="NovelSectionId" type="hidden" />
+            <div class="form-group">
+                <label class="control-label">Chapter Title</label>
+                <input asp-for="Name" type="text" class="form-control">
+                <span asp-validation-for="Name" class="text text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Author Thought</label>
+                <textarea asp-for="Description" type="text" class="form-control"> </textarea>
+                <span asp-validation-for="Description" class="text text-danger"></span>
+            </div>   
+            <div class="form-group">
+                <button class="btn btn-primary" id="btnEditDescription" type="submit">
+                    Edit Chapter
+                    <img src="~/images/loading.gif" class="hide" id="editChapterLoading" />
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,232 @@
+﻿@using Webnovel.Migrations
+@using Webnovel.Repository
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@inject IUser _user
+@inject INovel _novel
+@inject IComic _comic
+@inject IAnimation _animations 
+@inject IAuthor _author
+@{
+    var users = await _user.List();
+    var novels = await _novel.GetAllNovels();
+    var comics = await _comic.GetAllComics();
+    var animations = await _animations.GetAllAnimations();
+}
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+
+                    @*
+                        <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0);">Metrica</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0);">CRM</a>
+                            </li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                    </div>
+                        *@
+
+                    <h4 class="page-title">Dashboard</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div><!--end row--><!-- end page title end breadcrumb -->
+        <div class="row">
+         
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card crm-data-card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-4 align-self-center">
+                                        <div class="data-icon">
+                                            <i class="far fa-smile rounded-circle bg-soft-warning"></i>
+                                        </div>
+                                    </div><!-- end col-->
+                                    <div class="col-sm-8">
+                                        <h3>@users.Count()</h3>
+                                        <p class="text-muted font-14 mb-0">Users</p>
+                                    </div><!-- end col-->
+                                </div><!-- end row-->
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div><!-- end col-->
+                    <div class="col-sm-6">
+                        <div class="card crm-data-card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-4 align-self-center">
+                                        <div class="data-icon">
+                                            <i class="fa fa-book rounded-circle bg-soft-success"></i>
+                                        </div>
+                                    </div><!-- end col-->
+                                    <div class="col-sm-8">
+                                        <h3>@novels.Count()</h3>
+                                        <p class="text-muted font-14 mb-0">Novels</p>
+                                    </div><!-- end col-->
+                                </div><!-- end row-->
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div><!-- end col-->
+                </div><!--end row-->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card crm-data-card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-4 align-self-center">
+                                        <div class="data-icon">
+                                            <i class="mdi mdi-animation rounded-circle bg-soft-secondary"></i>
+                                        </div>
+                                    </div><!-- end col-->
+                                    <div class="col-sm-8">
+                                        <h3>@comics.Count()</h3>
+                                        <p class="text-muted font-14 mb-0">Comics</p>
+                                    </div><!-- end col-->
+                                </div><!-- end row-->
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div><!-- end col-->
+                    <div class="col-sm-6">
+                        <div class="card crm-data-card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-4 align-self-center">
+                                        <div class="data-icon">
+                                            <i class="mdi mdi-movie rounded-circle bg-soft-pink"></i>
+                                        </div>
+                                    </div><!-- end col-->
+                                    <div class="col-sm-8">
+                                        <h3>@animations.Count()</h3>
+                                        <p class="text-muted font-14 mb-0">Animations</p>
+                                    </div><!-- end col-->
+                                </div><!-- end row-->
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div><!-- end col-->
+                </div><!--end row-->
+              
+            </div><!--end col-->
+        </div><!--end row-->
+        <div class="row">
+            <!--end col-->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mt-0">Users By Country</h4>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div id="world-map-markers" class="crm-dash-map"></div>
+                            </div><!--end col-->
+                            <div class="col-lg-4 align-self-center">
+                                <div class="">
+                                    <span class="text-secondary">USA</span>
+                                    <small class="float-right text-muted ml-3 font-13">81%</small>
+                                    <div class="progress mt-2" style="height:3px;">
+                                        <div class="progress-bar bg-pink" role="progressbar" style="width: 81%; border-radius:5px;" aria-valuenow="81" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-secondary">Greenland</span>
+                                    <small class="float-right text-muted ml-3 font-13">68%</small>
+                                    <div class="progress mt-2" style="height:3px;">
+                                        <div class="progress-bar bg-secondary" role="progressbar" style="width: 68%; border-radius:5px;" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-secondary">Australia</span>
+                                    <small class="float-right text-muted ml-3 font-13">48%</small>
+                                    <div class="progress mt-2" style="height:3px;">
+                                        <div class="progress-bar bg-purple" role="progressbar" style="width: 48%; border-radius:5px;" aria-valuenow="48" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-secondary">Brazil</span>
+                                    <small class="float-right text-muted ml-3 font-13">32%</small>
+                                    <div class="progress mt-2" style="height:3px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 32%; border-radius:5px;" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div><!--end col-->
+        </div><!--end row-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mt-0 mb-3">Users</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Email</th>
+                                        <th>Phone No</th>
+                                      
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr><!--end tr-->
+                                </thead>
+                                <tbody>
+                                @foreach (var i in users)
+                                {
+                                    var img = "~/light/assets/images/users/user-9.jpg";
+                                    if (i.ProfileImage != null)
+                                    {
+                                        img = i.ProfileImage;
+                                    }
+                                    <tr>
+                                        <td>
+                                            <img src="@img" alt="" width="50" class="thumb-sm rounded-circle mr-2">@i.FirstName @i.LastName
+                                        </td>
+                                        <td>@i.Email</td>
+                                        <td>@i.PhoneNumber</td>
+                                      
+                                        <td>
+                                            @{
+                                                var isAuhtor = await _author.AuthorExist(i.Id);
+                                                var userType = "";
+                                                if (isAuhtor)
+                                                {
+                                                    userType = "Creative User";
+                                                }
+                                                else
+                                                {
+                                                    userType = "Reader";
+                                                }
+                                            }
+                                            <span class="badge badge-soft-purple">@userType</span>
+                                        </td>
+                                        <td>
+                                            @*<a href="#" class="mr-2"><i class="fas fa-edit text-info font-16"></i></a>
+                                            <a href="#"><i class="fas fa-trash-alt text-danger font-16"></i></a>*@
+                                        </td>
+                                    </tr><!--end tr-->
+                                }
+                     
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div><!--end col-->
+        
+        </div><!--end row-->
+    </div><!-- container -->
+
+</div>

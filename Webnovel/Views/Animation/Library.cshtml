@@ -1,0 +1,75 @@
+﻿@model System.Collections.Generic.IEnumerable<Webnovel.Entities.AnimationLibrary>
+
+
+
+@using CloudinaryDotNet
+@using Webnovel.Helpers
+@using Webnovel.Services
+
+@{
+    ViewBag.Title = "My Animation Library";
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+}
+
+
+@{
+
+
+
+
+    var cloudinary = new Cloudinary(new Account()
+    {
+        ApiKey = CloudinaryUpload.apiKey,
+        ApiSecret = CloudinaryUpload.apiSecret,
+        Cloud = CloudinaryUpload.cloud,
+
+    });
+
+}
+<div class="row">
+    <div class="col-md-12 card">
+        <h2 class="card-title p-3"> My Animation Barns</h2>
+
+
+    </div>
+    @foreach (var i in Model)
+    {
+        var img = i.Animation.CoverPageImageUrl;
+        if (img != null)
+        {
+            img = cloudinary.Api.UrlImgFetch.
+                Transform(new Transformation()
+                    .Height(300).Width(300).Crop("fill")).BuildUrl(i.Animation.CoverPageImageUrl);
+
+        }
+        <div class="col-lg-3 col-md-4">
+
+            <div class="card">
+                <div class="el-card-item">
+                    <div class="el-card-avatar el-overlay-1">
+                        <img src="@img" class="img-fluid" href="@i.Animation.CoverPageImageUrl" alt="user" />
+
+                    </div>
+                    <div class="d-flex no-block align-items-center">
+                        <div class="m-l-15">
+                            <h4 class="m-b-0">   @StringProcessor.SubString(i.Animation.Title, 0, 15)</h4>
+                            <span class="text-muted">  @StringProcessor.SubString(i.Animation.Description, 0, 30)</span>
+                        </div>
+
+                        <div class="ml-auto m-r-15">
+                            <a href="@Url.Action("RemoveFromLibrary", new {id=i.AnimationId})" class="btn btn-danger btn-circle"> <i class="fa fa-trash"></i></a>
+                        </div>
+
+                    </div>
+                    <div>
+                        @*<a class="btn default btn-outline image-popup-vertical-fit el-link" href="@i.Comic.CoverPageImageUrl"><i class="icon-magnifier"></i></a>*@
+                        <a class="btn btn-primary  default btn-outline el-link" href="@Url.Action("ReadAnimation", new{id = i.AnimationId})"><i class="icon-book-open"></i> Read</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+</div>
+

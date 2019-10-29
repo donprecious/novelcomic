@@ -1,39 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Webnovel.Data;
+using Webnovel.Entities;
 
 namespace Webnovel.Repository
 {
-    public class Category:ICategory
-    {
-        private ApplicationDbContext _context;
-        public Category(ApplicationDbContext context)
+	public class Category : ICategory
+	{
+		private ApplicationDbContext _context;
+
+		public Category(ApplicationDbContext context)
+		{
+			_context = context;
+		}
+
+		public async Task Create(Webnovel.Entities.Category category)
+		{
+			await _context.Categories.AddAsync(category, default(CancellationToken));
+		}
+
+		
+		public async Task Delete(int Id)
         {
-            _context = context;
-        }
-        public async Task Create(Entities.Category category)
-        {
-            await _context.Categories.AddAsync(category);
+            var find = await _context.Categories.FindAsync(Id);
+            _context.Categories.Remove(find);
         }
 
-        public async Task Delete(int Id)
-        {
-            throw new NotImplementedException();
-        }
+		public async Task<ICollection<Webnovel.Entities.Category>> List()
+		{
+			return await EntityFrameworkQueryableExtensions.ToListAsync<Webnovel.Entities.Category>((IQueryable<Webnovel.Entities.Category>)_context.Categories, default(CancellationToken));
+		}
 
-        public async Task<ICollection<Entities.Category>> List()
-        {
-            return await _context.Categories.ToListAsync();
-        }
-
-        public async Task<bool> Save()
-        {
-            return ((await _context.SaveChangesAsync()) >= 0);
-
-        }
-    }
+		public async Task<bool> Save()
+		{
+			return await((DbContext)_context).SaveChangesAsync(default(CancellationToken)) >= 0;
+		}
+	}
 }

@@ -1,0 +1,350 @@
+﻿@using Sentry.Protocol
+@using Webnovel.Repository
+
+@model Webnovel.Models.ReferralVm
+@{
+    ViewData["Title"] = "ReferralSigup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IUser _User;
+@inject IReferral _Referral;
+@{
+    var countries = await _User.Countries();
+    
+}
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct" style="padding-top: 100px">
+                    <h1>Sign up into Referral hub</h1>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single" style="padding-top: 5px">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-12 col-sm-12 col-xs-12" style="top:-80px">
+                <div class="form-style-1 user-pro" action="#">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        var user = await _User.GetUserByEmail(User.Identity.Name.ToString());
+                        var referral = await _Referral.GetReferral(user.Id);
+                        if (referral != null)
+                        {
+                            if (referral.Status == "PENDING")
+                            {
+                                <h4 class="text-center">
+                                    You have submitted a request
+                                </h4>
+                            }
+                            else
+                            {
+                                <form asp-controller="Home" asp-action="ReferralSignup" class="user">
+                                    <h4>Complete the form</h4>
+                                    <div class="row">
+                                        <div class="col-md-6 form-it">
+                                            <label>First Name</label>
+                                            <span asp-validation-for="FirstName" class="form-text text-danger"></span>
+
+                                            <input type="text" asp-for="FirstName">
+                                            <input type="hidden" asp-for="UserId">
+
+                                        </div>
+                                        <div class="col-md-6 form-it">
+                                            <label>Last Name</label>
+                                            <span asp-validation-for="LastName" class="form-text text-danger"></span>
+
+                                            <input type="text" asp-for="LastName">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 form-it">
+                                            <label>Email</label>
+                                            <span asp-validation-for="Email" class="form-text text-danger"></span>
+                                            <input type="email" disabled="disabled" asp-for="Email" value="@Model.Email" placeholder="">
+                                        </div>
+                                        <div class="col-md-6 form-it">
+                                            <label>Phone</label>
+                                            <input type="text" asp-for="Phone" placeholder="+43xxxxxx">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 form-it">
+                                            <label>Whats your Occupation/Profession</label>
+                                            <span asp-validation-for="Occupation" class="form-text text-danger"></span>
+
+                                            <textarea rows="5" asp-for="Occupation" placeholder="Please tell us what you do. eg am a graphic designer, a writer, editor or video editor"> </textarea>
+                                        </div>
+                                        <div class="col-md-6 form-it">
+                                            <label>How did you here about this referral program</label>
+                                            <span asp-validation-for="InformationFrom" class="form-text text-danger"></span>
+
+                                            <textarea rows="5" asp-for="InformationFrom" placeholder=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 form-it">
+                                            <label>Country</label>
+                                            <span asp-validation-for="CountryId" class="form-text text-danger"></span>
+
+                                            <select asp-for="CountryId">
+                                                @foreach (var i in countries.OrderByDescending(a => a.name))
+                                                {
+                                                    <option value="@i.Id">@i.name</option>
+
+                                                }
+
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-it">
+                                            <label>What are you applying for</label>
+                                            <span asp-validation-for="ProgramType" class="form-text text-danger"></span>
+
+                                            <select asp-for="ProgramType">
+                                                <option value="Content_Referral">Content Referral</option>
+                                                <option value="Subscriber_Referral_Program">Subscriber Referral Program</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 form-it">
+                                            <label>Gender</label>
+                                            <span asp-validation-for="Gender" class="form-text text-danger"></span>
+
+                                            <select asp-for="Gender">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-it">
+                                            <label>Date of Birth</label>
+                                            <span asp-validation-for="DateOfBirth" class="form-text text-danger"></span>
+
+                                            <input type="datetime" id="dob" asp-for="DateOfBirth">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 form-it">
+                                            <label>How Many Refers can you provide</label>
+                                            <span asp-validation-for="MinimumReferral" class="form-text text-danger"></span>
+
+                                            <input type="text" asp-for="MinimumReferral">
+
+
+                                        </div>
+                                        <div class="col-md-6 form-it">
+                                            <label>Additional Information</label>
+                                            <span asp-validation-for="AdditonalInformation" class="form-text text-danger"></span>
+
+                                            <textarea rows="5" asp-for="AdditonalInformation" placeholder="More Information you would like us to have"></textarea>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <input class="submit" type="submit" value="save">
+                                        </div>
+                                    </div>
+                                </form>
+                            }
+                        }
+                        else
+                        {
+                            <form asp-controller="Home" asp-action="ReferralSignup" class="user">
+                                <h4>Complete the form</h4>
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>First Name</label>
+                                        <span asp-validation-for="FirstName" class="form-text text-danger"></span>
+
+                                        <input type="text" asp-for="FirstName">
+                                        <input type="hidden" asp-for="UserId">
+
+                                    </div>
+                                    <div class="col-md-6 form-it">
+                                        <label>Last Name</label>
+                                        <span asp-validation-for="LastName" class="form-text text-danger"></span>
+
+                                        <input type="text" asp-for="LastName">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>Email</label>
+                                        <span asp-validation-for="Email" class="form-text text-danger"></span>
+                                        <input type="email" disabled="disabled" asp-for="Email" value="@Model.Email" placeholder="">
+                                    </div>
+                                    <div class="col-md-6 form-it">
+                                        <label>Phone</label>
+                                        <input type="text" asp-for="Phone" placeholder="+43xxxxxx">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>Whats your Occupation/Profession</label>
+                                        <span asp-validation-for="Occupation" class="form-text text-danger"></span>
+
+                                        <textarea rows="5" asp-for="Occupation" placeholder="Please tell us what you do. eg am a graphic designer, a writer, editor or video editor"> </textarea>
+                                    </div>
+                                    <div class="col-md-6 form-it">
+                                        <label>How did you here about this referral program</label>
+                                        <span asp-validation-for="InformationFrom" class="form-text text-danger"></span>
+
+                                        <textarea rows="5" asp-for="InformationFrom" placeholder=""></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>Country</label>
+                                        <span asp-validation-for="CountryId" class="form-text text-danger"></span>
+
+                                        <select asp-for="CountryId">
+                                            @foreach (var i in countries.OrderByDescending(a => a.name))
+                                            {
+                                                <option value="@i.Id">@i.name</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-it">
+                                        <label>What are you applying for</label>
+                                        <span asp-validation-for="ProgramType" class="form-text text-danger"></span>
+
+                                        <select asp-for="ProgramType">
+                                            <option value="Content_Referral">Content Referral</option>
+                                            <option value="Subscriber_Referral_Program">Subscriber Referral Program</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>Gender</label>
+                                        <span asp-validation-for="Gender" class="form-text text-danger"></span>
+
+                                        <select asp-for="Gender">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-it">
+                                        <label>Date of Birth</label>
+                                        <span asp-validation-for="DateOfBirth" class="form-text text-danger"></span>
+
+                                        <input type="datetime" id="dob" asp-for="DateOfBirth">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>How Many Refers can you provide</label>
+                                        <span asp-validation-for="MinimumReferral" class="form-text text-danger"></span>
+
+                                        <input type="text" asp-for="MinimumReferral">
+
+
+                                    </div>
+                                    <div class="col-md-6 form-it">
+                                        <label>Additional Information</label>
+                                        <span asp-validation-for="AdditonalInformation" class="form-text text-danger"></span>
+
+                                        <textarea rows="5" asp-for="AdditonalInformation" placeholder="More Information you would like us to have"></textarea>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <input class="submit" type="submit" value="save">
+                                    </div>
+                                </div>
+                            </form>
+                        }
+
+
+                    }
+                    else
+                    {
+                        <h4 class="text-center">
+                            Please Login to Access this Form
+                            <br />
+                            <br />
+
+                            <a class="btn btn-primary text-center text-danger" href="@Url.Action("Login","Account")">Login</a>
+                        </h4>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section css{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+    <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
+    <style>
+
+        input.form-control.input.valid, input[disabled], input#Email {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: url(../images/uploads/drop-icon.png) no-repeat right 20px center;
+            background-color: #233a50;
+        }
+        span.form-text.text-danger.field-validation-error {
+            color: #e67373;
+        }
+    </style>
+
+}
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        $("#dob").flatpickr({
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d"
+        });
+
+
+    </script> 
+    <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
+
+    <script>
+        $("form").submit(function(event) {
+            event.preventDefault();  
+
+            $.ajax({
+                url: $(this).attr("action"),
+                data: $(this).serialize(),
+                type: "Post", 
+                beforeSend: function() {        
+                    $(this).find("input[type=submit]").attr("disabled", "disabled");
+                },
+                complete: function() {
+                    $(this).find("input[type=submit]").removeAttr("disabled");
+                },
+                success: function(res) {
+                    if (res.status == 200) {
+                        toastr.success(res.message);
+                     
+                        var html = `<div>   <h4 class="text-center">
+                           Success,  We have Recieved Your Form and we would get back to you!
+                            <br />
+                            <br />   
+                        </h4>
+    </div>`;
+                        $(".user-pro").html(html);
+                    } else {
+                        toastr.warning(res.message);
+
+                    }
+                }
+            })
+        });
+    </script>
+}

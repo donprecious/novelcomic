@@ -33,7 +33,8 @@ function activateEditor() {
     //    },
     //    theme: 'snow'
     //});
-    $('.editor').summernote();
+    //$('.editor').summernote(); 
+    CKEDITOR.replace('editor1');
 }
 
 function showCreateSection() {
@@ -43,7 +44,6 @@ function showCreateSection() {
 function showAddChapter() {
     $("#createChapterModal").modal();
 }
-
 function showDisplayChapter(id) {
     $("#displayChapter").empty();
     var url = "/Novel/DisplayChapterView/" + id;
@@ -81,6 +81,9 @@ function showEditChapter(id) {
             success: function (response) {
                 $("#displayChapter").html(response);
                 activateEditor();
+                CKEDITOR.instances.editor1.setData($("#hiddenValue").html());
+
+                //$("#hiddenValue").val();
             },
             error: function (err) {
                 console.log(err);
@@ -88,15 +91,36 @@ function showEditChapter(id) {
         });
 
 }
+function viewSection(id) {
+    $("#displayChapter").empty();
+    var url = "/Novel/ViewSection/" + id;
+    $.ajax(url,
+        {
+            type: "GET",
+            dataType: "Html",
+            beforeSend: function () {
 
+            },
+            complete: function () {
+
+            },
+            success: function (response) {
+                $("#displayChapter").html(response);
+                CKEDITOR.instances.editor1.setData($("#hiddenValue").html());
+                activateEditor();
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+}
 
 function saveEdit(id) {
-    var content = $('.editor').summernote('code');
+    var content = CKEDITOR.instances.editor1.getData();
         var data = {
             "Id": id,
             "Content": content
         };
-  
         console.log(data);
         $.ajax({
             url: "/Novel/EditChapterSection",

@@ -12,6 +12,7 @@ namespace Webnovel.Services
         public static string apiKey = "849621861927721";
         public static string apiSecret = "0ofuuFUGk_6zt4lmaXTsXayy07k";
         public static string cloud = "votel";
+        public static string folder = "webnovel";
         public static string uploadedPath;
         private static Account account = new Account()
         {
@@ -35,13 +36,11 @@ namespace Webnovel.Services
                 if (uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     uploadedPath = uploadResult.SecureUri.ToString();
-                    
                     return true;
                 }
             }
             catch (Exception ex)
             {
-
                 return false;
             }
            
@@ -49,13 +48,9 @@ namespace Webnovel.Services
         }
         public static async Task<bool> DeleteFromCloud(string file, string folder = "webnovel")
         {
-
             Cloudinary cloud = new Cloudinary(account);
-
-          
             try
             {
-              
                 var uploadResult = cloud.DeleteResources(file);
                 if (uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -64,7 +59,6 @@ namespace Webnovel.Services
             }
             catch (Exception ex)
             {
-
                 return false;
             }
 

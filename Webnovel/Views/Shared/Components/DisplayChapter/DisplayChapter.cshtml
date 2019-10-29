@@ -3,13 +3,15 @@
 <div class="card">
     <div class="card-body">
         <div class="mb-3">
-            <button onclick="showEditChapter(@Model.Id)"  class="btn btn-primary"><i class="ti ti-edit"></i> Edit</button>
+            <input type="hidden" id="chapterId" value="@Model.Id"/>
+            <button onclick="showEditChapter(@Model.Id)" class="btn btn-primary"><i class="ti ti-pencil"></i> Edit</button>
+            <button class="btn btn-success pull-right" id="btnPublish"> <i class="ti ti-world"></i> Publish</button>
             <h4 class="card-title text-center"> @Model.Name</h4>
             <h6 class="card-title text-center"> @Model.NovelSection.Title</h6>
             <div class="border-left border-orange p-l-5">
                 @Html.Raw(Model.Content)
             </div>
-      
+
         </div>
     </div>
 

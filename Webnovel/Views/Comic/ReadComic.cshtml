@@ -1,120 +1,189 @@
 ﻿
 @using Webnovel.Repository
-@model Webnovel.Entities.Comic
+
 @inject IComic _Comic
+
+@model ReflectionIT.Mvc.Paging.PagingList<Webnovel.Entities.Episode>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+
 @{
     ViewData["Title"] = "Read Comic";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    Layout = "~/Views/Shared/_NovelLayout.cshtml";
 
-    var comicScene = await _Comic.GetComicScenes(Model.Id);
+    //var comicScene = await _Comic.GetComicScenes(Model.Id);
 
-    var episodeId = ViewBag.EpisodeId;
+    var chapterId = ViewBag.chapterId; 
+    var m = Model;
 }
-<div class="left-part bg-white p-b-40">
-    <!-- Mobile toggle button -->
-    <a class="ti-menu ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
-    <!-- Mobile toggle button -->
-    <div class="scrollable position-relative ps-container ps-theme-default" style="height:100%;" data-ps-id="bfdfe7c7-2f7f-9f54-d173-ff3f0606991b">
-        <div class="p-15" id="sections">
-            @* comic scences *@ 
-            <div class="p-15">
-               
-                @foreach (var i in comicScene)
-                {
-                    <h4 class="text-primary card-title m-2">@i.Title</h4>
-                    <ul class="list-group">
-           
-                        @if (i.Episodes.Any())
+
+@section Css
+{
+    
+    <style>
+        .page-template-t-tags-php .entry {
+            -moz-column-count: 1;
+            -webkit-column-count: 1;
+            column-count: 1; 
+
+        }
+
+        @@media screen and (min-width: 860px) { 
+        .entry {
+            -moz-column-count: 1;
+            -webkit-column-count: 1;
+            column-count: 1;
+            -moz-column-gap: 50px;
+            -webkit-column-gap: 50px;
+            column-gap: 50px;
+            -moz-column-rule: 1px dashed #eee;
+            -webkit-column-rule: 1px dashed #eee;
+            column-rule: 1px dashed #eee;
+        }
+        }
+    </style>
+
+}
+
+<div id="content">
+    <div id="main">
+
+        <div class="post-13 post type-post status-publish format-standard has-post-thumbnail hentry category-stories tag-another-tag-example tag-book tag-classic tag-england tag-fiction tag-non-fiction tag-novel tag-poetry tag-printed-word tag-short-story tag-tag-example tag-true-story tag-yet-another">
+
+            @*<div id="featuredImage">
+                    <img src="~/novelist/files/2011/08/sherlock2.png" class="attachment-post size-post wp-post-image" alt="" srcset="http://themes.themolitor.com/wpnovelist/files/2011/08/sherlock2.png 340w, http://themes.themolitor.com/wpnovelist/files/2011/08/sherlock2-150x150.png 150w, http://themes.themolitor.com/wpnovelist/files/2011/08/sherlock2-300x300.png 300w" sizes="(max-width: 340px) 100vw, 340px" />
+                </div>*@
+
+            <h2 class="posttitle">@ViewBag.Title </h2>
+            <div class="postInfo">@ViewBag.Description</div>
+
+            <div id="entryContainer">
+                <div class="entry">
+                    @*@Html.Raw(Model.Content)*@
+                    <p>
+                        @if (Model.Any())
                         {
-                            foreach (var a in i.Episodes)
+                            foreach (var i in Model)
+                             {
+                                 <img src="@i.ImageUrl">
+
+                             }
+                        }
+                      
+                    </p>
+                    <p class="postinate">
+                        @{
+                            var start = this.Model.StartPageIndex;
+                            var stop = this.Model.StopPageIndex;
+                        }
+                        @if (this.Model.PageCount > 1)
+                        {
+
+                            @if (start > 1)
                             {
-                                <li class="list-group-item"> <a class="text-cyan" onclick="displayEpisode(@a.Id)"> @a.Name </a>   </li>
+
+                                <a href="@Url.Action("ReadComic", Model.GetRouteValueForPage(1))"><span>1</span></a>
+                            }
+                            @if (this.Model.PageIndex > 1)
+                            {
+                                @*<li class="page-item">
+                    <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(this.Model.PageIndex - 1))" aria-label="Previous" class="page-link">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>*@
+                                <a href="@Url.Action("ReadComic", Model.GetRouteValueForPage(this.Model.PageIndex - 1))"><span>&laquo;</span></a>
+
+                            }
+                            @for (int i = start; i <= stop; i++)
+                            {
+                                @*<li class="page-item @((Model.PageIndex == i) ? "active" : null)">
+                    @Html.ActionLink(i.ToString(), Model.Action, Model.GetRouteValueForPage(i), new { @class = "page-link" })
+                </li>*@
+                                <a href="@Url.Action("ReadComic", Model.GetRouteValueForPage(i))"><span>@i</span></a>
+
+                            }
+                            @if (this.Model.PageIndex < this.Model.PageCount)
+                            {
+                                @*<li class="page-item">
+                    <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(this.Model.PageIndex + 1))" aria-label="Next" class="page-link">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>*@
+                                <a href="@Url.Action("ReadComic",  Model.GetRouteValueForPage(this.Model.PageIndex + 1))"><span>&raquo;</span></a>
+
+                            }
+                            @if (stop < this.Model.PageCount)
+                            {
+                                <li class="page-item">
+                                    <a href="@Url.Action("ReadComic", Model.GetRouteValueForPage(this.Model.PageCount))" aria-label="Last" class="page-link">
+                                        <span aria-hidden="true">@this.Model.PageCount</span>
+                                    </a>
+                                </li>
+                                <a href="@Url.Action("ReadComic", Model.GetRouteValueForPage(this.Model.PageCount))"><span>@this.Model.PageCount</span></a>
+
                             }
 
                         }
 
-                        @*<li class="list-group-item"> <a href="#">Chapter 1</a> </li>
-            <li class="list-group-item">Chapter 2</li>
-            <li class="list-group-item">Chapter 2</li>
-            <li class="list-group-item">Chapter 2</li>
-            <li class="list-group-item">Chapter 2</li>*@
-                    </ul>
-                }
-                @*<h4 class="text-primary card-title">Section 1</h4>
-    <ul class="list-group">
-        <li class="list-group-item"> <a href="#">Chapter 1</a> </li>
-        <li class="list-group-item">Chapter 2</li>
-        <li class="list-group-item">Chapter 2</li>
-        <li class="list-group-item">Chapter 2</li>
-        <li class="list-group-item">Chapter 2</li>
-    </ul>*@
-            </div>
-          
-        </div>
-        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                        @*Pages:
+                        <span>1</span>
+                        <a href="#"><span>2</span></a>
+                        <a href="#"><span>3</span></a>*@
 
-            <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-        </div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
-    </div>
-</div>
- 
-<input type="hidden" value=""/>
-<div class="right-part">
-    <div class="">
- 
-        <!-- Row -->
-        <div class="">
-            <div class="card p-3">
-                <h2 class="d-inline">My Comics</h2>
-                <h4 class="card-title text-center"> @Model.Title</h4>
-                <div class="tolbar">
-                    <button class="btn btn-outline-cyan "> <i class="fa fa-backward"></i> Back</button>
-                    <button class="btn btn-outline-cyan "> <i class="fa fa-tv"></i> Full Screen</button>
-
-                    <button class="btn btn-outline-cyan "> <i class="fa fa-forward"></i> Next</button>
-
-                </div>
-                <div class="card-body">
-                    <div id="loader" style="width: 40%; margin: auto; display: none; " >
-                        <img src="~/images/loading.gif" />
-                    </div>
-                    <div class="showEpisode">
-                        @await Component.InvokeAsync("ReadEpisode", new {episodeId = episodeId})
-
-                    </div>
-                </div>
+                    </p>
+                </div><!--end entry-->
             </div>
 
 
-        </div>
-        <!-- Row -->
+            <!--IF COMMENTS ARE OPEN-->
+            <div id="commentToggle">
+                <a href="#">~&nbsp;&nbsp; Thoughts? &nbsp;&nbsp;~</a>
+            </div>
+            <div id="commentsection">
+                <div id="toggleComments">
+                    <!--IF THERE ARE COMMENTS-->
 
-    </div>
-</div>
-@section css{
-    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
-}
+                    <div id="respond">
 
-@section Scripts
-    {
-     
-    <script>
-        function displayEpisode(epicId) {
-            $.ajax("/Comic/ReadEpisode/" + epicId,
-                {
-                    type: "get",
-                    beforeSend: function() {
-                        $("#loader").show();
-                    },
-                    complete: function() {
-                        $("#loader").hide();
+                        <h3>Leave a Reply</h3>
+                        <div class="cancel-comment-reply">
+                            <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display:none;">Click here to cancel reply.</a></small>
+                        </div>
+                        <!--IF USER MUST BE LOGGED IN-->
+                        <form action="http://themes.themolitor.com/wpnovelist/wp-comments-post.php" method="post" id="commentform">
+                            <!--IF USER IS LOGGED IN-->
+                            <p>
+                                <input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required='true' />
+                                <label for="author"><small>Name (required)</small></label>
+                            </p>
+                            <p>
+                                <input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required='true' />
+                                <label for="email"><small>Email (required)</small></label>
+                            </p>
+                            <p>
+                                <input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+                                <label for="url"><small>Website</small></label>
+                            </p>
 
-                    },
-                    success: function(response) {
-                        $(".showEpisode").html(response);
-                    }
-                });
-            //$(".showEpisode").load("/Comic/ReadEpisode/"+epicId);
-        }
-    </script>
-}
+                            <p>
+                                <textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea>
+                            </p>
+                            <p>
+                                <input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" />
+                                <input type='hidden' name='comment_post_ID' value='13' id='comment_post_ID' />
+                                <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+                            </p>
+
+                        </form>
+                    </div><!--end respond-->
+                </div><!--end toggleComments-->
+            </div>
+
+        </div><!--end post-->
+
+    </div><!--end main-->
+    <div class="clear"></div>
+    <a href="#" rel="next"></a>
+    <a href="#" rel="prev"></a>
+</div><!--end content-->

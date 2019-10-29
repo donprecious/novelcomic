@@ -1,17 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Webnovel.Entities;
 using Webnovel.Models;
 using Webnovel.Models.AccountViewModels;
+using Webnovel.Repository;
 using Webnovel.Services;
 
 namespace Webnovel.Controllers
@@ -24,17 +28,19 @@ namespace Webnovel.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-
+        private IReferral _referral;
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IReferral referral)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _referral = referral;
         }
 
         [TempData]
@@ -65,6 +71,13 @@ namespace Webnovel.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    // check  if user is logged in 
+                    var user = await  _userManager.Users.Where(a => a.Email == model.Email).SingleOrDefaultAsync();
+                    var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                    if (isAdmin)
+                    {
+                        return Redirect(Url.Action("Index", "Dashboard", new {Area = "Admin"}));
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -206,9 +219,14 @@ namespace Webnovel.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register(string returnUrl = null, int? referralId = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            if (referralId != null)
+            {
+               HttpContext.Session.SetString("referralId", referralId.ToString());
+                ViewData["referralId"] = referralId;
+            }
             return View();
         }
 
@@ -224,8 +242,19 @@ namespace Webnovel.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var referralId = HttpContext.Session.GetString("referralId");
+                    if ( referralId != null)
+                    {
+                        var referral = Convert.ToInt32(referralId);
+                       await _referral.AddReferred(new Referred()
+                        {
+                            ReferralId = referral,
+                            UserId = user.Id,
+                            DateRegistered = DateTime.UtcNow
+                        });
+                       await _referral.Save();
+                    }
                     _logger.LogInformation("User created a new account with password.");
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
@@ -244,6 +273,12 @@ namespace Webnovel.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+         public async Task<IActionResult> SignOut()
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
@@ -455,7 +490,7 @@ namespace Webnovel.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction("Index", "Home");
             }
         }
 

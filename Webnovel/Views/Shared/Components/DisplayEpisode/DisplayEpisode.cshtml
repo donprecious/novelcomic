@@ -5,22 +5,22 @@
         <div class="mb-3">
             @if (Model.ImageUrl == null)
             {
-                <button onclick="beginUpload(@Model.Id)" class="btn btn-primary"><i class="ti ti-edit"></i> Add Picture </button>
+                <button onclick="beginUpload(@Model.Id)" class="btn btn-primary"><i class="ti ti-edit"></i> Add  comic image </button>
             }
             else
             {
-                <button onclick="beginUpload(@Model.Id)" class="btn btn-primary"><i class="ti ti-edit"></i> Change Picture </button>
+                <button onclick="beginUpload(@Model.Id)" class="btn btn-primary"><i class="ti ti-edit"></i> Change comic image </button>
             }
-            <p class="text text-info">Recommended Size are 994 x 1528, or 1988 x 3056 </p>
+            <p class="text text-info">Recommended Size are 994 x 1528, or 1988 x 3056  <br /> 1 image per episode  </p>
             <h4 class="card-title text-center"> @Model.Name</h4>
             <p class="text-center">
                 <img src="~/images/loading.gif" style="display: none" id="loadingImg" />
                 <input type="hidden" id="uploadedFileData" />
             </p>
             <input class="hidden" type="file" id="UploadFileControl" />
-            <div class="border-left border-orange p-l-5">
+            <div class="img-div">
 
-                <img src="@Model.ImageUrl" id="myImage" class="img-fluid" />
+                <img src="@Model.ImageUrl" id="myImage" title="@Model.Name" class="img-fluid" />
             </div>
 
         </div>

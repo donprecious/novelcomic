@@ -1,0 +1,47 @@
+﻿@model object
+
+@{
+    ViewData["Title"] = "Create Content";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body collapse show">
+                <h4 class="card-title">Create Amazing Content</h4>
+                <p class="card-text">Be creative and entertain your audience </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card border-dark">
+            <div class="card-header bg-inverse">
+                <h4 class="m-b-0 text-white">Create Novel</h4></div>
+            <div class="card-body">
+                <h3 class="card-title"><a href="@Url.Action("Create","Novel")" class="btn btn-dark"> Create Novels </a></h3>
+         
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card border-dark">
+            <div class="card-header bg-inverse">
+                <h4 class="m-b-0 text-white"> Create Comic</h4></div>
+            <div class="card-body">
+                <h3 class="card-title"><a href="@Url.Action("Create","Comic")" class="btn btn-dark">Create Comics </a></h3>
+            </div>
+        </div>
+    </div> 
+    <div class="col-sm-4">
+        <div class="card border-dark">
+            <div class="card-header bg-inverse">
+                <h4 class="m-b-0 text-white"> Create Animation</h4></div>
+            <div class="card-body">
+                <h3 class="card-title"><a href="@Url.Action("Create","Animation")" class="btn btn-dark"> Create </a></h3>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+#zoomBox {
+	position: fixed;
+	display: none;
+	z-index: 1000;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: rgba(0,0,0,.92);
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	
+	-moz-transition-property:background-color, border-color, color;  
+ 	-moz-transition-duration:0.20s;  
+ 	-moz-transition-timing-function:linear;
+ 	
+ 	-webkit-transition-property:background-color, border-color, color;  
+ 	-webkit-transition-duration:0.20s;  
+ 	-webkit-transition-timing-function:linear; 
+ 	
+ 	-o-transition-property:background-color, border-color, color;  
+ 	-o-transition-duration:0.20s;  
+ 	-o-transition-timing-function:linear; 
+}
+#zoomBox.zoomOut {background: #000;}
+#zoomBox #imgBox {
+	position: absolute;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 1;
+	cursor: pointer;
+}
+#zoomBox.zoomIn #imgBox {
+	background-size: contain;
+	cursor:zoom-in;
+	top: 65px;
+	left: 65px;
+	right: 65px;
+	bottom: 65px;
+}
+#zoomBox.zoomOut #imgBox {
+	background-size: cover;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	cursor:zoom-out;
+}
+#zoomBox.loading:before {
+	content: '';
+	display: block;
+	color: #fff;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 30px;
+	width: 40px;
+	font-size: 14px;
+	margin: -15px 0 0 -20px;
+	background-color: #1a1a1a;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 5px;
+	z-index: 2;
+}
+
+#zoomBox .boxNav {
+	display: block;
+	top: 50%;
+	height: 55px;
+	width: 55px;
+	line-height: 55px;
+	text-align: center;
+	color: #fff;
+	font-size: 25px;
+	z-index: 1;
+	margin-top: -31px;
+	cursor: pointer;
+	position: fixed;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+#zoomBox #nextBox {right: 0;}
+#zoomBox #prevBox {left: 0;}
+
+#zoomBox #closeZoomBox {
+	position: absolute; 
+	display: block; 
+	color: #fff; 
+	height: 55px;
+	width: 55px;
+	line-height: 55px; 
+	text-align: center;
+	font-size: 25px;
+	top:0;
+	right:0;
+	z-index: 1;
+	cursor: pointer;	
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+#zoomBox #closeZoomBox:hover,
+#zoomBox .boxNav:hover {background: #fff; color: #000; text-shadow:none;}
+
+
+#zoomBox #titleBox {	
+	line-height: 1.2em;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);	
+	position: absolute; 
+	color: #fff;
+	font-size: 14px;
+	display: block;
+	text-align: center;
+	z-index: 1;
+	left: 0;
+	width: 100%;
+	bottom: 10px;
+}
+#zoomBox #titleBox span {display: block; font-size: 12px;}
+
+/*--------------------*/
+/*---SMALL DEVICES---*/
+/*------------------*/
+@media screen and (max-width:400px) {
+	
+	#zoomBox.zoomIn #imgBox {
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+	}	
+}

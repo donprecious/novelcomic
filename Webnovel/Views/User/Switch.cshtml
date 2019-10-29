@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Switch";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body collapse show">
+                <h4 class="card-title">Switch Account</h4>
+                <p class="card-text">Switch Account to creator or reader </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card border-primary">
+            <div class="card-header bg-primary">
+                <h4 class="m-b-0 text-white">Reader</h4>
+            </div>
+            <div class="card-body">
+                <p> I want to read and view like novels, comics and animations  </p>         
+                <h3 class="card-title"><a href="@Url.Action("SavedNovels", "Novel")" class="btn btn-primary">Ok </a></h3>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card border-orange">
+            <div class="card-header bg-orange">
+
+                <h4 class="m-b-0 text-white">Creator</h4>
+            </div>
+            <div class="card-body">
+                <p> I want to create content and earn from it  </p>
+                <h3 class="card-title"><a href="@Url.Action("Create", "Novel")" class="btn btn-orange">Ok </a></h3>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,60 @@
+﻿@using CloudinaryDotNet
+@using Webnovel.Services
+@model System.Collections.Generic.IEnumerable<Webnovel.Entities.Episode>
+
+@{
+    var cloudinary = new Cloudinary(new Account()
+    {
+        ApiKey = CloudinaryUpload.apiKey,
+        ApiSecret = CloudinaryUpload.apiSecret,
+        Cloud = CloudinaryUpload.cloud,
+
+    });
+}
+    <p class="text-primary card-title"><i class="mdi mdi-drag"></i> Drag and move item to different positon</p>
+<div class="row el-element-overlay o-sortable">
+    @foreach (var i in Model)
+    {
+        <div class="col-lg-3 col-md-6">
+            <div class="card epi-item" data-id="@i.Id">
+                <div class="el-card-item">
+                    <div class="el-card-avatar el-overlay-1"> @{ 
+                                                                  var img = i.ImageUrl;
+                                                                  if (img != null)
+                                                                  {
+                                                                      img = cloudinary.Api.UrlImgFetch.
+                                                                          Transform(new Transformation()
+                                                                              .Height(300).Width(300).Crop("fill")).BuildUrl(i.ImageUrl);
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      img = cloudinary.Api.UrlImgFetch.
+                                                                          Transform(new Transformation()
+                                                                              .Height(300).Width(300).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
+                                                                  }
+
+                                                              }
+                  
+                        <img src="@img" alt="user" />
+                        <div class="el-overlay">
+                            <ul class="list-style-none el-info">
+                                <li class="el-item"><a ><i class="mdi mdi-arrow-all"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <i class="mdi mdi-drag mdi-18px text-left pull-left"></i>
+                    <div class="el-card-content">
+                     
+                        <h4 class="m-b-0">
+
+                            @i.Name
+                        </h4> <span class="text-muted">@i.Description</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
+
+</div>

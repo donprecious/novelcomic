@@ -1,35 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using ReflectionIT.Mvc.Paging;
 using Webnovel.Data;
+using Webnovel.Entities;
+using Webnovel.Hubs;
 using Webnovel.Models;
 using Webnovel.Repository;
 using Webnovel.Services;
+using NovelComment = Webnovel.Repository.NovelComment;
 
 namespace Webnovel
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
+	public class Startup
+	{
+		public IConfiguration Configuration
+		{
+			get;
+		}
+
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+       
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+		public void ConfigureServices(IServiceCollection services)
+		{
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
             services.AddIdentity<ApplicationUser, IdentityRole>(o =>
                 {
                     o.Password.RequireDigit = false;
@@ -41,21 +57,43 @@ namespace Webnovel
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            
-            // Add application services.
+   // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddScoped<ICategory, Category>();
-            services.AddScoped<INovel, Novel>();
-            services.AddScoped<IAuthor, Author>();
-            services.AddScoped<IComic, Comic>();
-            services.AddScoped<IAnimation, Animation>();
+            services.AddScoped<ICategory, Repository.Category>();
+            services.AddScoped<INovel, Repository.Novel>();
+            services.AddScoped<IAuthor, Repository.Author>();
+            services.AddScoped<IComic, Repository.Comic>();
+            services.AddScoped<IAnimation, Repository.Animation>();
+            services.AddScoped<IUser, Repository.User>();
+            services.AddScoped<IReferral, Repository.Referral>();
+            services.AddScoped<INovelHistory, NovelHistory>();
+            services.AddScoped<IComicHistory, Repository.ComicHistory>();
 
+            services.AddScoped<INovelComment, NovelComment>();
+            services.AddScoped<IAppConfig, AppConfig>();
+            services.AddScoped<IRate, Rate>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddAsyncInitializer<MyAppInitializer>();
+            services.AddPaging();
 
-            services.AddMvc();
-        }
+            services.AddMvc(); 
+            services.AddCors(options => options.AddPolicy("CorsPolicy", 
+                builder => 
+                {
+                    builder.AllowAnyMethod().AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowCredentials();
+                }));
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        
+
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
+		}
+
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -71,7 +109,7 @@ namespace Webnovel
             app.UseBrowserLink();
             app.UseDeveloperExceptionPage();
             app.UseDatabaseErrorPage();
-          
+
             AutoMapper.Mapper.Initialize(map =>
             {
                 map.CreateMap<Entities.Novel, Models.NovelVm>();
@@ -96,7 +134,7 @@ namespace Webnovel
                 map.CreateMap<Entities.Comic, Models.CoverPageVm>();
 
 
-                
+
                 map.CreateMap<Entities.ComicScene, Models.ComicSceneVm>();
                 map.CreateMap<Models.ComicSceneVm, Entities.ComicScene>();
 
@@ -104,7 +142,7 @@ namespace Webnovel
                 map.CreateMap<Models.EpisodeVm, Entities.Episode>();
 
                 map.CreateMap<Entities.Animation, Models.AnimationVm>();
-                map.CreateMap< Models.AnimationVm, Entities.Animation>();
+                map.CreateMap<Models.AnimationVm, Entities.Animation>();
 
                 map.CreateMap<Models.AnimationCoverPageVm, Entities.Animation>();
                 map.CreateMap<Entities.Animation, Models.AnimationCoverPageVm>();
@@ -117,14 +155,21 @@ namespace Webnovel
 
                 map.CreateMap<Entities.NovelComment, Models.NovelCommentVm>();
                 map.CreateMap<Models.NovelCommentVm, Entities.NovelComment>();
+
+                map.CreateMap<Entities.ChapterComment, Models.NovelChapterCommentVm>();
+                map.CreateMap<Models.NovelChapterCommentVm, Entities.ChapterComment>();
             });
 
-                app.UseStaticFiles();
+            app.UseStaticFiles();
 
             app.UseAuthentication();
 
-      
-
+            app.UseSession();
+          //  app.UseHttpContextItemsMiddleware();
+          app.UseSignalR(routes => 
+          {
+              routes.MapHub<NovelCommentHub>("/novelCommentHub");
+          });
             app.UseMvc(routes =>
             {
                 routes.MapAreaRoute(

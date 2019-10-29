@@ -26,6 +26,7 @@
                         confirmButtonText: 'Cool'
                     });
                     $("#sections").load('/Novel/AddSectionView/' + response.data.novelId);
+                    location.reload();
                 } else if (response.status == 400) {
                     var html = "<ul> ";
                     response.errors.forEach(a => {

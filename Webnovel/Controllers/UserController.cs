@@ -1,98 +1,147 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Webnovel.Data;
+using Webnovel.Models;
+using Webnovel.Repository;
+using Author = Webnovel.Entities.Author;
 
 namespace Webnovel.Controllers
 {
-    public class UserController : Controller
-    {
-        // GET: User
+    [Authorize]
+	public class UserController : Controller
+	{
+        private UserManager<ApplicationUser> _userManager;
+        private ApplicationDbContext _context;
+        private IReferral _referral;
+
+        private string userId;
+        public UserController(UserManager<ApplicationUser> userManager, ApplicationDbContext context, IReferral referral)
+        {
+            _userManager = userManager;
+            _context = context;
+            _referral = referral;
+
+        }
         public ActionResult Dashboard()
-        {
-            return View();
-        }
+		{
+			return View();
+		}
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+		public ActionResult Index()
+		{
+			return (ActionResult)(object)((ControllerBase)this).RedirectToAction("Dashboard");
+		}
 
-        // GET: User/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+		public ActionResult CreateContent()
+		{
+			return View();
+		}
 
-        // POST: User/Create
+		
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Delete(int id, IFormCollection collection)
+		{
+			try
+			{
+				return (ActionResult)(object)((ControllerBase)this).RedirectToAction("Dashboard");
+			}
+			catch
+			{
+				return View();
+			}
+		}
+
+		public ActionResult Switch()
+		{
+			return View();
+		}
+
+		public IActionResult UnderConstructionPage()
+		{
+			return (IActionResult)(object)((Controller)this).View();
+		}
+
+        public async  Task<IActionResult> CreatorProfile()
+        {
+            userId = _userManager.GetUserId(User);
+            var user = await _context.Users.Where(a => a.Id == userId).SingleAsync();
+            return View("Profile", user);
+        } 
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> ChangeProfilePicture(string picture)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Dashboard));
-            }
-            catch
-            {
-                return View();
-            }
+            if (picture == null) return Json(new{message="picture is not found", status=400});
+            userId = _userManager.GetUserId(User);
+            var user = await _context.Users.Where(a => a.Id == userId).SingleAsync();
+            user.ProfileImage = picture;
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return Json(new { message = "Picture changes successfully", status = 200 });
         }
 
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        
+        public async Task<ActionResult> EditProfile()
         {
-            return View();
+            userId = _userManager.GetUserId(User);
+            var user = await _context.Users.Where(a => a.Id == userId).SingleAsync();
+            return PartialView("_EditProfile", user);
         }
 
-        // POST: User/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditAuthorProfile(EditUserVm user)
         {
-            try
+            //get user  
+            var findUser = _context.Users.SingleOrDefault(a => a.Id == user.UserId);
+            var author = _context.Authors.FirstOrDefault(a => a.UserId == user.UserId);
+            findUser.FirstName = user.FirstName;
+            findUser.LastName = user.LastName;
+            findUser.PhoneNumber = user.Phone;
+            _context.Entry(findUser).State = EntityState.Modified;
+            _context.SaveChanges();
+            //check author 
+            if (author != null)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Dashboard));
+                 // check for title 
+                 if (user.AuthorTitle != null || string.IsNullOrEmpty(user.AuthorTitle))
+                 {
+                     author.Title = user.AuthorTitle;
+                     _context.Entry(author).State = EntityState.Modified;
+                     _context.SaveChanges();
+                 }
             }
-            catch
+            else
             {
-                return View();
+                //create new person 
+                if (user.AuthorTitle != null || string.IsNullOrEmpty(user.AuthorTitle))
+                {
+                    _context.Authors.Add(new Author()
+                    {
+                        UserId = user.UserId,
+                        Title = user.AuthorTitle,
+                    });
+                    _context.SaveChanges();
+                }
             }
+           return Json(new { status = 200, message = "Changes Saved Successfully" });
         }
 
-        // GET: User/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> ReferralHub()
         {
-            return View();
-        }
-
-        // POST: User/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+            var referral = (await _referral.GetReferral(_userManager.GetUserId(User)));
+            if (referral != null)
             {
-                // TODO: Add delete logic here
+                ViewBag.referralId = referral.Id;
 
-                return RedirectToAction(nameof(Dashboard));
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        public IActionResult UnderConstructionPage()
-        {
-            return View();
+            var refers = await _referral.Refers(_userManager.GetUserId(User));
+            return View(refers);
         }
     }
 }

@@ -1,0 +1,37 @@
+﻿@model EditUserVm
+
+<form class="form-horizontal form-material" action="/Profile/EditProfile" method="post" id="editProfileForm">
+ @Html.HiddenFor(a=>a.UserId)
+    <div class="form-group">
+        <label class="col-md-12">First Name</label>
+        <div class="col-md-12">
+            <input type="text" value="@Model.FirstName" name="@Html.NameFor(a=>a.FirstName)" class="form-control form-control-line">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-12">Last Name</label>
+        <div class="col-md-12">
+            <input type="text" placeholder="@Model.LastName" value="@Model.LastName" name="@Html.NameFor(a=>a.LastName)" class="form-control form-control-line">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-12">My Title</label>
+        <div class="col-md-12">
+            <input type="text" placeholder="@Model.AuthorTitle" value="@Model.AuthorTitle" name="@Html.NameFor(a=>a.AuthorTitle)" class="form-control form-control-line">
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-md-12">Phone No</label>
+        <div class="col-md-12">
+            <input type="text" placeholder="@Model.Phone" value="@Model.Phone" name="@Html.NameFor(a=>a.Phone)" class="form-control form-control-line">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button class="btn btn-success">Update Profile</button>
+        </div>
+    </div>
+</form>

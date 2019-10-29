@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Http
+@model System.Collections.Generic.ICollection<Webnovel.Entities.Referred>
+
+@{
+    ViewBag.Title = "Referral Hub";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IHttpContextAccessor _httpContextAccessor 
+
+<div>
+    <div class="hero common-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="hero-ct">
+                        <h1>Referral Hub</h1>
+                        @*<ul class="breadcumb">
+                            <li class="active"><a href="#">Home</a></li>
+                            <li> <span class="ion-ios-arrow-right"></span> blog listing</li>
+                        </ul>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="buster-light">
+    <div class="page-single">
+        <div class="container">
+ 
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="blog-detail-ct text-white text-center">
+                       
+                        @{
+                            var host = @_httpContextAccessor.HttpContext.Request.Host;
+                            var referal = Url.Action("Register", "Account", new {referralId = ViewBag.referralId});
+
+                            var url = $"http://{host}/{referal}";
+                        }
+                        <h3>Users Referred  (@Model.Count())</h3>
+                        <p style="padding-top: 10px;"> Your Links 
+                            <br />
+                            @url
+                            <br />
+                            </p>
+                        <div>
+                            <table class="table table-responsive table-borderless table-bordered table-responsive-sm"><tr>
+                                    <th>Email</th>
+                                    <th>Date Registered</th>
+
+                                </tr>
+                                @foreach (var i in Model)
+                                {
+                                    <tr>
+                                        <td>@i.User.Email</td>
+                                        <td>@i.DateRegistered.ToString("f")</td>
+                                    </tr>
+
+                                }
+                            </table>
+                        </div>
+                
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

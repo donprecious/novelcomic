@@ -1,0 +1,163 @@
+﻿@model System.Collections.Generic.List<Webnovel.Entities.Animation>
+@using CloudinaryDotNet
+@using Webnovel.Helpers
+@using Webnovel.Repository
+@using Webnovel.Services
+@{
+    ViewBag.Title = "Latest Comics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var cloudinary = new Cloudinary(new Account()
+    {
+        ApiKey = CloudinaryUpload.apiKey,
+        ApiSecret = CloudinaryUpload.apiSecret,
+        Cloud = CloudinaryUpload.cloud,
+
+    });
+}
+
+@inject IComic _comic
+
+@inject ICategory Category;
+@{
+    var tags = await _comic.GetTags();
+    var categories = await Category.List();
+}
+
+
+
+<div class="hero common-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1>Novels</h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a asp-action="Home">Home</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span> Animations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="topbar-filter">
+                    @*<p>Found <span>1,608 movies</span> in total</p>*@
+                    <label>Sort by:</label>
+                    <select>
+                        <option value="popularity">Popularity Descending</option>
+                        <option value="popularity">Popularity Ascending</option>
+                        <option value="rating">Rating Descending</option>
+                        <option value="rating">Rating Ascending</option>
+                        <option value="date">Release date Descending</option>
+                        <option value="date">Release date Ascending</option>
+                    </select>
+                    @*<a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
+                        <a href="moviegrid.html" class="grid"><i class="ion-grid active"></i></a>*@
+                </div>
+                <div class="flex-wrap-movielist">
+                    @foreach (var i in Model)
+                    {
+                        var img = i.CoverPageImageUrl;
+                        if (img != null)
+                        {
+                            img = cloudinary.Api.UrlImgFetch.
+                                Transform(new Transformation()
+                                     .Height(244).Width(152).Crop("fill")).BuildUrl(i.CoverPageImageUrl);
+
+                        }
+                        else
+                        {
+                            img = cloudinary.Api.UrlImgFetch.
+                                Transform(new Transformation()
+                                    .Height(128).Width(284).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
+
+                        }
+
+                        <div class="movie-item-style-2 movie-item-style-1">
+                            <img src="@img" alt="">
+                            <div class="hvr-inner">
+                                <a href="@Url.Action("Animation", new{id = i.Id})"> Read <i class="ion-android-arrow-dropright"></i> </a>
+                            </div>
+                            <div class="mv-item-infor">
+                                <h6><a href="@Url.Action("Animation", new{id = i.Id})"> @StringProcessor.SubString(i.Title, 0, 20)</a></h6>
+                                <p class="rate"><i class="ion-android-star"></i><span>0</span> /5</p>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+                <div class="topbar-filter">
+                    <label>Movies per page:</label>
+                    <select>
+                        <option value="range">20 Movies</option>
+                        <option value="saab">10 Movies</option>
+                    </select>
+
+                    @*<div class="pagination2">
+                            <span>Page 1 of 2:</span>
+                            <a class="active" href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">...</a>
+                            <a href="#">78</a>
+                            <a href="#">79</a>
+                            <a href="#"><i class="ion-arrow-right-b"></i></a>
+                        </div>*@
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="sidebar">
+                    <div class="sb-cate sb-it">
+                        <h4 class="sb-title">Categories</h4>
+                        <ul>
+                            @foreach (var i in categories)
+                            {
+                                <li><a href="#">@i.Name</a></li>
+
+                            }
+
+                        </ul>
+                    </div>
+                    <div class="sb-recentpost sb-it">
+                        <h4 class="sb-title">most popular</h4>
+                        @*<div class="recent-item">
+                                <span>01</span><h6><a href="#">Korea Box Office: Beauty and the Beast Wins Fourth</a></h6>
+                            </div>*@
+
+                    </div>
+                    <div class="sb-tags sb-it">
+                        <h4 class="sb-title">tags</h4>
+                        <ul class="tag-items">
+                            @foreach (var i in tags)
+                            {
+                                <li><a href="#">@i.Name</a></li>
+                            }
+
+                        </ul>
+                    </div>
+                    @*<div class="ads">
+                            <img src="images/uploads/ads1.png" alt="">
+                        </div>
+                        <div class="sb-facebook sb-it">
+                            <h4 class="sb-title">Find us on Facebook</h4>
+                            <iframe src="#" data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fhaintheme%2F%3Ffref%3Dts&tabs=timeline&width=340&height=315px&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=true&appId" height="315" style="width:100%;border:none;overflow:hidden"></iframe>
+                        </div>
+                        <div class="sb-twitter sb-it">
+                            <h4 class="sb-title">Tweet to us</h4>
+                            <div class="slick-tw">
+                                <div class="tweet item" id="599202861751410688">
+                                </div>
+                                <div class="tweet item" id="297462728598122498">
+                                </div>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

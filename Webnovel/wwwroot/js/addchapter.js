@@ -19,19 +19,15 @@
             },
             success: function (response) {
                 if (response.status == 200) {
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Section Created Successfully',
-                        type: 'success',
-                        confirmButtonText: 'Cool'
-                    });
-                    $("#sections").load('/Novel/AddSectionView/' + response.data.novelId);
-                } else if (response.status == 400) {
-                    var html = "<ul> ";
-                    response.errors.forEach(a => {
-                        html += `<li> ${a.errorMessage} </li>`;
+                    $("#createChapterModal").hide();
+                    $("#sections").load('/Novel/AddSectionView/' + response.data.novelId); 
+                    showEditChapter(response.data.id);
+                    $("#createChapterModal").modal('hide');
+                        toastr.success(response.message);
 
-                    });
+                } else if (response.status == 400) {
+                    var html = "<ul>";
+                    response.errors.forEach(a=>{html += `<li>${a.errorMessage}</li>`; });
                     $("#alertNovelError").html(html + '</ul>');
                     $('#alertNovelError').removeClass('hide');
 
