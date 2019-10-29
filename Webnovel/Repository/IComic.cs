@@ -72,6 +72,12 @@ namespace Webnovel.Repository
         Task<ICollection<Tag>> GetTags();
                  Task   AddEpisodes(int comicId, List<string> pictures);
         Task SortEpisodes(List<int> episodes);
+        Task AddViewer(ComicViewer comicViewer);
+        Task<ICollection<ComicViewer>> GetComicViewer();
+        Task<ICollection<ComicViewer>> GetComicViewer(int comicId);
+        Task<ICollection<ComicViewer>> GetAuthorNovelViewers(int authorId);
+      
+
         Task<bool> Save();
     }
 }

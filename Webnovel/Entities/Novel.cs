@@ -80,6 +80,7 @@ namespace Webnovel.Entities
 			set;
 		}
 
+        public string Status {get;set;}
 		[ForeignKey("CategoryId")]
 		public Category Category
 		{

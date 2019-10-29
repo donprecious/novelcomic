@@ -38,6 +38,8 @@ namespace Webnovel.Repository
 
 		Task<IEnumerable<Chapter>> GetNovelChapters(int novelId);
         Task<IOrderedQueryable<Chapter>> GetNovelChaptersNoTracking(int novelId);
+        Task<IQueryable<Chapter>> GetNovelChaptersAsIQueryable(int novelId);
+
 		Task<Chapter> GetNovelChapter(int chapterId);
 
 		Task EditNovelChapter(ChapterVm chapter);
@@ -75,11 +77,17 @@ namespace Webnovel.Repository
 		Task<Tag> GetTag(string name);
 
 		Task<bool> FindTag(string name);
+         Task<ICollection<Chapter>> GetNovelPublishedChapter(int novelId);
+        Task<ICollection<Chapter>> GetAuthorPublishedChapter(int authorId);
 
 		Task<bool> Save();
 
 		Task UpdateChapter(Chapter chapter);
 
 		Task<IEnumerable<NovelLibrary>> GetLibrary(string userId);
-	}
+        Task AddViewer(NovelViewer novelViewer);
+        Task<ICollection<NovelViewer>> GetNovelViewer();
+        Task<ICollection<NovelViewer>> GetNovelViewer(int novelId);
+        Task<ICollection<NovelViewer>> GetAuthorNovelViewers(int authorId);
+    }
 }

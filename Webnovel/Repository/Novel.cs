@@ -148,6 +148,12 @@ namespace Webnovel.Repository
                 .Where(a => a.NovelId == novelId).AsNoTracking().OrderBy(a => a.DateCreated);
         }
 
+        public async Task<IQueryable<Chapter>> GetNovelChaptersAsIQueryable(int novelId)
+        {
+            return  _context.Chapters.Include(a => a.Novel).Include(a => a.NovelSection)
+                .Where(a => a.NovelId == novelId).AsNoTracking().OrderBy(a => a.DateCreated);
+        }
+
         public async Task<Chapter> GetNovelChapter(int chapterId)
 		{
 			return await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Chapter>((IQueryable<Chapter>)EntityFrameworkQueryableExtensions.Include<Chapter, NovelSection>(((IQueryable<Chapter>)_context.Chapters).Where((Chapter a) => a.Id == chapterId), (Expression<Func<Chapter, NovelSection>>)((Chapter a) => a.NovelSection)), default(CancellationToken));
@@ -283,6 +289,36 @@ namespace Webnovel.Repository
         {
           await  _context.ChapterComments.AddAsync(chapterComment);
         }
+
+        public async Task<ICollection<Chapter>> GetNovelPublishedChapter(int novelId){
+                var chapters = await _context.Chapters.Where(a=>a.NovelId == novelId 
+                && a.isPublished == true  ).ToListAsync();
+            return chapters;
+         } 
+          public async Task<ICollection<Chapter>> GetAuthorPublishedChapter(int authorId)
+            {
+                var chapters = await _context.Chapters.Where(a=>a.Novel.AuthorId == authorId 
+                && a.isPublished == true  ).ToListAsync();
+            return chapters;
+         }
+
+          public async Task AddViewer(NovelViewer novelViewer)
+          {
+              await _context.NovelViewer.AddAsync(novelViewer);
+          }
+
+          public async Task<ICollection<NovelViewer>> GetNovelViewer()
+          {
+              return await _context.NovelViewer.Include(a=>a.Novel).ToListAsync();
+          }
+          public async Task<ICollection<NovelViewer>> GetNovelViewer(int novelId)
+          {
+              return await _context.NovelViewer.Where(a=>a.NovelId == novelId).Include(a=>a.Novel).ToListAsync();
+          }
+          public async Task<ICollection<NovelViewer>> GetAuthorNovelViewers(int authorId)
+          {
+              return await _context.NovelViewer.Where(a=>a.Novel.AuthorId == authorId).Include(a=>a.Novel).ToListAsync();
+          }
 		public async Task<bool> Save()
 		{
 			return await((DbContext)_context).SaveChangesAsync(default(CancellationToken)) >= 0;

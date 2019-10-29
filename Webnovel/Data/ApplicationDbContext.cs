@@ -232,11 +232,16 @@ namespace Webnovel.Data
             get;
             set;
         }
-
+        public DbSet<ComicHistory> ComicHistory  {
+            get;
+            set;
+        }
         public DbSet<ChapterComment> ChapterComments { get; set; } 
         public DbSet<ChapterCommentReply> ChapterCommentReplies { get; set; } 
 
         public DbSet<RatingType> RatingTypes { get; set; }
+        public DbSet<NovelViewer> NovelViewer { get; set; }
+        public DbSet<ComicViewer> ComicViewer { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -320,6 +325,15 @@ namespace Webnovel.Data
 
             builder.Entity<NovelRating>().HasOne(a => a.RatingType);
             builder.Entity<NovelComment>().HasOne(a => a.NovelRating);
+            builder.Entity<NovelViewer>().HasOne(a => a.Novel);
+            builder.Entity<ComicViewer>().HasOne(a => a.Comic);
+
+            builder.Entity<ComicHistory>().HasOne(a => a.User);
+            builder.Entity<ComicHistory>().HasOne(a => a.Comic);
+            builder.Entity<ComicHistory>().HasOne(a => a.Episode);
+         
+
+
         }
 	}
 }

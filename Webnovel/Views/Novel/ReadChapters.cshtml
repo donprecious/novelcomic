@@ -1,18 +1,22 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<Webnovel.Entities.Chapter>
+﻿@model X.PagedList.IPagedList<Webnovel.Entities.Chapter>
 
 @using Webnovel.Repository
+@*@using X.PagedList
+@using X.PagedList.Mvc.Core*@
 
 @*@model  Webnovel.Entities.Chapter*@
 @{
     ViewData["Title"] = "ReadChapter";
     Layout = "~/Views/Shared/_NovelLayout.cshtml";
+    int currentPage = Model.PageNumber;
+    int nextPage = currentPage + 1;
+    int previousPage = currentPage - 1;
 }
-@{
-//var data = Model.FirstOrDefault();
-}
+
 
 @inject UserManager<ApplicationUser> UserManager
 @inject INovelComment NovelComment
+<input type='hidden' name='userId' value='@UserManager.GetUserId(User)' id='userId' />
 
 <div id="content">
     @foreach (var a in Model)
@@ -26,25 +30,24 @@
                     <div class="entry">
                         @Html.Raw(a.Content)
 
-                        @*<p class="postinate">
-                                Pages:
-                                <span>1</span>
-                                <a href="2/index.html"><span>2</span></a>
-                                <a href="3/index.html"><span>3</span></a>
-                                <a href="4/index.html"><span>4</span></a>
-                                <a href="5/index.html"><span>5</span></a>
-                                <a href="6/index.html"><span>6</span></a>
-                                <a href="7/index.html"><span>7</span></a>
-                                <a href="8/index.html"><span>8</span></a>
-                                <a href="9/index.html"><span>9</span></a>
-                            </p>*@
+                        <p class="postinate">
+                            @if (Model.HasPreviousPage)
+                            {
+                                <a href="@Url.Action("ReadChapters", new {novelId=Model.FirstOrDefault().NovelId, page= previousPage })" class="btn wizard-btn-prev" >Previous Chapter</a> <span>|</span>
+                            }  
+                            @if (Model.HasNextPage)
+                            {
+                                <a href="@Url.Action("ReadChapters", new {novelId = Model.FirstOrDefault().NovelId, page = nextPage})" class="btn wizard-btn-next">Next Chapter</a>
+                            }
+
+                        </p>
                     </div><!--end entry-->
                 </div>
 
 
                 <!--IF COMMENTS ARE OPEN-->
                 <div id="commentToggle">
-                    <a href="#">~&nbsp;&nbsp; Thoughts? &nbsp;&nbsp;~</a>
+                    <a >~&nbsp;&nbsp; Thoughts? &nbsp;&nbsp;~</a>
                 </div>
                 <div id="commentsection">
                     <div id="toggleComments">
@@ -62,8 +65,7 @@
                                     <textarea name="comment" id="comment_@a.Id" cols="100%" rows="5" tabindex="4"></textarea>
                                 </p>
                                 <p>
-                                    <input name="submit" type="submit" data-chapterId ="@a.Id"  id="submitComment" tabindex="5" value="Submit Comment" />
-                                    <input type='hidden' name='userId' value='@UserManager.GetUserId(User)' id='userId' />
+                                    <input name="submit" type="submit" data-chapterId ="@a.Id"  class="submitComment" tabindex="5" value="Submit Comment" />
                                 </p>
 
                             </div>
@@ -87,7 +89,7 @@
                                         <div class="comment-author vcard">
                                             <img alt="" src="@img" class="avatar avatar-32 photo" height="32" width="32">
                                             <cite class="fn">
-                                                <a href="http://dds" rel="external nofollow" class="url">@i.User.FirstName , @i.User.LastName</a>
+                                                <a href="#" rel="external nofollow" class="url">@i.User.FirstName , @i.User.LastName</a>
                                             </cite> <span class="says">says:</span>
                                         </div>
 
@@ -129,8 +131,16 @@
     }
 
     <div class="clear"></div>
-    <a href="#" rel="next"></a>
-    <a href="#" rel="prev"></a>
+  
+    @if (Model.HasNextPage)
+    {
+        <a href="@Url.Action("ReadChapters", new {novelId=Model.FirstOrDefault().NovelId, page=nextPage })" rel="prev"></a> 
+    }
+    @if (Model.HasPreviousPage)
+    {
+        <a href="@Url.Action("ReadChapters", new {novelId=Model.FirstOrDefault().NovelId, page= previousPage })" rel="next"></a>
+    }
+
 </div>
 
 @section Scripts {
@@ -168,16 +178,16 @@
 
             });
 
-        $("#submitComment").click(function(event) {
+        $(".submitComment").click(function(event) {
 
             @*var chapterCommentVm =  {
 
                 "chapterId": "@Model.Id",
                 "userId": $("#userId").val(),
-                "comment": $("#comment").val()
+                "comment": $("#data-chapterId").val()
             }*@
-            var @*chapterId = @;*@
-            var message = $("#comment").val();
+            var chapterId = $(this).attr("data-chapterId");
+            var message = $("#comment_"+chapterId).val();
             var userId = $("#userId").val();
             connection.invoke("SendChapterComment", chapterId, userId, message).then(function() {
                 console.log("comment sent");

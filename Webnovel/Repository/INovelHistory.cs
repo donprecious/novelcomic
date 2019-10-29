@@ -10,9 +10,12 @@ namespace Webnovel.Repository
     {
 
         Task<ICollection<NovelChapterHistory>> GetHistories(string userId, int novelId);
+        Task<ICollection<NovelChapterHistory>> GetHistories(string userId);
+
         Task<bool> CheckHistory(string userId, int chapterId);
         Task<NovelChapterHistory> GetLastHistory(string userId, int novelId);
         Task AddHistory(NovelChapterHistory chapterHistory);
+        Task AddUniqueHistory(NovelChapterHistory chapterHistory);
         Task<bool> Save();
 
     }

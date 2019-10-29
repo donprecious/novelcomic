@@ -7,13 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ReflectionIT.Mvc.Paging;
+//using ReflectionIT.Mvc.Paging;
 using Webnovel.Components;
 using Webnovel.Entities;
 using Webnovel.Helpers;
 using Webnovel.Models;
 using Webnovel.Repository;
 using Webnovel.Services;
+using X.PagedList;
 
 namespace Webnovel.Controllers
 {
@@ -29,14 +30,15 @@ namespace Webnovel.Controllers
 		private string userId;
 
         private INovelHistory _novelHistory;
-
+        private SignInManager<ApplicationUser> _signInManager;
         public NovelController(INovel novel, IAuthor author, UserManager<ApplicationUser> userManager,
-            INovelHistory novelHistory)
+            INovelHistory novelHistory, SignInManager<ApplicationUser> signInManager)
         {
             _novel = novel;
             _author = author;
             _userManager = userManager;
             _novelHistory = novelHistory;
+            _signInManager = signInManager;
         }
 
         public async Task<IActionResult> Create()
@@ -415,7 +417,6 @@ namespace Webnovel.Controllers
 				{
 					await _novel.AddToLibrary(new NovelLibrary
 					{
-				
 						NovelId = id,
 						UserId = userId
 					});
@@ -431,8 +432,8 @@ namespace Webnovel.Controllers
 					    
 				}
 			}
-
-            return RedirectToAction("ReadChapter", new {novelId = id, chapterId = chapterId});
+           
+            return RedirectToAction("ReadChapters", new {novelId = id, chapterId = chapterId});
         }
 
         public async Task<IActionResult> ReadChapter(int novelId, int? chapterId = null)
@@ -497,13 +498,29 @@ namespace Webnovel.Controllers
          
 		}
 
-        public async Task ReadChapters(int id, int page = 1, int? chapterId = null)
+        public async Task<IActionResult> ReadChapters(int novelId, int? page, int? chapterId = null)
         {
+            int id = novelId;
             Webnovel.Entities.Novel novel = await _novel.GetNovel(id);
-            var chapters = (await _novel.GetNovelChaptersNoTracking(id));
-           
-            var model = await PagingList.CreateAsync(chapters, 1, page);
+            ViewBag.NovelId = novelId;
+            var pageNumber = page ?? 1;
+            var chapters = (await _novel.GetNovelChaptersAsIQueryable(id));
+            //var model = await PagingList.CreateAsync(chapters, 1, page);
+            var model = chapters.ToPagedList( pageNumber, 1);
             userId = _userManager.GetUserId(User);
+           chapterId =   model.FirstOrDefault().Id;
+          
+            if (chapterId != null)
+            {
+                await _novelHistory.AddUniqueHistory(new NovelChapterHistory()
+                {
+                    UserId = userId,
+                    ChapterId = (int)chapterId,
+                    NovelId = novelId,
+                    DateAdded = DateTime.UtcNow,
+                    LastOpened = DateTime.Now
+                });
+            }
             return View(model);
 
         }
@@ -524,7 +541,7 @@ namespace Webnovel.Controllers
 		//		userId = userId
 		//	});
 		//}
-
+         
 		public async Task<IActionResult> EditChapterView(int id)
 		{
 			return (IActionResult)(object)((Controller)this).ViewComponent("EditChapter", (object)new

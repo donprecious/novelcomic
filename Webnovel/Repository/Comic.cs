@@ -15,8 +15,9 @@ namespace Webnovel.Repository
 	public class Comic : IComic
 	{
 		private ApplicationDbContext _context;
+    
 
-		public Comic(ApplicationDbContext context)
+        public Comic(ApplicationDbContext context)
 		{
 			_context = context;
 		}
@@ -305,6 +306,27 @@ namespace Webnovel.Repository
             }
           
            
+        }
+        public async Task AddViewer(ComicViewer comicViewer)
+        {
+            await _context.ComicViewer.AddAsync(comicViewer);
+        }
+
+        public async Task<ICollection<ComicViewer>> GetComicViewer()
+        {
+            return await _context.ComicViewer.Include(a=>a.Comic).ToListAsync();
+        }
+
+        public async Task<ICollection<ComicViewer>> GetComicViewer(int comicId)
+        {
+            return await _context.ComicViewer.Where(a=>a.ComicId == comicId).Include(a=>a.Comic).ToListAsync();
+        }
+
+     
+      
+        public async Task<ICollection<ComicViewer>> GetAuthorNovelViewers(int authorId)
+        {
+            return await _context.ComicViewer.Where(a=>a.Comic.AuthorId == authorId).Include(a=>a.Comic).ToListAsync();
         }
         public async Task<bool> Save()
 		{

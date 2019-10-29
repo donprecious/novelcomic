@@ -84,6 +84,8 @@
     <PackageReference Include="refit" Version="4.7.51" />
     <PackageReference Include="ReflectionIT.Mvc.Paging" Version="2.4.0" />
     <PackageReference Include="Sentry.AspNetCore" Version="1.2.0" />
+    <PackageReference Include="X.PagedList.Mvc" Version="7.9.1" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.5.0" />
   </ItemGroup>
 
   <ItemGroup>

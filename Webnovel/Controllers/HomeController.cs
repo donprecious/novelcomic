@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Webnovel.Entities;
 using Webnovel.Models;
@@ -29,7 +30,12 @@ namespace Webnovel.Controllers
         private IUser _user;
 
         private IReferral _referral;
-		public HomeController(UserManager<ApplicationUser> userManager, IComic comic, INovel novel, IAnimation animation, IUser user, IReferral referral)
+        private SignInManager<ApplicationUser> _signInManager;
+        private IHttpContextAccessor _accessor;
+		public HomeController(UserManager<ApplicationUser> userManager, IComic comic, INovel novel, 
+            IAnimation animation, IUser user, IReferral referral, 
+            SignInManager<ApplicationUser> signInManager, IHttpContextAccessor accessor
+            )
 			
 		{
 			_comic = comic;
@@ -38,6 +44,8 @@ namespace Webnovel.Controllers
 			_animation = animation;
             _user = user;
             _referral = referral;
+            _signInManager = signInManager;
+            _accessor = accessor;
         }
 
 		public IActionResult Index()
@@ -101,6 +109,31 @@ namespace Webnovel.Controllers
 			{
 				return (IActionResult)(object)((Controller)this).View("Error404");
 			}
+            if (_signInManager.IsSignedIn(User))
+            {
+                userId = _userManager.GetUserId(User);
+
+                await _comic.AddViewer(new ComicViewer()
+                {
+                    BrowserAgent = Request.Headers["User-Agent"].ToString(),
+                    IpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    Date = DateTime.UtcNow,
+                    UserId = userId,
+                    ComicId = id,
+                });
+                await _comic.Save();
+            }
+            else
+            {
+                await _comic.AddViewer(new ComicViewer()
+                {
+                    BrowserAgent = Request.Headers["User-Agent"].ToString(),
+                    IpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    Date = DateTime.UtcNow,
+                    ComicId = id,
+                });
+                await _comic.Save();
+            }
 			return (IActionResult)(object)((Controller)this).View((object)comic);
 		}
 
@@ -188,6 +221,32 @@ namespace Webnovel.Controllers
 			{
 				return (IActionResult)(object)((Controller)this).View("Error404");
 			}
+
+            if (_signInManager.IsSignedIn(User))
+            {
+                userId = _userManager.GetUserId(User);
+
+                await _novel.AddViewer(new NovelViewer()
+                                {
+                                    BrowserAgent = Request.Headers["User-Agent"].ToString(),
+                                    IpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                                    Date = DateTime.UtcNow,
+                                    UserId = userId,
+                                    NovelId = id,
+                                });
+                await _novel.Save();
+            }
+            else
+            {
+                await _novel.AddViewer(new NovelViewer()
+                {
+                    BrowserAgent = Request.Headers["User-Agent"].ToString(),
+                    IpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    Date = DateTime.UtcNow,
+                    NovelId = id,
+                });
+                await _novel.Save();
+            }
 			return (IActionResult)(object)((Controller)this).View((object)novel);
 		}
 

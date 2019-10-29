@@ -26,14 +26,16 @@ namespace Webnovel.Controllers
 		private IComic _comic;
 
 		private IAuthor _author;
+        private IComicHistory _comicHistory;
 
-		public ComicController(UserManager<ApplicationUser> userManager, IComic comic, IAuthor author)
+		public ComicController(UserManager<ApplicationUser> userManager, IComic comic, IAuthor author, IComicHistory comicHistory)
 			
 		{
 			_comic = comic;
 			_userManager = userManager;
 			_author = author;
-		}
+            _comicHistory = comicHistory;
+        }
 
 		public async Task<IActionResult> Create()
 		{
@@ -413,6 +415,18 @@ namespace Webnovel.Controllers
             ViewBag.Description = comic.Description;
             var episodes = await _comic.GetEpisodes(id);
             var model = await PagingList.CreateAsync(episodes, 5, page);
+
+            foreach (var i in model)
+            {
+                await _comicHistory.AddUniqueHistory(new Entities.ComicHistory()
+                {
+                    ComicId = i.ComicId,
+                    EpisodeId = i.Id,
+                    DateAdded = DateTime.UtcNow,
+                    LastOpened = DateTime.UtcNow,
+                    UserId =  userId
+                });
+            }
 			return (IActionResult)(object)((Controller)this).View((object)model);
 		}
 
@@ -446,7 +460,7 @@ namespace Webnovel.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveEpisodes(int comicId, List<string> pictures)
         {
-            // first save all pictures  and create episodes 
+            // first save all pictures  and create episodes mh
             //next take update the episode prefrence numbers using the last prefrencse number  
                 await _comic.AddEpisodes(comicId, pictures); 
              //if(!await _comic.Save()) return Json(new {stats=400, message="Unable to save comic please try again later"});

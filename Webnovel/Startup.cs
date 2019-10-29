@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using ReflectionIT.Mvc.Paging;
 using Webnovel.Data;
 using Webnovel.Entities;
@@ -66,9 +67,12 @@ namespace Webnovel
             services.AddScoped<IUser, Repository.User>();
             services.AddScoped<IReferral, Repository.Referral>();
             services.AddScoped<INovelHistory, NovelHistory>();
+            services.AddScoped<IComicHistory, Repository.ComicHistory>();
+
             services.AddScoped<INovelComment, NovelComment>();
             services.AddScoped<IAppConfig, AppConfig>();
             services.AddScoped<IRate, Rate>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAsyncInitializer<MyAppInitializer>();
             services.AddPaging();
 
