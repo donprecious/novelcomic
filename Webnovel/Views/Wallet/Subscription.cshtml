@@ -1,0 +1,293 @@
+﻿@using Webnovel.Helpers
+@using Webnovel.Repository
+
+@{
+    ViewData["Title"] = "Subscription";
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+}
+@inject IPayment Payment;
+@inject UserManager<ApplicationUser> _user
+
+@{
+    var subcriptions = await Payment.GetSubcriptions();
+    var user = await _user.GetUserAsync(User);
+}
+@{
+    var hasFree = await Payment.HasFreeSubscription(_user.GetUserId(User));
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-breadcrumb">
+            <h2 class="page-title">Pay once and get access to unlimited content</h2>
+
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var i in subcriptions)
+                    {
+                        if (hasFree)
+                        {
+
+                            <div class="col-6 col-sm-4 col-md-4" style="display: none">
+                                <div class="card bg-light-info hover card-hover text-dark border-radius-fix rounded shadow shadow-lg sh border  border-purple">
+                                    <div class="card-body">
+                                        <div class="">
+
+                                            <div class="m-l-5 m-t-10 text-center">
+                                                <h2 class="font-medium m-b-0">@i.Title</h2>
+                                                <h4 class="font-medium m-b-0">USD @i.Amount  <span class="text text-blue"> / @Utilities.ConvertDaysToMonthYear(@i.Days)</span></h4>
+                                                <p>@i.Description</p>
+                                                <button class="btn btn-primary btn-rounded waves-button waves-effect waves-light" onclick="checkOut(@i.Amount,'@i.Description',@i.Id)">Subscribe</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-6 col-sm-4 col-md-4">
+                                <div class="card bg-light-info hover card-hover text-dark border-radius-fix rounded shadow shadow-lg sh border  border-purple">
+                                    <div class="card-body">
+                                        <div class="">
+
+                                            <div class="m-l-5 m-t-10 text-center">
+                                                <h2 class="font-medium m-b-0">@i.Title</h2>
+                                                <h4 class="font-medium m-b-0">USD @i.Amount  <span class="text text-blue"> / @Utilities.ConvertDaysToMonthYear(@i.Days)</span></h4>
+                                                <p>@i.Description</p>
+                                                <button class="btn btn-primary btn-rounded waves-button waves-effect waves-light btnSub_@i.Id" onclick="checkOut(@i.Amount,'@i.Description',@i.Id)">Subscribe</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div id="addPhoneNumberModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Enter Phone Number</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="errorDiv">
+
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber" class="control-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phoneNumber">
+                </div>
+                <button type="button" id="addPhone" onclick="updatePhone()" class="btn btn-success center text-center waves-effect waves-light">Proceed</button>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
+
+    <script src="~/dist/Inter_tel/js/intlTelInput.js"></script>
+    <script src="~/dist/Inter_tel/js/intlTelInput-jquery.js"></script>
+    <script src="~/dist/Inter_tel/js/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="@Constants.Wave_Base_Script_API_URL"></script>
+    <script>
+        /// page varables
+        var currentAmount = '';
+        var currentDes = '';
+
+    </script>
+    <script>
+        var inputPhone = document.querySelector("#phoneNumber");
+        var iti = window.intlTelInput(inputPhone,
+            {
+                initialCountry: "auto",
+                geoIpLookup: function (success, failure) {
+                    $.get("http://ip-api.com/json/", function () { }, "jsonp").always(function (resp) {
+                        var countryCode = (resp && resp.countryCode) ? resp.countryCode : "";
+                        success(countryCode);
+                    });
+                },
+                utilsScript: "../dist/Inter_tel/js/utils.js"
+            });
+
+
+        function updatePhone() {
+            var isValid = false;
+            var number = iti.getNumber();
+            console.log(number);
+            var valid = iti.isValidNumber();
+            if (!valid) {
+                //display error
+                var errorMessage = "Phone number is not Valid"
+                var html = `   <div class="alert alert-error alert-rounded fade show">  ${errorMessage}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                            </div >`;
+            } else {
+                //submit
+                $.ajax("/User/UpdatePhoneNumber/?phoneNumber=" + number,
+                    {
+                        type: "get",
+                        beforeSend: () => {
+                            toastr.info('Updating Phone Number');
+                            $("#addPhone").attr("disabled", "disabled");
+                        },
+                        complete: () => {
+                            $("#addPhone").removeAttr("disabled");
+
+                        },
+                        success: (data) => {
+                            console.log(data);
+                            if (data.status == 200) {
+                                toastr.success(data.message);
+                                $("#addPhoneNumberModal").modal('hide');
+
+                                isValid = true;
+                                payWithRave(currentAmount, currentDes);
+                            } else {
+                                toastr.warning(data.message);
+                            }
+                        }
+                    });
+            }
+            //$("#addPhone").click(function (e) {
+            //    e.preventDefault();
+
+
+            //});
+            return isValid;
+        }
+
+    </script>
+    @{
+        var uid = Guid.NewGuid();
+
+    }
+    <script>
+        const API_publicKey = "@Constants.Wave_test_PublicKey";
+        var email = "@user.Email";
+        var phone = "@user.PhoneNumber";
+        var ref = "@uid";
+
+        function payWithRave(amount, des, subId) {
+            var x = getpaidSetup({
+                PBFPubKey: API_publicKey,
+                customer_email: email,
+                amount: amount,
+                customer_phone: phone,
+                currency: "USD",
+
+                txref: ref,
+                payment_options: "card,account,ussd,barter,bank transfer",
+                meta: [
+                    {
+                        metaname: "description",
+                        metavalue: des
+                    },
+                    {
+                        metaname: "Subscription",
+                        metavalue: subId+" : "+des
+
+                    }
+                ],
+                onclose: function() {
+                    // a function that should tell a subscriber that he was unable to complete a payment
+
+                },
+                callback: function(response) {
+                    var txref = response.tx
+                        .txRef; // collect txRef returned and pass to a 					server page to complete status check.
+                    console.log("This is the response returned after a charge", response);
+                    if (
+                        response.tx.chargeResponseCode == "00" ||
+                            response.tx.chargeResponseCode == "0"
+                    ) {
+                        // redirect to a success page
+                        location.href = "/Wallet/VerifyPayAsYouGoPayment/?reference=" + txref;
+                    } else {
+                        // redirect to a failure page.
+                        location.href = "/Wallet/VerifyPayAsYouGoPayment/?reference=" + txref;
+                    }
+                        x.close();
+                    // use this to close the modal immediately after payment.
+                }
+            });
+        }
+
+    </script>
+    <script>
+
+
+    function checkOut(amount, des, subId) {
+        var phone = "@user.PhoneNumber";
+        if (phone == '') {
+
+            currentAmount = amount;
+            currentDes = des;
+            $("#addPhoneNumberModal").modal();
+        } else {
+            //if (isUpdated) {
+            $("#addPhoneNumberModal").modal('hide');
+
+            var hasFree = '@hasFree';
+            if (hasFree == 'True') {
+                //sorry you cant subscribe to a free
+                Swal.fire(
+                    'Information',
+                    'Sorry, You cant subscribe to a free plan more than once'
+                );
+            } else {
+                if (amount <= 1) {
+                    //subscribe for free
+                    $.ajax("/Wallet/FreeSubscription/"+subId,
+                        {
+                            "type":"get",
+                            beforeSend: function () { $(".btnSub_"+subId).attr("disabled", "disabled")},
+                            complete: function () { $(".btnSub_"+subId).removeAttr("disabled")},
+                            success: function(data) {
+                                if (data.status == 200) {
+                                    Swal.fire(data.message);
+                                    //redirect
+                                    location.href = "@Url.Action("ReaderProfile", "Reader")";
+                                } else {
+
+                                    Swal.fire(data.message);
+
+                                }
+                            }
+                        }
+                        );
+
+                } else {
+                    payWithRave(amount, des, subId);
+                }
+
+            }
+
+
+            //}
+        }
+        }
+
+    </script>
+}

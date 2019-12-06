@@ -21,6 +21,8 @@ namespace Webnovel.Services
         {
            await _user.CreateDefaultAdminUser();
            await _appConfig.SeedCountry();
+           await _appConfig.SeedPages();
+           await _appConfig.SeedRateType();
         }
     }
 }

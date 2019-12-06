@@ -1,0 +1,31 @@
+﻿@model Webnovel.Entities.Page
+
+@{
+    ViewBag.Title = "Details - " + Model.Name;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+          
+            <div class="card-body">
+                <div class="card-title">  <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-default"> Edit</a></div>
+                <div class="m-t-5">
+                    @Html.Raw(Model.Content)
+
+                </div>
+            </div>
+            <div class="card-footer">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-default"> Edit</a>
+            </div>
+        </div>
+    </div>
+</div>

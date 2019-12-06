@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -18,14 +19,20 @@ namespace Webnovel.Controllers
         private UserManager<ApplicationUser> _userManager;
         private ApplicationDbContext _context;
         private IReferral _referral;
-
+        private  INovel _novel;
+        private  IComic _comic;
+        private IAuthor _author;
         private string userId;
-        public UserController(UserManager<ApplicationUser> userManager, ApplicationDbContext context, IReferral referral)
+        public UserController(UserManager<ApplicationUser> userManager,
+            ApplicationDbContext context, IReferral referral,
+            IAuthor author, INovel novel, IComic comic)
         {
             _userManager = userManager;
             _context = context;
             _referral = referral;
-
+            _novel = novel;
+            _comic = comic;
+            _author = author;
         }
         public ActionResult Dashboard()
 		{
@@ -132,6 +139,20 @@ namespace Webnovel.Controllers
            return Json(new { status = 200, message = "Changes Saved Successfully" });
         }
 
+        public async Task<ActionResult> UpdatePhoneNumber( string phone)
+        {
+            userId = _userManager.GetUserId(User);
+            var user =  await _context.Users.Where(a => a.Id == userId).SingleAsync();
+            if (user != null)
+            {
+                user.PhoneNumber = phone;
+                _context.Entry(user).State = EntityState.Modified;
+             await   _context.SaveChangesAsync();
+             return Json(new {status = 200, message = "changes saved"});
+            }
+            return Json(new {status = 400, message = "Something Went Wrong"});
+
+        }
         public async Task<ActionResult> ReferralHub()
         {
             var referral = (await _referral.GetReferral(_userManager.GetUserId(User)));
@@ -143,5 +164,68 @@ namespace Webnovel.Controllers
             var refers = await _referral.Refers(_userManager.GetUserId(User));
             return View(refers);
         }
+
+        public async Task<ActionResult> GetTotalViewers()
+        {
+            userId = UserId;
+
+            var author = await _author.Get(userId);
+            if (author != null)
+            {
+               var viewer =  (await _novel.GetAuthorNovelViewers(author.Id));
+               //get today
+               var today = DateTime.UtcNow;
+               var thisMonthDateBegins = new DateTime(today.Year, today.Month, 1);
+               var lastMonthDateBegins = thisMonthDateBegins.AddMonths(-1);
+               var lastMonthDateEnds = thisMonthDateBegins.AddDays(-1);
+               var lastMonthViewers = viewer.Count(a => a.Date >= lastMonthDateBegins && a.Date <= lastMonthDateEnds);
+               var thisMonthViewers = viewer.Count(a => a.Date >= thisMonthDateBegins);
+               var obj = new
+               {
+                   thisMonthViewers = thisMonthViewers,
+                   lastMonthViewers = lastMonthViewers
+               };
+               return Json(obj);
+            } 
+            return Json(null);
+        }
+
+        public async Task<ActionResult> GetTotalUniqueViewers()
+        {
+            userId = UserId;
+
+            var author = await _author.Get(userId);
+            if (author != null)
+            {
+                var viewer = (await _novel.GetAuthorNovelViewers(author.Id));
+
+                var today = DateTime.UtcNow;
+                var thisMonthDateBegins = new DateTime(today.Year, today.Month, 1);
+                var lastMonthDateBegins = thisMonthDateBegins.AddMonths(-1);
+                var lastMonthDateEnds = thisMonthDateBegins.AddDays(-1);
+                var lastMonthViewers = viewer
+                    .Where(a => a.Date >= thisMonthDateBegins)
+                    .Select((a)=> new
+                    {
+                        UserId = a.UserId,
+                        NovelId = a.NovelId
+                    }).Distinct().Count();
+                var thisMonthViewers = viewer.Where(a => a.Date >= thisMonthDateBegins)
+                                                .Select((a)=> new
+                                                {
+                                                    UserId = a.UserId,
+                                                    NovelId = a.NovelId
+                                                }).Distinct().Count();
+                var obj = new
+                {
+                    thisMonthViewers = thisMonthViewers,
+                    lastMonthViewers = lastMonthViewers
+                };
+                return Json(obj);
+            } 
+
+            return Json(null);
+        }
+        public string UserId => _userManager.GetUserId(User);
     }
 }

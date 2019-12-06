@@ -6,7 +6,8 @@ namespace Webnovel.Entities
 {
 	public class PaidChapterHistory
 	{
-		public int Id
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id
 		{
 			get;
 			set;
@@ -24,7 +25,7 @@ namespace Webnovel.Entities
 			get;
 			set;
 		}
-
+        
 		public int ChapterId
 		{
 			get;

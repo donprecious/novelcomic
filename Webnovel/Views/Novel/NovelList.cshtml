@@ -1,4 +1,5 @@
 ﻿@using CloudinaryDotNet
+@using Webnovel.Enum
 @using Webnovel.Helpers
 @using Webnovel.Repository
 @using Webnovel.Services
@@ -16,6 +17,35 @@
         Cloud = CloudinaryUpload.cloud,
 
     });
+    var status = new List<StatusModel>();
+    status.Add(new StatusModel
+    {
+        Status = ContentStatus.Completed.ToString(),
+        Description = "Content is available to the public",
+        StatusEnumValue = (int) ContentStatus.Completed
+
+    });
+    status.Add(new StatusModel
+    {
+        Status = ContentStatus.Developing.ToString(),
+        Description = "Content is available to the public, but user expect to see more release with time",
+        StatusEnumValue = (int)ContentStatus.Developing
+
+    });
+    status.Add(new StatusModel
+    {
+        Status = ContentStatus.UnderReview.ToString(),
+        Description = "Content is not available and under review",
+        StatusEnumValue = (int)ContentStatus.UnderReview
+
+
+    });
+    status.Add(new StatusModel
+    {
+        Status = ContentStatus.Hide.ToString(),
+        Description = "Content is hidden for the public to see",
+        StatusEnumValue = (int)ContentStatus.Hide
+    });
 }
 <div class="row">
     <div class="col-12">
@@ -24,9 +54,9 @@
         <div class="row">
             @if (Model.Any())
             {
-                foreach (var i in Model.OrderByDescending(a=>a.DateCreated))
+                foreach (var i in Model.OrderByDescending(a => a.DateCreated))
                 {
-                    <div class="col-lg-3 col-md-2 col-sm-3" id="noveList_@i.Id">
+                    <div class="col-lg-2 col-md-2 col-6" id="noveList_@i.Id">
                         <!-- Card -->
                         @{
                             var img = i.CoverPageImageUrl;
@@ -34,14 +64,14 @@
                             {
                                 img = cloudinary.Api.UrlImgFetch.
                                         Transform(new Transformation()
-                                            .Height(300).Width(300).Crop("fill")).BuildUrl(i.CoverPageImageUrl);
+                                            .Height(200).Width(200).Crop("fill")).BuildUrl(i.CoverPageImageUrl);
 
                             }
                             else
                             {
                                 img = cloudinary.Api.UrlImgFetch.
                                     Transform(new Transformation()
-                                        .Height(300).Width(300).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
+                                        .Height(200).Width(200).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
 
                             }
 
@@ -58,21 +88,94 @@
                             </a>
                             <div class="card-body">
                                 <div class="d-flex no-block align-items-center m-b-15">
-                                    <span><i class="ti-eye"></i> 0 Views</span>
+                                    <span><i class="ti-eye"></i> 0 Views <small class="badge">@i.Status</small></span>
                                     <div class="ml-auto">
                                         <a href="javascript:void(0)" class="link"><i class="ti-comments"></i> 0 Comments</a>
                                     </div>
                                 </div>
-                                <h4 class="card-title">@i.Name</h4>
                                 @{
-                                    var des = StringProcessor.SubString(i.Title, 0, 50);
-
+                                    var des = StringProcessor.SubString(i.Title, 0, 100);
+                                    var heading = StringProcessor.SubString(@i.Name, 0, 50);
                                 }
-                                <p class="card-text novel-list-des">@des ...</p>
-                                <a class="btn btn-primary btn-sm waves-effect waves-light" href="@Url.Action("ManageChapters", "Novel", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-settings"></i></span> Manage Contents</a>
+                                <h4 class="card-title">
+                                    @heading
+                                </h4>
 
-                                <button type="button" data-id="@i.Id" data-href="@Url.Action("DeleteNovel", new {id = i.Id})" class="btn btn-danger btn-sm waves-effect waves-light deleteNovel"><span class="btn-label"><i class="mdi mdi-delete"></i></span> Delete</button>
-                                <br />
+                                <p class="card-text novel-list-des">@des ...</p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="ti-settings"></i> Manage
+                                            </button>
+                                            <div class="dropdown-menu animated flipInY">
+                                                <a class="dropdown-item" href="@Url.Action("ManageChapters", "Novel", new {id = i.Id})"><i class="fa fa-edit"></i> Manage Content</a>
+                                                <a class="dropdown-item" href="#"><i class="ti-eye"></i> Insight</a>
+
+                                                <div class="dropdown-divider"></div>
+                                                <button type="button" data-id="@i.Id" data-href="@Url.Action("DeleteNovel", new {id = i.Id})" class="btn dropdown-item btn-danger btn-sm waves-effect waves-light deleteNovel"><span class="btn-label"><i class="mdi mdi-delete"></i></span> Delete</button>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="btn-group">
+                                            @{// get current status
+                                               StatusModel currentStatus = new StatusModel() ;
+                                                foreach (var s in status)
+                                                {
+                                                    if (i.Status != null)
+                                                    {
+                                                        if (i.Status.ToLower() == s.Status.ToLower())
+                                                        {
+                                                            currentStatus = s;
+                                                        }
+                                                    }
+                                                   
+                                                }
+                                            }
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="ti-shield"></i> Status<i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="@currentStatus.Description" data-original-title="@currentStatus.Description"></i>
+                                            </button>
+                                            <div class="dropdown-menu animated flipInY">
+                                                @foreach (var s in status)
+                                                {
+                                                    {
+                                                        ContentStatus cs = (ContentStatus)s.StatusEnumValue;
+                                                    }
+                                                    if (s.Status.ToLower() == currentStatus.Status.ToString().ToLower())
+                                                    {
+                                                        <button class="dropdown-item btn waves-effect waves-light btn-success" onclick="changeStatus(@i.Id,@s.StatusEnumValue)">
+                                                            <i class="mdi mdi-heart"></i> @s.Status
+                                                            <i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="Current -  @s.Description" data-original-title="Current - @s.Description"></i>
+                                                        </button> 
+                                                    }
+                                                    else
+                                                    {
+                                                        <button  class="dropdown-item btn waves-effect waves-light btn-light" onclick="changeStatus( @i.Id, @s.StatusEnumValue)">
+                                                            <i class="mdi mdi-star-box"></i> @s.Status
+                                                            <i class="mdi mdi-information" data-toggle="tooltip" data-placement="right" title="@s.Description" data-original-title="@s.Description"></i>
+                                                        </button>
+                                                    }
+                                                   
+                                                }
+
+
+                                                <div class="dropdown-divider"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+
+                                @*<a class="btn btn-primary btn-sm waves-effect waves-light" href="@Url.Action("ManageChapters", "Novel", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-settings"></i></span> Manage Contents</a>
+
+                                    <button type="button" data-id="@i.Id" data-href="@Url.Action("DeleteNovel", new {id = i.Id})" class="btn btn-danger btn-sm waves-effect waves-light deleteNovel"><span class="btn-label"><i class="mdi mdi-delete"></i></span> Delete</button>
+                                    <br />*@
                                 @*<a class="waves-effect waves-light" href="@Url.Action("CoverPage", "Novel", new {id = i.Id})"><span class="btn-label"><i class="mdi mdi-image"></i></span> Change Cover Picture</a>*@
 
                             </div>
@@ -100,11 +203,12 @@
 </div>
 @section css{
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" /> 
+    <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
     <style>
         .img-back {
             background-color: #0000008a;
-            height: 300px;
+            height: 200px;
             position: absolute;
             width: 100%;
             cursor: pointer;
@@ -131,8 +235,24 @@
     {
     <script src="~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-
+    <script src="~/admin/assets/libs/prism/prism.js"></script>
+    <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
     <script>
+        function changeStatus(id, status) {
+            $.ajax("/Novel/ChangeStatus/?status=" + status + "&novelId=" + id,
+                {
+                    type: "get",
+                    success: (data) => {
+                        console.log(data);
+                        if (data.status == 200) {
+                            //notification
+                            toastr.success(data.message);
+                        } else {
+                            toastr.error(data.message);
+                        }
+                    }
+                });
+        }
         $(function () {
             $(".novel-list-des").text().substring(0, 100);
 
@@ -189,6 +309,7 @@
 
             });
 
+          
         });
     </script>
     <script>
@@ -203,13 +324,13 @@
             function () {
                 $(this).find(".img-back").show();
             }).on("mouseout", ".img-link",
-                function () {
-                    $(this).find(".img-back").hide();
-                });
-            //$(document.body).on("hover", ".img-link",
-            //    function() {
-            //        console.log($(this));
+            function () {
+                $(this).find(".img-back").hide();
+            });
+        //$(document.body).on("hover", ".img-link",
+        //    function() {
+        //        console.log($(this));
 
-            //    });
+        //    });
     </script>
 }

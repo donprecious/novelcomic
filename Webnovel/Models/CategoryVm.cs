@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Webnovel.Models
 {
 	public class CategoryVm
@@ -8,6 +10,7 @@ namespace Webnovel.Models
 			set;
 		}
 
+        [Required(ErrorMessage = "Category Title Required")]
 		public string Name
 		{
 			get;
@@ -18,6 +21,8 @@ namespace Webnovel.Models
 		{
 			get;
 			set;
-		}
+		} 
+
+
 	}
 }

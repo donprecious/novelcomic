@@ -1,0 +1,79 @@
+﻿@model SubscriptionVm
+
+@{
+    ViewData["Title"] = "Create Subscription";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a asp-area="Admin" asp-controller="Feature" asp-action="Subscriptions">Subscriptions</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0);">Create Subscription</a>
+                            </li>
+
+                        </ol>
+                    </div>
+
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div><!--end row--><!-- end page title end breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-body">
+                    <h4 class="card-title">Add Categories</h4>
+
+                    <form class="form-horizontal m-t-30" method="post" asp-action="CreateSubscriptions">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @Html.AntiForgeryToken()
+                     
+                        <div class="form-group">
+                            <label>Title <span class="help">eg Trial</span></label>
+                            <span class="text-danger" asp-validation-for="Title"> </span>
+
+                            <input asp-for="Title" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Description <span class="help"> Access all content free for 14 days</span></label>
+                            <span class="text-danger" asp-validation-for="Description"> </span>
+
+                            <textarea asp-for="Description" type="text" class="form-control"> </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Durations (in days) <span class="help"> Enter Duration in days, 30 days equals 1month, 180 days = 6 months   </span></label>
+                            <span class="text-danger" asp-validation-for="Days"> </span>
+
+                            <input asp-for="Days" type="number" class="form-control"/> 
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cost <span class="help"> Cost User Pays in Usd during the duration</span></label>
+                            <span class="text-danger" asp-validation-for="Amount"> </span>
+                            <input asp-for="Amount" type="number" placeholder="amount" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- container -->
+
+</div>
+
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

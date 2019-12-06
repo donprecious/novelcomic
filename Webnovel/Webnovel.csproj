@@ -11,12 +11,16 @@
   <ItemGroup>
     <Compile Remove="Areas\Admin\Data\**" />
     <Compile Remove="Areas\Admin\Models\**" />
+    <Compile Remove="wwwroot\asset\featherlight\**" />
     <Content Remove="Areas\Admin\Data\**" />
     <Content Remove="Areas\Admin\Models\**" />
+    <Content Remove="wwwroot\asset\featherlight\**" />
     <EmbeddedResource Remove="Areas\Admin\Data\**" />
     <EmbeddedResource Remove="Areas\Admin\Models\**" />
+    <EmbeddedResource Remove="wwwroot\asset\featherlight\**" />
     <None Remove="Areas\Admin\Data\**" />
     <None Remove="Areas\Admin\Models\**" />
+    <None Remove="wwwroot\asset\featherlight\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,6 +80,9 @@
     <PackageReference Include="AspNetCore.AsyncInitialization" Version="1.1.2" />
     <PackageReference Include="AutoMapper" Version="8.1.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.8.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.7" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.7" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.7" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
@@ -84,7 +91,6 @@
     <PackageReference Include="refit" Version="4.7.51" />
     <PackageReference Include="ReflectionIT.Mvc.Paging" Version="2.4.0" />
     <PackageReference Include="Sentry.AspNetCore" Version="1.2.0" />
-    <PackageReference Include="X.PagedList.Mvc" Version="7.9.1" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.5.0" />
   </ItemGroup>
 
@@ -95,8 +101,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Pages\Dashboard\" />
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Entities\NewFolder\" />
     <Folder Include="Pages\Components\" />
     <Folder Include="wwwroot\main\video-category\games\page\2\" />
     <Folder Include="wwwroot\main\video-category\hockey\" />
@@ -745,6 +751,13 @@
     <None Include="wwwroot\admin\assets\libs\typeahead.js\dist\bloodhound.min.js" />
     <None Include="wwwroot\admin\assets\libs\typeahead.js\dist\typeahead.jquery.min.js" />
     <None Include="wwwroot\admin\assets\libs\wnumb\wNumb.js" />
+    <None Include="wwwroot\asset\animatedModal\animatedModal.js" />
+    <None Include="wwwroot\asset\animatedModal\animatedModal.min.js" />
+    <None Include="wwwroot\asset\animatedModal\demo\js\animatedModal.js" />
+    <None Include="wwwroot\asset\animatedModal\demo\js\animatedModal.min.js" />
+    <None Include="wwwroot\asset\animatedModal\demo\js\jquery.min.js" />
+    <None Include="wwwroot\asset\animatedModal\LICENSE" />
+    <None Include="wwwroot\asset\animatedModal\README.md" />
     <None Include="wwwroot\asset\rating\.travis.yml" />
     <None Include="wwwroot\asset\rating\LICENSE" />
     <None Include="wwwroot\asset\rating\rater.js" />
@@ -1419,6 +1432,66 @@
     <None Include="wwwroot\lib\jquery\dist\jquery.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\Semantiui\.versions" />
+    <None Include="wwwroot\lib\Semantiui\components\accordion.js" />
+    <None Include="wwwroot\lib\Semantiui\components\accordion.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\api.js" />
+    <None Include="wwwroot\lib\Semantiui\components\api.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\checkbox.js" />
+    <None Include="wwwroot\lib\Semantiui\components\checkbox.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\colorize.js" />
+    <None Include="wwwroot\lib\Semantiui\components\colorize.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\dimmer.js" />
+    <None Include="wwwroot\lib\Semantiui\components\dimmer.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\dropdown.js" />
+    <None Include="wwwroot\lib\Semantiui\components\dropdown.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\embed.js" />
+    <None Include="wwwroot\lib\Semantiui\components\embed.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\form.js" />
+    <None Include="wwwroot\lib\Semantiui\components\form.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\modal.js" />
+    <None Include="wwwroot\lib\Semantiui\components\modal.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\nag.js" />
+    <None Include="wwwroot\lib\Semantiui\components\nag.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\popup.js" />
+    <None Include="wwwroot\lib\Semantiui\components\popup.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\progress.js" />
+    <None Include="wwwroot\lib\Semantiui\components\progress.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\rating.js" />
+    <None Include="wwwroot\lib\Semantiui\components\rating.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\search.js" />
+    <None Include="wwwroot\lib\Semantiui\components\search.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\shape.js" />
+    <None Include="wwwroot\lib\Semantiui\components\shape.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\sidebar.js" />
+    <None Include="wwwroot\lib\Semantiui\components\sidebar.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\site.js" />
+    <None Include="wwwroot\lib\Semantiui\components\site.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\state.js" />
+    <None Include="wwwroot\lib\Semantiui\components\state.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\sticky.js" />
+    <None Include="wwwroot\lib\Semantiui\components\sticky.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\tab.js" />
+    <None Include="wwwroot\lib\Semantiui\components\tab.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\transition.js" />
+    <None Include="wwwroot\lib\Semantiui\components\transition.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\video.js" />
+    <None Include="wwwroot\lib\Semantiui\components\video.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\visibility.js" />
+    <None Include="wwwroot\lib\Semantiui\components\visibility.min.js" />
+    <None Include="wwwroot\lib\Semantiui\components\visit.js" />
+    <None Include="wwwroot\lib\Semantiui\components\visit.min.js" />
+    <None Include="wwwroot\lib\Semantiui\LICENSE" />
+    <None Include="wwwroot\lib\Semantiui\package.js" />
+    <None Include="wwwroot\lib\Semantiui\README.md" />
+    <None Include="wwwroot\lib\Semantiui\semantic.js" />
+    <None Include="wwwroot\lib\Semantiui\semantic.min.js" />
+    <None Include="wwwroot\lib\Semantiui\themes\default\assets\fonts\brand-icons.svg" />
+    <None Include="wwwroot\lib\Semantiui\themes\default\assets\fonts\brand-icons.woff2" />
+    <None Include="wwwroot\lib\Semantiui\themes\default\assets\fonts\icons.svg" />
+    <None Include="wwwroot\lib\Semantiui\themes\default\assets\fonts\icons.woff2" />
+    <None Include="wwwroot\lib\Semantiui\themes\default\assets\fonts\outline-icons.svg" />
+    <None Include="wwwroot\lib\Semantiui\themes\default\assets\fonts\outline-icons.woff2" />
     <None Include="wwwroot\lib\signalr\dist\browser\signalr.js" />
     <None Include="wwwroot\lib\signalr\dist\browser\signalr.js.map" />
     <None Include="wwwroot\lib\signalr\dist\browser\signalr.min.js" />

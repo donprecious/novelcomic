@@ -37,8 +37,7 @@ namespace Webnovel.Entities
     public class Referred
     {
         [Key]
-        public string UserId
-        {  get;set; } 
+        public string UserId{ get; set; } 
         public int ReferralId { get; set; }
         public DateTime DateRegistered { get; set; }
 
@@ -47,5 +46,20 @@ namespace Webnovel.Entities
         [ForeignKey("ReferralId")]
         public  Referral Referral { get; set; }
    
+    }
+
+    public class NormalReferredUser
+    {
+        [Key]
+        public string UserId  {  get;set; } 
+
+        [ForeignKey("UserId")]
+        public ApplicationUser User { get; set; }
+
+        public string ReferredUserId { get; set; } 
+        [ForeignKey("ReferredUserId ")]
+        public ApplicationUser ReferredUser { get; set; }
+
+        public DateTime DateRegistered { get; set; }
     }
 }

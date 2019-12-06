@@ -32,9 +32,12 @@ namespace Webnovel.Controllers
         private IReferral _referral;
         private SignInManager<ApplicationUser> _signInManager;
         private IHttpContextAccessor _accessor;
-		public HomeController(UserManager<ApplicationUser> userManager, IComic comic, INovel novel, 
+        private readonly IPage _page;
+
+        public HomeController(UserManager<ApplicationUser> userManager, IComic comic, INovel novel, 
             IAnimation animation, IUser user, IReferral referral, 
             SignInManager<ApplicationUser> signInManager, IHttpContextAccessor accessor
+            ,IPage page
             )
 			
 		{
@@ -46,6 +49,7 @@ namespace Webnovel.Controllers
             _referral = referral;
             _signInManager = signInManager;
             _accessor = accessor;
+            _page = page;
         }
 
 		public IActionResult Index()
@@ -369,5 +373,16 @@ namespace Webnovel.Controllers
         {
             return View();
         }
-	}
+
+        public async Task<IActionResult> Page(int id)
+        {
+            var page = await _page.GetPage(id);
+            return View(page);
+        }
+
+        public async Task<IActionResult> BasicReferral()
+        {
+            return View();
+        }
+    }
 }

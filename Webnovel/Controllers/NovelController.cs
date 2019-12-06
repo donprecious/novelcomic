@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 //using ReflectionIT.Mvc.Paging;
 using Webnovel.Components;
 using Webnovel.Entities;
+using Webnovel.Enum;
 using Webnovel.Helpers;
 using Webnovel.Models;
 using Webnovel.Repository;
@@ -31,14 +32,22 @@ namespace Webnovel.Controllers
 
         private INovelHistory _novelHistory;
         private SignInManager<ApplicationUser> _signInManager;
+        private readonly IRate _rate;
+
+        private readonly IPayment _payment;
+
         public NovelController(INovel novel, IAuthor author, UserManager<ApplicationUser> userManager,
-            INovelHistory novelHistory, SignInManager<ApplicationUser> signInManager)
+            INovelHistory novelHistory, SignInManager<ApplicationUser> signInManager, IRate rate,
+            IPayment payment
+            )
         {
             _novel = novel;
             _author = author;
             _userManager = userManager;
             _novelHistory = novelHistory;
             _signInManager = signInManager;
+            _rate = rate;
+            _payment = payment;
         }
 
         public async Task<IActionResult> Create()
@@ -508,7 +517,46 @@ namespace Webnovel.Controllers
             //var model = await PagingList.CreateAsync(chapters, 1, page);
             var model = chapters.ToPagedList( pageNumber, 1);
             userId = _userManager.GetUserId(User);
-           chapterId =   model.FirstOrDefault().Id;
+            chapterId =   model.FirstOrDefault().Id;
+            if (model.IsFirstPage)
+            {
+                ViewBag.isFirst = true;
+                ViewBag.hasPaid = true;
+            }
+            else
+            {
+                //check if user has paid 
+                var hasPaid = await _novel.HasPaidForChapter(userId, (int) chapterId);
+                var hasSubScription = await _payment.UserHasActiveSubscription(userId);
+                if (hasPaid)
+                {
+                    ViewBag.hasPaid = true;
+                }
+                if (hasSubScription)
+                {
+                    ViewBag.hasPaid = true;
+                }
+                if (!hasPaid && !hasSubScription)
+                {
+                   // try pay
+                }
+                if (!hasPaid && !hasSubScription)
+                {
+                    ViewBag.hasPaid = false;
+                    model.FirstOrDefault().Content = "";
+                }
+            }
+            // get next page chapter 
+            // and calculate the amount it will cost
+            if (model.HasNextPage)
+            {
+                pageNumber += 1; 
+                var nextChapter =  chapters.ToPagedList( pageNumber, 1).FirstOrDefault();
+                var words = StringProcessor.CountWordsWithoutHtml(nextChapter.Content);
+                var cowriesSpent = AppUtilities.CalculateCowriesToSpendOnWords(words);
+                ViewBag.CowriesToSpentOnNext = cowriesSpent;
+            }
+            ViewBag.CowriesToSpentOnCurrent = AppUtilities.CalculateCowriesToSpendOnWords(StringProcessor.CountWordsWithoutHtml(model.FirstOrDefault().Content)) ;;
           
             if (chapterId != null)
             {
@@ -523,6 +571,48 @@ namespace Webnovel.Controllers
             }
             return View(model);
 
+        }
+
+        public async Task<IActionResult> PayforChapter(int chapterId, double amount)
+        {
+            var chapter = await _novel.GetNovelChapter(chapterId);
+            userId = _userManager.GetUserId(User);
+
+            if (chapter == null) return Json(new { status=400, message="Chapter not found" }); 
+            //get cost 
+            var costOfContent =
+                AppUtilities.CalculateCowriesToSpendOnWords(StringProcessor.CountWordsWithoutHtml(chapter.Content));
+            if (amount < costOfContent)
+            {
+                return Json(new {status = "404", message = "Sorry, cowries is not enough to purchase this content"});
+            }
+            //deduct 
+            var hasPaid = await _novel.HasPaidForChapter(userId, chapterId);
+            var hasSub = await _payment.UserHasActiveSubscription(userId);
+            if(hasSub)  return Json(new {status = "200", message = "You have unlimited access to this content, enjoy"});
+            if (!hasPaid)
+            {
+                await _payment.AddOrUpdateUserCowries(new UserCowries()
+                {
+                    UserId = userId,
+                    Cowries = -costOfContent
+                });
+             await   _payment.Save();
+                await _novel.AddPaidChapterHistory(new PaidChapterHistory()
+                {
+                    UserId = userId,
+                    DateTime = DateTime.UtcNow,
+                    SpentInUsd = AppUtilities.CalculateUsd(costOfContent),
+                    CowriesUsed = costOfContent,
+                    ChapterId = chapterId,
+                });
+                await _novel.Save();
+                return Json(new {status = "200", message = "Success! Payment Successful, Enjoy your content"});
+            }
+            else
+            {
+                return Json(new {status = "402", message = "Wow, It seems you have already paid for this content"});
+            }
         }
 		public async Task<IActionResult> Library()
 		{
@@ -585,6 +675,7 @@ namespace Webnovel.Controllers
 					message = "Sorry, Your Content should have a minimum of 500 words"
 				});
 			}
+            //publish if today 
 			if (chapter.DatePublished.Value.ToShortDateString() == DateTime.UtcNow.ToShortDateString())
 			{
 				chapter2.isPublished = true;
@@ -648,6 +739,7 @@ namespace Webnovel.Controllers
 			});
 		}
 
+        
 		public async Task<IActionResult> EditSection(int id)
 		{
 			return (IActionResult)(object)((Controller)this).PartialView("_EditSection", (object)(await _novel.GetNovelSection(id)));
@@ -710,5 +802,76 @@ namespace Webnovel.Controllers
 				message = "Unable to Delete"
 			});
 		}
-	}
+
+        public async Task<ActionResult> ChangeStatus(ContentStatus status, int novelId)
+        {
+         var save = (await  _novel.ChangeStatus(status, novelId));
+        
+          if (save)
+          {
+              return Json(new
+              {
+                  status = 200, message = "Status Updated"
+              });
+          }
+          return Json(new
+          {
+              status = 400, message = "Status Failed"
+          });
+        }
+
+        public async Task<IActionResult> SaveRating(List<NovelRating> rating, string description)
+        {
+            var rate = rating.FirstOrDefault();
+            foreach (var i in rating)
+            {
+                await _rate.CreateNovelRate(i);
+                await _rate.Save();
+              
+            }
+
+            if (rate != null)
+            {
+                if (!string.IsNullOrEmpty(description))
+                {
+                    await _novel.AddNovelComment(new Entities.NovelComment()
+                    {
+                        UserId = rate.UserId,
+                        Comment = description,
+                        DateTime = DateTime.UtcNow,
+                        NovelId = rate.NovelId
+                    });
+                    await _novel.Save();
+                }
+               
+                return Json(new
+                {
+                    status = 200, message = "Comment / Rating Saved"
+                });
+            }
+            return Json(new
+            {
+                status = 500, message = "Failed to save"
+            });
+        }
+
+
+        public async Task<IActionResult> ReportNovel(NovelReport report)
+        {
+            if (report.Message == null)
+            {
+                 return Json(new
+                {
+                    status = 500, message = "Content must be present"
+                });
+            }
+
+          await  _novel.AddNovelReport(report);
+          await _novel.Save();
+          return Json(new
+          {
+              status = 200, message = "Complain Sent"
+          });
+        }
+    }
 }

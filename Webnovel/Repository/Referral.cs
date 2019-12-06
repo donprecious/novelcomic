@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Refit;
 using Webnovel.Data;
 using Webnovel.Entities;
+using Webnovel.Models;
+using Webnovel.Services;
 
 namespace Webnovel.Repository
 {
@@ -62,6 +65,81 @@ namespace Webnovel.Repository
                 .Include(a=>a.referreds)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<bool> AddUniqueNormalBasicReferredUser(NormalReferredUser normalReferredUser)
+        {
+            var refreedUser = await GetNormalReferredUsers(normalReferredUser.UserId);
+            if (refreedUser == null)
+            {
+                //add 
+              await  _context.NormalReferredUsers.AddAsync(normalReferredUser);
+              return true;
+            }
+            return false;
+
+        }
+
+        public async Task<ICollection<NormalReferredUser>> GetNormalReferredUsers()
+        {
+            return await _context.NormalReferredUsers.ToListAsync();
+        }
+
+        public async Task<ICollection<NormalReferredUser>> GetNormalReferredUsers(string userId)
+        {
+            return await _context.NormalReferredUsers.Where(a => a.UserId == userId).ToListAsync();
+        }
+
+        public async Task<ICollection<NormalReferredUser>> GetNormalReferredUsersReferredBy(string refrreedByUserId)
+        {
+            return await _context.NormalReferredUsers.Where(a => a.ReferredUserId ==refrreedByUserId).ToListAsync();
+
+        }
+
+        public async Task<bool> GenerateBasicReferralUrl(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+
+                try
+                {
+                    var shortUrl = await RestService.For<IBitly>("https://api-ssl.bitly.com/v4/").ShortUrl(
+                        new CreateLink()
+                        {
+                            long_url = "http://alkebulania.com/account/register/?email=" + user.Email,
+
+                            tags = new List<string>()
+                            {
+                                "alkebulania", "Novel", "Comics", "Animations", user.FirstName, user.LastName
+                            },
+                            title = "alkebulania " + user.Email + "- Sign up link"
+                        });
+                    if (shortUrl != null)
+                    {
+                        user.BasicReferralLink = shortUrl.link;
+                    }
+                    _context.Entry(user).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                catch (ValidationApiException validationException)
+                {
+                    // handle validation here by using validationException.Content, 
+                    // which is type of ProblemDetails according to RFC 7807
+                    Console.WriteLine(validationException);
+                }
+                catch (ApiException exception)
+                {
+                    // other exception handling
+                    Console.WriteLine(exception);
+                }
+
+           
+            }
+
+            return false;
+        }
+
         public async Task<bool> DeleteReferal(int id)
         {
            var r = await _context.Referrals.FindAsync(id);
@@ -87,7 +165,5 @@ namespace Webnovel.Repository
         {
             return await((DbContext)_context).SaveChangesAsync(default(CancellationToken)) >= 0;
         }
-
-     
     }
 }

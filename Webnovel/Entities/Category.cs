@@ -22,5 +22,7 @@ namespace Webnovel.Entities
 			get;
 			set;
 		}
+
+        public string ImageUrl { get; set; }
 	}
 }

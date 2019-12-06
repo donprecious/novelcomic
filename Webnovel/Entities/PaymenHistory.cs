@@ -1,12 +1,14 @@
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Webnovel.Models;
 
 namespace Webnovel.Entities
 {
-	public class FundHistory
+	public class PaymentHistory
 	{
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id
+		[Key]
+		public string Id
 		{
 			get;
 			set;
@@ -42,5 +44,8 @@ namespace Webnovel.Entities
 			get;
 			set;
 		}
+
+        public string AdditionalDetail { get; set; }
+        public DateTime TxtDateTime { get; set; }
 	}
 }

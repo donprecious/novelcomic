@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Sentry.Protocol
+@using Webnovel.Helpers
+@model System.Collections.Generic.ICollection<Webnovel.Entities.Page>
+@inject IHttpContextAccessor _accessor
+@{
+    ViewBag.Title = "Website Pages";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title">Pages</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <a class="btn btn-primary" href="@Url.Action("Create")"> Create New Page</a>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Link</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var i in Model)
+                            {
+                                 var url = _accessor.HttpContext.Request.Host.Host + Url.Action("Page", "Home", new {id = i.Id});
+                                         
+                                <tr>
+                                    <td>@i.Id</td>
+                                    <td>@i.Name</td>
+                                    <td> @StringProcessor.SubString(i.Content, 0, 50) </td>
+                                    <td><small class="badge badge-info">  @url</small>
+                                        <button class="btn btn-copy btn-primary btn-xs" data-clipboard-text="@url">
+                                            Copy <i class="fa fa-copy"></i>
+                                        </button></td>
+                                    <td>
+                                        <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", new {Id = i.Id})">Edit</a> |
+                                        <a class="btn btn-sm btn-primary" href="@Url.Action("Detail", new {Id = i.Id})">View</a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/light/assets/plugins/clipboard/clipboard.min.js"></script>
+    <script>
+        new ClipboardJS('.btn-copy');
+    </script>
+}
+

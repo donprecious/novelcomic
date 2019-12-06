@@ -12,7 +12,7 @@ namespace Webnovel.Helpers
 			}
 			return value.Substring(start, value.Length);
 		}
-
+      
 		public static int CountWordsWithoutHtml(string htmlString)
 		{
 			
@@ -37,5 +37,7 @@ namespace Webnovel.Helpers
 			}
 			return num;
 		}
+
+        
 	}
 }

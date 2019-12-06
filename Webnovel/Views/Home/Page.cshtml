@@ -1,0 +1,46 @@
+﻿@model Webnovel.Entities.Page
+
+@{
+    ViewBag.Title = Model.Name;
+
+}
+@section Css{
+    <style>
+        h1,h2,h3,h4,h5,h6 {
+            color: white;
+            margin-bottom: 3px;
+
+        }
+        li,p {
+            color: white;
+        }
+    </style>
+}
+
+<div class="hero common-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1> @Model.Name</h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a href="@Url.Action("Index")">Home</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- blog detail section-->
+<div class="page-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="blog-detail-ct">
+                @Html.Raw(@Model.Content)
+                </div>
+            </div>
+         
+        </div>
+    </div>
+</div>

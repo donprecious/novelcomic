@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Webnovel.Entities;
+using Webnovel.Enum;
 using Webnovel.Models;
 
 namespace Webnovel.Repository
@@ -89,5 +90,12 @@ namespace Webnovel.Repository
         Task<ICollection<NovelViewer>> GetNovelViewer();
         Task<ICollection<NovelViewer>> GetNovelViewer(int novelId);
         Task<ICollection<NovelViewer>> GetAuthorNovelViewers(int authorId);
+      Task<bool>  ChangeStatus(ContentStatus status, int novelId);
+      Task<ICollection<PaidChapterHistory>> GetUserPaidChapterHistory(string userId);
+      Task<bool> HasPaidForChapter(string userId, int chapterId);
+      Task<bool> AddPaidChapterHistory(PaidChapterHistory chapterHistory);
+     Task AddNovelComment(Entities.NovelComment comment);
+     Task AddNovelReport(Entities.NovelReport report);
+      Task PublishAllChapters();
     }
 }

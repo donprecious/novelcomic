@@ -43,9 +43,12 @@ namespace Webnovel.Controllers
 
 	
 
-        public IActionResult ReaderProfile()
+        public async Task<IActionResult> ReaderProfile()
         {
-            return View();
+            userId = _userManager.GetUserId(User);
+            var user = await _userManager.FindByIdAsync(userId);
+            //return View("Profile", user);
+            return View(user);
         }
 
         public async Task<IActionResult> GetContentHistory()

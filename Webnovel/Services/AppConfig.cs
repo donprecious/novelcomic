@@ -37,6 +37,74 @@ namespace Webnovel.Services
             return false;
         }
 
+        public async Task<bool> SeedPages()
+        {
+            var pages = await _context.Pages.AnyAsync();
+            if (!pages)
+            {
+                await _context.Pages.AddRangeAsync(new List<Page>()
+                {
+                    new Page()
+                    {
+                        Name = "FAQ",
+                        Content = "<h1>Frequently asked questions</h1>"
+                    },
+                    new Page()
+                    {
+                        Name = "About",
+                        Content = "<h1>About Us </h1>"
+                    },
+                    new Page()
+                    {
+                        Name = "Privacy and Policy",
+                        Content = "<h1>Privacy and Policy</h1>"
+                    },
+                    new Page()
+                    {
+                        Name = "Terms and Condition",
+                        Content = "<h1>Terms and Condition</h1>"
+                    },
+            
+                });
+                await  _context.SaveChangesAsync(); 
+            }
         
+            return true;
+        } 
+        public async Task<bool> SeedRateType()
+        {
+            var pages = await _context.RatingTypes.AnyAsync();
+            if (!pages)
+            {
+                await _context.RatingTypes.AddRangeAsync(new List<RatingType>()
+                {
+                    new RatingType()
+                    {
+                        Name = "Translation Quality"
+                    },
+                    new RatingType()
+                    {
+                        Name = "Stability of Updates"
+                    },
+                    new RatingType()
+                    {
+                        Name = "Story Development"
+                    },
+                    new RatingType()
+                    {
+                        Name = "Character Design"
+                    },
+                    new RatingType()
+                    {
+                        Name = "World Background"
+                    },
+                });
+                await  _context.SaveChangesAsync(); 
+            }
+        
+            return true;
+        }
+
+     
     }
 }

@@ -14,5 +14,13 @@ namespace Webnovel.Services
             return emailSender.SendEmailAsync(email, "Confirm your email",
                 $"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(link)}'>link</a>");
         }
+
+        public static Task SendEmailAsync(this IEmailSender emailSender, string email, string subject, string message, string link, string linkText="Click to View")
+        {
+            return emailSender.SendEmailAsync(email, subject,
+                $"{message} <br/> " +
+                $"<a href='{HtmlEncoder.Default.Encode(link)}'> {linkText}</a>");
+        }
+        
     }
 }

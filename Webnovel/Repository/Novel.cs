@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Webnovel.Data;
 using Webnovel.Entities;
+using Webnovel.Enum;
 using Webnovel.Models;
 
 namespace Webnovel.Repository
@@ -319,6 +320,79 @@ namespace Webnovel.Repository
           {
               return await _context.NovelViewer.Where(a=>a.Novel.AuthorId == authorId).Include(a=>a.Novel).ToListAsync();
           }
+
+          public async Task<bool> ChangeStatus(ContentStatus status, int novelId)
+          {
+              var novel = await _context.Novels.FindAsync(novelId);
+              if (novel != null)
+              {
+                  novel.Status = status.ToString();
+                  _context.Entry(novel).State = EntityState.Modified;
+                  _context.SaveChanges();
+                  return true;
+              }
+
+              return false;
+          }
+
+          public async Task<ICollection<PaidChapterHistory>> GetUserPaidChapterHistory(string userId)
+          {
+              return await _context.PaidChapterHistories.Where(a => a.UserId == userId).ToListAsync();
+          }
+
+          public async Task<bool> HasPaidForChapter(string userId, int chapterId)
+          {
+              return await _context.PaidChapterHistories.AnyAsync(a => a.UserId == userId && a.ChapterId==chapterId);
+
+          }
+
+          public async Task<bool> AddPaidChapterHistory(PaidChapterHistory chapterHistory)
+          {
+              var hasPaid = await _context.PaidChapterHistories.AnyAsync(a =>
+                  a.UserId == chapterHistory.UserId && a.ChapterId == chapterHistory.ChapterId);
+              if (hasPaid) return false;
+
+            await  _context.PaidChapterHistories.AddAsync(chapterHistory);
+            return await Save();
+          }
+
+          public async Task AddNovelReport(NovelReport report)
+          {
+             await _context.NovelReports.AddAsync(report);
+          }
+
+          public async Task PublishAllChapters()
+          {
+              // get all chapter with status of not published 
+              var chapters = await _context.Chapters.Where(a => a.isPublished == false).ToListAsync();
+              foreach (var c in chapters)
+              {
+                  // convert date to publish to current system time utc using user set time zone 
+                  var today = DateTime.UtcNow;  
+                  // check if chapter has a publish Date
+                  if (c.DatePublished != null)
+                  {
+                      var timeZone = TimeZoneInfo.FindSystemTimeZoneById(c.TimeZone);
+                      var publishDateUtc = TimeZoneInfo.ConvertTimeToUtc( Convert.ToDateTime(c.DatePublished), timeZone); 
+                      // check if publish date is greater or equal to the system current time 
+                      if (today >= publishDateUtc)
+                      {
+                          // publish this  
+                          c.DatePublished = today;
+                          c.isPublished = true;
+                          _context.Entry(c).State = EntityState.Modified;
+                          _context.SaveChanges();
+                      }
+                  }
+                 
+              }
+          }
+
+          public async Task AddNovelComment(Entities.NovelComment comment)
+          {
+             await _context.NovelComments.AddAsync(comment);
+          }
+         
 		public async Task<bool> Save()
 		{
 			return await((DbContext)_context).SaveChangesAsync(default(CancellationToken)) >= 0;

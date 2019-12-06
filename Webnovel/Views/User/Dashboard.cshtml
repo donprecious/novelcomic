@@ -3,160 +3,217 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
     ViewBag.Title = "Dashboard";
 }
+<h4 class="card-title m-t-40">This Month Viewers</h4>
+
+    <div class="card-group">
+        <!-- Column -->
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="text-center text-info">Total Viewers</h4>
+                <h2 id="txtTotalViewer">0</h2>
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col text-center align-self-center" id="thisMonthBar">
+                        <div data-label="100%" class="css-bar m-b-0 css-bar-primary css-bar-100"><i class="display-6 mdi mdi-account-circle"></i></div>
+                    </div>
+                </div>
+                <div class="row" id="thisMonthStat">
+                   
+                    <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> 0</h4>
+                        <h6 class="font-light m-b-0">last month</h6>
+
+                    </div>
+                        <div class="col-md-6 col-sm-12">
+                            <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> 0</h4>
+                            <h6 class="font-light m-b-0">Rate</h6>
+
+                        </div>
+                 
+                   
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <!-- Column -->
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="text-center text-info">Unique Viewers</h4>
+                <h2 id="txtUViewer">0</h2>
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col text-center align-self-center" id="thisUMonthBar">
+                        <div data-label="100%" class="css-bar m-b-0 css-bar-primary css-bar-100"><i class="display-6 mdi mdi-account-circle"></i></div>
+                    </div>
+                </div>
+                <div class="row" id="thisUMonthStat">
+                   
+                    <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> 0</h4>
+                        <h6 class="font-light m-b-0">last month</h6>
+
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> 0</h4>
+                        <h6 class="font-light m-b-0">Rate</h6>
+
+                    </div>
+                 
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Column -->
+        <!-- Column -->
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="text-center text-cyan">Subscribers</h4>
+                <h2>0</h2>
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col text-center align-self-center">
+                        <div data-label="20%" class="css-bar m-b-0 css-bar-success css-bar-20"><i class="display-6 mdi mdi-briefcase-check"></i></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> 0</h4>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> 0</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+    </div>
+
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <div class="d-md-flex align-items-center">
                     <div>
-                        <h4 class="card-title">Earning Summary</h4>
-                        <h5 class="card-subtitle">Overview of This Month</h5>
+                        <h4 class="card-title">Novel Summary</h4>
+                       
                     </div>
-                    <div class="ml-auto d-flex no-block align-items-center">
-                        <ul class="list-inline font-12 dl mr-3 mb-0">
-                            <li class="list-inline-item text-info"><i class="fa fa-circle"></i> Novel</li>
-                            <li class="list-inline-item text-primary"><i class="fa fa-circle"></i> Comics</li>
-                        </ul>
-                        <div class="dl">
-                            <select class="custom-select">
-                                <option value="0" selected>Monthly</option>
-                                <option value="1">Daily</option>
-                                <option value="2">Weekly</option>
-                                <option value="3">Yearly</option>
-                            </select>
-                        </div>
-                    </div>
+                   
                 </div>
-                <div class="row">
-                    <!-- column -->
-                    <div class="col-lg-4">
-                        <h1 class="mb-0 mt-4">$0.0</h1>
-                        <h6 class="font-light text-muted">Current Month Earnings</h6>
-                        <h3 class="mt-4 mb-0">0.0</h3>
-                        <h6 class="font-light text-muted">Current Month Viewers</h6>
-                        <a class="btn btn-info mt-3 p-15 pl-4 pr-4 mb-3" href="javascript:void(0)">Last Month Summary</a>
-                    </div>
-                    <!-- column -->
-                    <div class="col-lg-8">
-                        <div class="campaign ct-charts"></div>
-                    </div>
-                    <!-- column -->
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- Info Box -->
-            <!-- ============================================================== -->
-            <div class="card-body border-top">
+          
                 <div class="row mb-0">
                     <!-- col -->
-                    <div class="col-lg-2 col-md-6">
+                    <div class="col-lg-6 col-md-6">
                         <div class="d-flex align-items-center">
-                            <div class="mr-2"><span class="text-orange display-5"><i class="mdi mdi-wallet"></i></span></div>
+                            <div class="mr-2"><span class="text-success display-5"><i class="mdi mdi-heart"></i></span></div>
                             <div>
-                                <span>Wallet Balance</span>
-                                <h3 class="font-medium mb-0">$0.0</h3>
+                                   
+                                <h2 class="font-medium mb-0">0</h2>
+                                <span>Completed</span>
                             </div>
                         </div>
                     </div>
-                    <!-- col -->
-                    <!-- col -->
-                    <div class="col-lg-2 col-md-6">
+                    <div class="col-lg-6 col-md-6">
                         <div class="d-flex align-items-center">
-                            <div class="mr-2"><span class="text-cyan display-5"><i class="mdi mdi-star-circle"></i></span></div>
+                            <div class="mr-2"><span class="text-orange display-5"><i class="mdi mdi-pencil"></i></span></div>
                             <div>
-                                <span>Referral Earnings</span>
-                                <h3 class="font-medium mb-0">$0.0</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <!-- col -->
-                    <div class="col-lg-2 col-md-6">
-                        <div class="d-flex align-items-center">
-                            <div class="mr-2"><span class="text-info display-5"><i class="mdi mdi-shopping"></i></span></div>
-                            <div>
-                                <span>Novel Earnings</span>
-                                <h3 class="font-medium mb-0">0.0</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <!-- col -->
-
-                    <div class="col-lg-2 col-md-6">
-                        <div class="d-flex align-items-center">
-                            <div class="mr-2"><span class="text-primary display-5"><i class="mdi mdi-currency-usd"></i></span></div>
-                            <div>
-                                <span>Comic Earnings</span>
-                                <h3 class="font-medium mb-0">$0.0</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6">
-                        <div class="d-flex align-items-center">
-                            <div class="mr-2"><span class="text-primary display-5"><i class="mdi mdi-currency-usd"></i></span></div>
-                            <div>
-                                <span>Animation Earnings</span>
-                                <h3 class="font-medium mb-0">$0.0</h3>
+                                   
+                                <h2 class="font-medium mb-0">0</h2>
+                                <span>Development</span>
                             </div>
                         </div>
                     </div>
                     <!-- col -->
                 </div>
+            
             </div>
+         
         </div>
     </div>
-</div>
-<!-- Locations -->
-<!-- ============================================================== -->
-<div class="row">
-    <!-- column -->
-    <div class="col-sm-12">
+    <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">User Locations</h4>
-             
-                <div class="row">
-                    <!-- column -->
-                    <div class="col-sm-12 col-md-6 col-lg-8">
-                        <iframe id="efrnpKTjcS" width="600" height="350" style="margin:0px;border-width:0px;overflow:hidden;" scrolling="no" src="https://www.embeddedanalytics.com/reports/displayreport?reportcode=efrnpKTjcS&chckcode=gawO9PtH5PlMI2m3DJcGnE" title="Reporting Tool for Google Analytics and Google Adwords."></iframe>
-
+                <div class="d-md-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">Chapters Summary</h4>
+                       
                     </div>
-                    <!-- column -->
-                    <div class="col-sm-12 col-md-6 col-lg-4">
-                        <ul class="list-style-none scrollable p-r-15" style="height: 250px; position: relative;">
-                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
-                                <i class="flag-icon flag-icon-it m-r-15" title="it" id="it"></i>
-                                <span class="text-info">Italy</span>
-                                <h5 class="ml-auto m-b-0">24</h5>
-                            </li>
-                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
-                                <i class="flag-icon flag-icon-us m-r-15" title="us" id="us"></i>
-                                <span class="text-info">USA</span>
-                                <h5 class="ml-auto m-b-0">18</h5>
-                            </li>
-                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
-                                <i class="flag-icon flag-icon-de m-r-15" title="de" id="de"></i>
-                                <span class="text-info">Germany</span>
-                                <h5 class="ml-auto m-b-0">14</h5>
-                            </li>
-                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
-                                <i class="flag-icon flag-icon-in m-r-15" title="in" id="in"></i>
-                                <span class="text-info">India</span>
-                                <h5 class="ml-auto m-b-0">09</h5>
-                            </li>
-                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
-                                <i class="flag-icon flag-icon-es m-r-15" title="es" id="es"></i>
-                                <span class="text-info">Spain</span>
-                                <h5 class="ml-auto m-b-0">15</h5>
-                            </li>
-                        </ul>
-                        <a href="#" class="btn btn-info m-t-10">View Full Details</a>
-                    </div>
+                   
                 </div>
+          
+                <div class="row mb-0">
+                    <!-- col -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2"><span class="text-success display-5"><i class="mdi mdi-publish"></i></span></div>
+                            <div>
+                                   
+                                <h2 class="font-medium mb-0">0</h2>
+                                <span>Completed/Published</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2"><span class="text-orange display-5"><i class="mdi mdi-pencil-lock"></i></span></div>
+                            <div>
+                                   
+                                <h2 class="font-medium mb-0">0</h2>
+                                <span>Draft</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- col -->
+                </div>
+            
             </div>
+         
         </div>
     </div>
+</div> 
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-md-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">Comic Summary</h4>
+
+                    </div>
+
+                </div>
+
+                <div class="row mb-0">
+                    <!-- col -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2"><span class="text-success display-5"><i class="mdi mdi-heart"></i></span></div>
+                            <div>
+
+                                <h2 class="font-medium mb-0">0</h2>
+                                <span>Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2"><span class="text-orange display-5"><i class="mdi mdi-pencil"></i></span></div>
+                            <div>
+
+                                <h2 class="font-medium mb-0">0</h2>
+                                <span>Development</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- col -->
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+   
 </div>
 <!-- ============================================================== -->
 <!-- Tables -->
@@ -173,10 +230,9 @@
                     <div class="ml-auto d-flex no-block align-items-center">
                         <div class="dl">
                             <select class="custom-select">
-                                <option value="0" selected="">Monthly</option>
-                                <option value="1">Daily</option>
-                                <option value="2">Weekly</option>
-                                <option value="3">Yearly</option>
+                                <option value="0" selected="">Content</option>
+                                <option value="1">Novel</option>
+                                <option value="2">Comic</option>
                             </select>
                         </div>
                     </div>
@@ -185,100 +241,39 @@
                     <table class="table no-wrap v-middle">
                         <thead>
                             <tr class="border-0">
+                                <th class="border-0">s/n</th>
                                 <th class="border-0">Title</th>
-                                <th class="border-0">Genre</th>
-                                <th class="border-0">Author</th>
-                                <th class="border-0">Read/Unread</th>
+                                <th class="border-0">Viewers</th>
+                                <th class="border-0">Subscribers</th>
                                 <th class="border-0">Rating</th>
-                                <th class="border-0">Price</th>
+                                <th class="border-0">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div class="d-flex no-block align-items-center">
-                                        <div class="mr-2"><img src="~/admin/assets/images/users/d1.jpg" alt="user" class="rounded-circle" width="45"></div>
-                                        <div class="">
-                                            <h5 class="mb-0 font-16 font-medium">Hanna Gover</h5><span>hgover@gmail.com</span>
-                                        </div>
+                        <!--
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <div class="d-flex no-block align-items-center">
+                                    <div class="mr-2"><label class="label label-primary">Novel</label></div>
+                                    <div class="">
+                                        <h5 class="mb-0 font-16 font-medium">Book Title</h5>@*<span>hgover@gmail.com</span>*@
                                     </div>
-                                </td>
-                                <td>Elite Admin</td>
-                                <td>
-                                    <div class="popover-icon">
-                                        <a class="btn-circle btn btn-info" href="javascript:void(0)">SS</a>
-                                        <a class="btn-circle btn btn-cyan text-white popover-item" href="javascript:void(0)">DS</a>
-                                        <a class="btn-circle btn p-0 popover-item" href="javascript:void(0)"><img src="~/admin/assets/images/users/1.jpg" class="rounded-circle" width="39" alt=""></a>
-                                        <a class="btn-circle btn btn-outline-secondary" href="javascript:void(0)">+</a>
-                                    </div>
-                                </td>
-                                <td><i class="fa fa-circle text-orange" data-toggle="tooltip" data-placement="top" title="" data-original-title="In Progress"></i></td>
-                                <td>35</td>
-                                <td class="blue-grey-text  text-darken-4 font-medium">$96K</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex no-block align-items-center">
-                                        <div class="mr-2"><img src="~/admin/assets/images/users/d2.jpg" alt="user" class="rounded-circle" width="45"></div>
-                                        <div class="">
-                                            <h5 class="mb-0 font-16 font-medium">Daniel Kristeen</h5><span>Kristeen@gmail.com</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Elite Admin</td>
-                                <td>
-                                    <div class="popover-icon">
-                                        <a class="btn-circle btn btn-info" href="javascript:void(0)">SS</a>
-                                        <a class="btn-circle btn btn-primary text-white popover-item" href="javascript:void(0)">DS</a>
-                                        <a class="btn-circle btn btn-outline-secondary" href="javascript:void(0)">+</a>
-                                    </div>
-                                </td>
-                                <td><i class="fa fa-circle text-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Active"></i></td>
-                                <td>35</td>
-                                <td class="blue-grey-text  text-darken-4 font-medium">$96K</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex no-block align-items-center">
-                                        <div class="mr-2"><img src="~/admin/assets/images/users/d3.jpg" alt="user" class="rounded-circle" width="45"></div>
-                                        <div class="">
-                                            <h5 class="mb-0 font-16 font-medium">Julian Josephs</h5><span>Josephs@gmail.com</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Elite Admin</td>
-                                <td>
-                                    <div class="popover-icon">
-                                        <a class="btn-circle btn btn-info" href="javascript:void(0)">SS</a>
-                                        <a class="btn-circle btn btn-cyan text-white popover-item" href="javascript:void(0)">DS</a>
-                                        <a class="btn-circle btn btn-orange text-white popover-item" href="javascript:void(0)">RP</a>
-                                        <a class="btn-circle btn btn-outline-secondary" href="javascript:void(0)">+</a>
-                                    </div>
-                                </td>
-                                <td><i class="fa fa-circle text-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Active"></i></td>
-                                <td>35</td>
-                                <td class="blue-grey-text  text-darken-4 font-medium">$96K</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex no-block align-items-center">
-                                        <div class="mr-2"><img src="~/admin/assets/images/users/2.jpg" alt="user" class="rounded-circle" width="45"></div>
-                                        <div class="">
-                                            <h5 class="mb-0 font-16 font-medium">Jan Petrovic</h5><span>hgover@gmail.com</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Elite Admin</td>
-                                <td>
-                                    <div class="popover-icon">
-                                        <a class="btn-circle btn btn-orange text-white" href="javascript:void(0)">RP</a>
-                                        <a class="btn-circle btn btn-outline-secondary" href="javascript:void(0)">+</a>
-                                    </div>
-                                </td>
-                                <td><i class="fa fa-circle text-orange" data-toggle="tooltip" data-placement="top" title="" data-original-title="In Progress"></i></td>
-                                <td>35</td>
-                                <td class="blue-grey-text  text-darken-4 font-medium">$96K</td>
-                            </tr>
+                                </div>
+                            </td>
+                            <td>
+                                Unique: <span class="badge badge-pill badge-blue">0</span> <br/>
+                                Total: <span class="badge badge-pill badge-blue">0</span>
+
+                            </td>
+                            <td>
+                                89K
+                            </td>
+                            <td><span class="fa fa-star text-orange"></span> 4/5</td>
+                            <td><a class="btn btn-outline-primary btn-rounded  waves-effect waves-green"> <i class="mdi mdi-eye"></i> Insight</a></td>
+
+                        </tr>
+                        -->
                         </tbody>
                     </table>
                 </div>
@@ -286,6 +281,96 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <!-- column -->
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">User Locations</h4>
+
+                <div class="row">
+                    <!-- column -->
+                    <div class="col-sm-12 col-md-6 col-lg-8">
+                        <iframe id="efrnpKTjcS" width="600" height="350" style="margin:0px;border-width:0px;overflow:hidden;" scrolling="no" src="https://www.embeddedanalytics.com/reports/displayreport?reportcode=efrnpKTjcS&chckcode=gawO9PtH5PlMI2m3DJcGnE" title="Reporting Tool for Google Analytics and Google Adwords."></iframe>
+
+                    </div>
+                    <!-- column -->
+                    @*<div class="col-sm-12 col-md-6 col-lg-4">
+                        <ul class="list-style-none scrollable p-r-15" style="height: 250px; position: relative;">
+                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
+                                <i class="flag-icon flag-icon-it m-r-15" title="it" id="it"></i>
+                                <span class="text-info">Italy</span>
+                                <h5 class="ml-auto m-b-0">0</h5>
+                            </li>
+                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
+                                <i class="flag-icon flag-icon-us m-r-15" title="us" id="us"></i>
+                                <span class="text-info">USA</span>
+                                <h5 class="ml-auto m-b-0">0</h5>
+                            </li>
+                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
+                                <i class="flag-icon flag-icon-de m-r-15" title="de" id="de"></i>
+                                <span class="text-info">Germany</span>
+                                <h5 class="ml-auto m-b-0">0</h5>
+                            </li>
+                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
+                                <i class="flag-icon flag-icon-in m-r-15" title="in" id="in"></i>
+                                <span class="text-info">India</span>
+                                <h5 class="ml-auto m-b-0">09</h5>
+                            </li>
+                            <li class="d-flex border-bottom p-t-20 p-b-20 align-items-center">
+                                <i class="flag-icon flag-icon-es m-r-15" title="es" id="es"></i>
+                                <span class="text-info">Spain</span>
+                                <h5 class="ml-auto m-b-0">0</h5>
+                            </li>
+                        </ul>
+                        <a href="#" class="btn btn-info m-t-10">View Full Details</a>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<div class="row">
+    <!-- Column -->
+    <div class="col-sm-12 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round align-self-center round-success"><i class="fa fa-male fa-4x"></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h4 class="m-b-0">Male</h4>
+                       
+                    </div>
+                    <div class="ml-auto align-self-center">
+                        <h2 class="font-medium m-b-0">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-sm-12 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round align-self-center round-info"><i class="fa fa-female fa-4x"></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h4 class="m-b-0"> Female</h4>
+                      
+                    </div>
+                    <div class="ml-auto align-self-center">
+                        <h2 class="font-medium m-b-0">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
 @section css
 {
     <link href="~/admin/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet">
@@ -295,7 +380,7 @@
 }
 
 @section Scripts
-    {
+{
     <!--chartis chart-->
     <script src="~/admin/assets/libs/chartist/dist/chartist.min.js"></script>
     <script src="~/admin/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
@@ -311,4 +396,124 @@
     <script src="~/admin/assets/libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
     <script src="~/admin/assets/libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
     <script src="~/admin/assets/js/pages/dashboards/dashboard10.js"></script>
+    <script>
+        $(function() {
+            $.ajax("/User/GetTotalViewers",
+                {
+                    type: "get",
+                    success: function(data) {
+                        if (data != null) {
+                            //update Total Viewers
+                            console.log(data);
+                            var thisMonth = data.thisMonthViewers;
+                            var lastMonth = data.lastMonthViewers;
+                            var margin = thisMonth - lastMonth;
+                            var absMargin = Math.abs(margin);
+
+                            var total = thisMonth + lastMonth;
+
+                            var percentage = (absMargin / total) * 100;
+
+                            var sign = Math.sign(margin);
+
+                            var tviewer = "";
+                            var bar = "";
+                            $("#txtTotalViewer").text(total);
+                            if (sign > 0) {
+                                // positive value 
+                                tviewer = `  <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> ${lastMonth}</h4>
+                        <h6 class="font-light m-b-0">last month</h6>
+
+                    </div>
+                        <div class="col-md-6 col-sm-12">
+                            <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> ${percentage
+                                    }%</h4>
+                            <h6 class="font-light m-b-0">Rate</h6>
+
+                        </div>`;
+                                bar =
+                                    `<div data-label="${percentage}%" class="css-bar m-b-0 css-bar-success css-bar-${percentage}"><i class="display-6 mdi mdi-account-circle"></i></div>`;
+                            } else {
+                                // negative
+                                tviewer = `  <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> ${lastMonth}</h4>
+                        <h6 class="font-light m-b-0">last month</h6>
+
+                    </div>
+                        <div class="col-md-6 col-sm-12">
+                            <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> ${percentage
+                                    }%</h4>
+                            <h6 class="font-light m-b-0">Rate</h6>
+
+                        </div>`;
+                                bar =
+                                    `<div data-label="${percentage}%" class="css-bar m-b-0 css-bar-danger css-bar-${percentage}"><i class="display-6 mdi mdi-account-circle"></i></div>`;
+
+                            }
+                            $("#thisMonthStat").html(tviewer);
+                            $("#thisMonthBar").html(bar);
+                        }
+                    }
+                }); 
+            $.ajax("/User/GetTotalUniqueViewers",
+                {
+                    type: "get",
+                    success: function (data) {
+                        if (data != null) {
+                            //update Total Viewers
+                            console.log(data);
+                            var thisMonth = data.thisMonthViewers;
+                            var lastMonth = data.lastMonthViewers;
+                            var margin = thisMonth - lastMonth;
+                            var absMargin = Math.abs(margin);
+
+                            var total = thisMonth + lastMonth;
+
+                            var percentage = (absMargin / total) * 100;
+
+                            var sign = Math.sign(margin);
+
+                            var tviewer = "";
+                            var bar = "";
+                            $("#txtUViewer").text(total);
+                            if (sign > 0) {
+                                // positive value 
+                                tviewer = `  <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> ${lastMonth}</h4>
+                        <h6 class="font-light m-b-0">last month</h6>
+
+                    </div>
+                        <div class="col-md-6 col-sm-12">
+                            <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> ${percentage
+                                    }%</h4>
+                            <h6 class="font-light m-b-0">Rate</h6>
+
+                        </div>`;
+                                bar =
+                                    `<div data-label="${percentage}%" class="css-bar m-b-0 css-bar-success css-bar-${percentage}"><i class="display-6 mdi mdi-star-circle"></i></div>`;
+                            } else {
+                                // negative
+                                tviewer = `  <div class="col-md-6 col-sm-12">
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> ${lastMonth}</h4>
+                        <h6 class="font-light m-b-0">last month</h6>
+
+                    </div>
+                        <div class="col-md-6 col-sm-12">
+                            <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> ${percentage
+                                    }%</h4>
+                            <h6 class="font-light m-b-0">Rate</h6>
+
+                        </div>`;
+                                bar =
+                                    `<div data-label="${percentage}%" class="css-bar m-b-0 css-bar-danger css-bar-${percentage}"><i class="display-6 mdi mdi-star-circle"></i></div>`;
+
+                            }
+                            $("#thisUMonthStat").html(tviewer);
+                            $("#thisUMonthBar").html(bar);
+                        }
+                    }
+                }); 
+        })
+    </script>
 }

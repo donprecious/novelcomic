@@ -166,13 +166,13 @@ namespace Webnovel.Data
 			set;
 		}
 
-		public DbSet<UserFund> UserFunds
+		public DbSet<PaymentHistory> PaymentHistories
 		{
 			get;
 			set;
 		}
 
-		public DbSet<FundHistory> FundHistories
+		public DbSet<UserCowries> UserCowrieses
 		{
 			get;
 			set;
@@ -237,11 +237,25 @@ namespace Webnovel.Data
             set;
         }
         public DbSet<ChapterComment> ChapterComments { get; set; } 
-        public DbSet<ChapterCommentReply> ChapterCommentReplies { get; set; } 
+        public DbSet<ChapterCommentReply> ChapterCommentReplies { get; set; }
 
         public DbSet<RatingType> RatingTypes { get; set; }
         public DbSet<NovelViewer> NovelViewer { get; set; }
         public DbSet<ComicViewer> ComicViewer { get; set; }
+
+        public DbSet<CowriesPurchasedHistory> CowriesPurchasedHistories { get; set; }
+
+        public DbSet<SubscriptionPaidHistory> SubscriptionPaidHistories { get; set; }
+        public DbSet<UserSubscription> UserSubscriptions { get; set; }
+        public DbSet<Subscription> Subscriptions{ get; set; }
+        public DbSet<Page> Pages{ get; set; }
+        public DbSet<WalletFundHistory> WalletFundHistories{ get; set; }
+        public DbSet<UserWallet> UserWallets{ get; set; }
+
+        public DbSet<NormalReferredUser> NormalReferredUsers{
+            get;
+            set;
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -296,14 +310,13 @@ namespace Webnovel.Data
             builder.Entity<Comic>().HasMany(a => a.Tags).WithOne(a=>a.Comic);
             builder.Entity<NovelRating>().HasOne<ApplicationUser>((Expression<Func<NovelRating, ApplicationUser>>)((NovelRating a) => a.User));
 			builder.Entity<NovelRating>().HasOne<Novel>((Expression<Func<NovelRating, Novel>>)((NovelRating a) => a.Novel)).WithMany((Expression<Func<Novel, IEnumerable<NovelRating>>>)((Novel a) => a.NovelRatings));
-			builder.Entity<UserFund>().HasOne<ApplicationUser>((Expression<Func<UserFund, ApplicationUser>>)((UserFund a) => a.User));
-			builder.Entity<FundHistory>().HasOne<ApplicationUser>((Expression<Func<FundHistory, ApplicationUser>>)((FundHistory a) => a.User));
-			builder.Entity<PaidChapterHistory>().HasOne<ApplicationUser>((Expression<Func<PaidChapterHistory, ApplicationUser>>)((PaidChapterHistory a) => a.User));
+				builder.Entity<PaidChapterHistory>().HasOne<ApplicationUser>((Expression<Func<PaidChapterHistory, ApplicationUser>>)((PaidChapterHistory a) => a.User));
 			builder.Entity<PaidChapterHistory>().HasOne<Chapter>((Expression<Func<PaidChapterHistory, Chapter>>)((PaidChapterHistory a) => a.Chapter));
 			builder.Entity<AuthorEarning>().HasOne<PaidChapterHistory>((Expression<Func<AuthorEarning, PaidChapterHistory>>)((AuthorEarning a) => a.PaidChapterHistory));
 			builder.Entity<AuthorIncome>().HasOne<Author>((Expression<Func<AuthorIncome, Author>>)((AuthorIncome a) => a.Author));
-
-         
+            builder.Entity<UserCowries>().HasOne(a => a.User);
+            builder.Entity<PaymentHistory>().HasOne(a => a.User);
+            
             builder.Entity<Referral>().HasOne(a => a.User);
             builder.Entity<Referral>().HasOne(a => a.Country);
             builder.Entity<Referral>().HasMany(a => a.referreds);
@@ -324,7 +337,7 @@ namespace Webnovel.Data
             builder.Entity<ChapterCommentReply>().HasOne(a => a.ChapterComment);
 
             builder.Entity<NovelRating>().HasOne(a => a.RatingType);
-            builder.Entity<NovelComment>().HasOne(a => a.NovelRating);
+            //builder.Entity<NovelComment>().HasOne(a => a.NovelRating);
             builder.Entity<NovelViewer>().HasOne(a => a.Novel);
             builder.Entity<ComicViewer>().HasOne(a => a.Comic);
 
@@ -332,8 +345,26 @@ namespace Webnovel.Data
             builder.Entity<ComicHistory>().HasOne(a => a.Comic);
             builder.Entity<ComicHistory>().HasOne(a => a.Episode);
          
+            builder.Entity<CowriesPurchasedHistory>().HasOne(a => a.User);
+            builder.Entity<CowriesPurchasedHistory>().HasOne(a => a.PaymentHistory);
 
 
+            builder.Entity<SubscriptionPaidHistory>().HasOne(a => a.PaymentHistory);
+            builder.Entity<SubscriptionPaidHistory>().HasOne(a => a.PaymentHistory);
+            builder.Entity<SubscriptionPaidHistory>().HasOne(a => a.Subscription);
+
+            builder.Entity<UserSubscription>().HasOne(a => a.User);
+            builder.Entity<UserSubscription>().HasOne(a => a.Subscription);
+
+
+            builder.Entity<UserWallet>().HasOne(a => a.User);
+            
+            builder.Entity<WalletFundHistory>().HasOne(a => a.User);
+            builder.Entity<WalletFundHistory>().HasOne(a => a.PaymentHistory);
+
+            builder.Entity<NormalReferredUser>().HasOne(a => a.User);
+            builder.Entity<NormalReferredUser>().HasOne(a => a.ReferredUser);
+            
         }
 	}
 }

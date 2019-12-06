@@ -1,10 +1,11 @@
 ﻿@using CloudinaryDotNet
+@using Webnovel.Helpers
 @using Webnovel.Repository
 @using Webnovel.Services
 @model ApplicationUser
 @inject IAuthor Author
 @inject UserManager<ApplicationUser> UserManager
-
+@inject IPayment _payment
 @{
     ViewBag.Title = "My Profile";
     Layout = "~/Views/Shared/_ReaderLayout.cshtml";
@@ -16,8 +17,12 @@
         Cloud = CloudinaryUpload.cloud,
 
     });
+    var userId = UserManager.GetUserId(User);
     var author = await Author.Get(Model.Id);
-
+    var hasWallet = await _payment.HasWallet(userId);
+    var getWallet = await _payment.GetUserWallet(userId);
+    var userSubscription = await _payment.GetUserSubscription(userId);
+    var userCowries = await _payment.GetUserCowries(userId);
 }
 
 <div class="row">
@@ -49,10 +54,30 @@
                         <h6 class="card-subtitle"> @author.Title</h6>
                     }
                     <div class="row text-center justify-content-md-center">
-                        <div class="col-sm-6"><a href="javascript:void(0)" class="link"><i class="fa fa-money"></i> Cowries <font class="font-medium">0</font></a></div>
-                        <div class="col-sm-6"><a href="javascript:void(0)" class="link"><i class="fa fa-clock"></i> Subscription <font class="font-medium">0 days remaining</font></a></div>
+                        <div class="col-md-4">
+                            <a href="javascript:void(0)" class="link">
+                                <img src="~/images/cowries.png" class="img-circle img-responsive" width="20"/> Cowries
+                                <br/><span class="font-medium">@userCowries.Cowries</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4"><a href="javascript:void(0)" class="link"><i class="fa fa-clock"></i>  Subscription    <br /> <span class="font-medium"> @Utilities.CalculateDaysRemainingFromToday( userSubscription.DueDate) days remaining</span></a></div> 
+                        @if (hasWallet)
+                        {
+                            <div class="col-md-4"><a href="javascript:void(0)" class="link"><i class="fa fa-wallet"></i>  Wallet    <br /> <span class="font-medium">$ @getWallet.Amount </span></a></div>
+                        }
+                    </div> 
+                    <div class="row text-center justify-content-md-center">
+                        <div class="col-md-4">
+                            <a href="@Url.Action("FundWallet","Wallet")" class="btn btn-sm btn-primary">
+                                <span class="font-medium">Add Cowries</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="@Url.Action("SubScription","Wallet")" class="btn btn-sm btn-primary">
+                                <span class="font-medium">Subscribe</span>
+                            </a>
+                        </div>
                     </div>
-
                 </center>
             </div>
 
@@ -141,7 +166,7 @@
         .img-back {
             background-color: #0000008a;
             position: absolute;
-            top: 50%;
+            top: 42%;
             left: 50%;
             height: 200px;
             width: 200px;

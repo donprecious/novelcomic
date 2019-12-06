@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Welcome Reader";
 
-}
+} 
 
 @{
     Layout = null;
@@ -290,7 +290,7 @@
                                                 <p class=" m-b-0">@user.Email.ToLower()</p>
                                             </div>
                                         </div>
-                                        <a class="dropdown-item" href="@Url.Action("Profile","Reader")"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
+                                        <a class="dropdown-item" href="@Url.Action("ReaderProfile","Reader")"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                         @*<a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
                                             <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
                                             <div class="dropdown-divider"></div>
@@ -363,7 +363,7 @@
                                 <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">My Account </span></a>
                                 <ul aria-expanded="false" class="collapse  first-level">
                                     <li class="sidebar-item"><a class="sidebar-link"><i class="mdi mdi-wallet"></i><span class="hide-menu"> My Wallet </span></a></li>
-                                    <li class="sidebar-item"><a class="sidebar-link"><i class="mdi mdi-settings"></i><span class="hide-menu"> Profile </span></a></li>
+                                    <li class="sidebar-item"><a class="sidebar-link" asp-controller="Reader" asp-action="ReaderProfile" ><i class="mdi mdi-settings"></i><span class="hide-menu"> Profile </span></a></li>
 
                                 </ul>
                             </li>

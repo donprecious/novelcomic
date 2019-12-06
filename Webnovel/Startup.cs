@@ -9,10 +9,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Http;
 using ReflectionIT.Mvc.Paging;
 using Webnovel.Data;
 using Webnovel.Entities;
+using Webnovel.Filters;
 using Webnovel.Hubs;
 using Webnovel.Models;
 using Webnovel.Repository;
@@ -33,6 +36,7 @@ namespace Webnovel
 			Configuration = configuration;
        
         }
+
 
 		public void ConfigureServices(IServiceCollection services)
 		{
@@ -72,9 +76,30 @@ namespace Webnovel
             services.AddScoped<INovelComment, NovelComment>();
             services.AddScoped<IAppConfig, AppConfig>();
             services.AddScoped<IRate, Rate>();
+            services.AddScoped<IPayment, Payment>();
+            services.AddScoped<IPage, Repository.Page>();
+            services.AddScoped<IRate, Repository.Rate>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAsyncInitializer<MyAppInitializer>();
             services.AddPaging();
+
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    UsePageLocksOnDequeue = true,
+                    DisableGlobalLocks = true
+                }));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
 
             services.AddMvc(); 
             services.AddCors(options => options.AddPolicy("CorsPolicy", 
@@ -90,10 +115,13 @@ namespace Webnovel
             services.AddSignalR(o =>
             {
                 o.EnableDetailedErrors = true;
-            });
+            }); 
+
+          
+
 		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env,  IBackgroundJobClient backgroundJobs,  IRecurringJobManager recurringJobManager)
         {
             if (env.IsDevelopment())
             {
@@ -158,6 +186,9 @@ namespace Webnovel
 
                 map.CreateMap<Entities.ChapterComment, Models.NovelChapterCommentVm>();
                 map.CreateMap<Models.NovelChapterCommentVm, Entities.ChapterComment>();
+
+                map.CreateMap<Subscription, SubscriptionVm>();
+                map.CreateMap<SubscriptionVm,Subscription>();
             });
 
             app.UseStaticFiles();
@@ -166,6 +197,15 @@ namespace Webnovel
 
             app.UseSession();
           //  app.UseHttpContextItemsMiddleware();
+
+          app.UseHangfireDashboard("/jobs", new DashboardOptions()
+          {
+              Authorization = new [] { new HangDashboardAuthorizationFilter()}
+          });
+          backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
+          //"0 0/30 0 ? * * *"
+          RecurringJob.AddOrUpdate<INovel>(a =>  a.PublishAllChapters(), "*/30 * * * *");
+          //RecurringJob.AddOrUpdate();
           app.UseSignalR(routes => 
           {
               routes.MapHub<NovelCommentHub>("/novelCommentHub");

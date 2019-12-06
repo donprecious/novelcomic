@@ -1,4 +1,4 @@
-﻿@model EditUserVm
+﻿@model ApplicationUser
 
 <form class="form-horizontal form-material">
     <div class="form-group">
@@ -14,17 +14,15 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-md-12">My Title</label>
-        <div class="col-md-12">
-            <input type="text" placeholder="@Model.AuthorTitle" name="@Html.NameFor(a=>a.AuthorTitle)" class="form-control form-control-line">
-        </div>
-    </div>
-
-
-    <div class="form-group">
         <label class="col-md-12">Phone No</label>
         <div class="col-md-12">
-            <input type="text" placeholder="@Model.Phone" name="@Html.NameFor(a=>a.Phone)" class="form-control form-control-line">
+            <input type="text" placeholder="@Model.PhoneNumber" name="@Html.NameFor(a=>a.PhoneNumber)" class="form-control form-control-line">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-12">Date of Birth</label>
+        <div class="col-md-12">
+            <input type="text" placeholder="@Model.DateOfBirth" name="@Html.NameFor(a=>a.DateOfBirth)" class="form-control form-control-line">
         </div>
     </div>
    

@@ -347,6 +347,8 @@ namespace Webnovel.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<string>("ImageUrl");
+
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
@@ -547,6 +549,8 @@ namespace Webnovel.Migrations
 
                     b.Property<int>("ComicId");
 
+                    b.Property<string>("Description");
+
                     b.Property<string>("UserId");
 
                     b.Property<double>("Value");
@@ -686,6 +690,28 @@ namespace Webnovel.Migrations
                     b.ToTable("Countries");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.CowriesPurchasedHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DatePurchased");
+
+                    b.Property<string>("PaymentHistoryId");
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentHistoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CowriesPurchasedHistories");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Episode", b =>
                 {
                     b.Property<int>("Id")
@@ -715,24 +741,19 @@ namespace Webnovel.Migrations
                     b.ToTable("Episodes");
                 });
 
-            modelBuilder.Entity("Webnovel.Entities.FundHistory", b =>
+            modelBuilder.Entity("Webnovel.Entities.NormalReferredUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<double>("AmountUsd");
-
-                    b.Property<string>("PaymentGateWay");
-
-                    b.Property<string>("ReferenceNumber");
-
                     b.Property<string>("UserId");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("DateRegistered");
 
-                    b.HasIndex("UserId");
+                    b.Property<string>("ReferredUserId");
 
-                    b.ToTable("FundHistories");
+                    b.HasKey("UserId");
+
+                    b.HasIndex("ReferredUserId");
+
+                    b.ToTable("NormalReferredUsers");
                 });
 
             modelBuilder.Entity("Webnovel.Entities.Novel", b =>
@@ -809,15 +830,11 @@ namespace Webnovel.Migrations
 
                     b.Property<int>("NovelId");
 
-                    b.Property<int>("RateId");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NovelId");
-
-                    b.HasIndex("RateId");
 
                     b.HasIndex("UserId");
 
@@ -846,6 +863,8 @@ namespace Webnovel.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
 
                     b.Property<int>("NovelId");
 
@@ -962,6 +981,21 @@ namespace Webnovel.Migrations
                     b.ToTable("NovelViewer");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.Page", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content")
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pages");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.PaidChapterHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -984,6 +1018,30 @@ namespace Webnovel.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("PaidChapterHistories");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.PaymentHistory", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AdditionalDetail");
+
+                    b.Property<double>("AmountUsd");
+
+                    b.Property<string>("PaymentGateWay");
+
+                    b.Property<string>("ReferenceNumber");
+
+                    b.Property<DateTime>("TxtDateTime");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PaymentHistories");
                 });
 
             modelBuilder.Entity("Webnovel.Entities.RatingType", b =>
@@ -1049,6 +1107,56 @@ namespace Webnovel.Migrations
                     b.ToTable("Referreds");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.Subscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Amount");
+
+                    b.Property<int>("Days");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Preference");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.SubscriptionPaidHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Amount");
+
+                    b.Property<DateTime>("DatePurchased");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("DueDate");
+
+                    b.Property<string>("PaymentHistoryId");
+
+                    b.Property<int>("SubscriptionId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentHistoryId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SubscriptionPaidHistories");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -1061,22 +1169,71 @@ namespace Webnovel.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Webnovel.Entities.UserFund", b =>
+            modelBuilder.Entity("Webnovel.Entities.UserCowries", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("UserId");
 
                     b.Property<double>("Cowries");
 
-                    b.Property<string>("UserId1");
+                    b.HasKey("UserId");
 
-                    b.Property<int>("WordsRemaining");
+                    b.ToTable("UserCowrieses");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.UserSubscription", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<double>("Amount");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("DueDate");
+
+                    b.Property<int>("SubscriptionId");
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("SubscriptionId");
 
-                    b.ToTable("UserFunds");
+                    b.ToTable("UserSubscriptions");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.UserWallet", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<double>("Amount");
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserWallets");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.WalletFundHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Amount");
+
+                    b.Property<DateTime>("DateFunded");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("PaymentHistoryId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentHistoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WalletFundHistories");
                 });
 
             modelBuilder.Entity("Webnovel.Models.ApplicationUser", b =>
@@ -1086,10 +1243,14 @@ namespace Webnovel.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("BasicReferralLink");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<DateTime?>("DateOfBirth");
+
+                    b.Property<string>("DisplayName");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -1468,6 +1629,17 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.CowriesPurchasedHistory", b =>
+                {
+                    b.HasOne("Webnovel.Entities.PaymentHistory", "PaymentHistory")
+                        .WithMany()
+                        .HasForeignKey("PaymentHistoryId");
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Episode", b =>
                 {
                     b.HasOne("Webnovel.Entities.Comic", "Comic")
@@ -1481,11 +1653,16 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Webnovel.Entities.FundHistory", b =>
+            modelBuilder.Entity("Webnovel.Entities.NormalReferredUser", b =>
                 {
+                    b.HasOne("Webnovel.Models.ApplicationUser", "ReferredUser")
+                        .WithMany()
+                        .HasForeignKey("ReferredUserId");
+
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Webnovel.Entities.Novel", b =>
@@ -1523,11 +1700,6 @@ namespace Webnovel.Migrations
                     b.HasOne("Webnovel.Entities.Novel", "Novel")
                         .WithMany()
                         .HasForeignKey("NovelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Entities.NovelRating", "NovelRating")
-                        .WithMany()
-                        .HasForeignKey("RateId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
@@ -1629,6 +1801,13 @@ namespace Webnovel.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Webnovel.Entities.PaymentHistory", b =>
+                {
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Webnovel.Entities.Referral", b =>
                 {
                     b.HasOne("Webnovel.Entities.Country", "Country")
@@ -1654,11 +1833,60 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Webnovel.Entities.UserFund", b =>
+            modelBuilder.Entity("Webnovel.Entities.SubscriptionPaidHistory", b =>
+                {
+                    b.HasOne("Webnovel.Entities.PaymentHistory", "PaymentHistory")
+                        .WithMany()
+                        .HasForeignKey("PaymentHistoryId");
+
+                    b.HasOne("Webnovel.Entities.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.UserCowries", b =>
                 {
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.UserSubscription", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.UserWallet", b =>
+                {
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Webnovel.Entities.WalletFundHistory", b =>
+                {
+                    b.HasOne("Webnovel.Entities.PaymentHistory", "PaymentHistory")
+                        .WithMany()
+                        .HasForeignKey("PaymentHistoryId");
+
+                    b.HasOne("Webnovel.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

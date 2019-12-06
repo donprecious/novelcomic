@@ -1,7 +1,14 @@
-﻿
+﻿@using Webnovel.Helpers
+
 @{
     ViewData["Title"] = "FundWallet";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+@inject UserManager<ApplicationUser> _user
+@{
+    var user = await _user.GetUserAsync(User);
+
 }
 <div class="card">
     <div class="card-body">
@@ -21,139 +28,194 @@
 <div class="row">
     <div class="col-lg-3 col-md-3  col-sm-4">
         <div class="card">
-            <a >
-                <div class="card-body ">
-                    <div class="d-flex flex-row">
-                        <div class="round align-self-center round-warning">
-                            <i class="ti-money"></i>
-                        </div>
-                        <div class="m-l-10 align-self-center">
-                            <h3 class="font-medium">Fund with 1 USD </h3>
-                            <p class="text-warning" style="font-size: 1.5rem">20 CR</p>
-                            <p class="text-info">10,000 word access</p>
-                        </div>
+
+            <div class="card-body shadow shadow-sm animated zoomIn hover card-hover ">
+                <div class="">
+
+                    <div class="text-center">
+                        <h3 class="font-medium">1 USD </h3>
+                        <p class="text-warning" style="font-size: 0.8rem">20 CR</p>
+                        @*<p class="text-info">10,000 word access</p>*@
+                        <button type="button" class="btn btn-rounded btn-success" onclick="checkOut(1,'paid 1usd for 20 cowries')"> Pay</button>
                     </div>
                 </div>
-            </a>
-
+            </div>
         </div>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-4">
         <div class="card">
-            <a href="#">
-                <div class="card-body ">
-                    <div class="d-flex flex-row">
-                        <div class="round align-self-center round-warning">
-                            <i class="ti-money"></i>
-                        </div>
-                        <div class="m-l-10 align-self-center">
-                            <h3 class="font-medium">Fund with 5 USD </h3>
-                            <p class="text-warning" style="font-size: 1.5rem">100 CR</p>
-                            <p class="text-info">50,000 word access</p>
-                        </div>
+
+            <div class="card-body card-body shadow shadow-sm animated zoomIn hover card-hover">
+                <div class="">
+
+                    <div class="text-center">
+                        <h3 class="font-medium">5 USD </h3>
+                        <p class="text-warning" style="font-size: 0.8rem">100 CR</p>
+                        @*<p class="text-info">50,000 word access</p>*@
+                        <button type="button" class="btn btn-rounded btn-success" onclick="checkOut(5,'paid 5usd for 100 cowries')"> Pay</button>
                     </div>
                 </div>
-            </a>
+            </div>
+
 
         </div>
     </div>
     <div class="col-lg-3 col-md-3  col-sm-4">
         <div class="card">
-            <a href="#">
-                <div class="card-body ">
-                    <div class="d-flex flex-row">
-                        <div class="round align-self-center round-warning">
-                            <i class="ti-money"></i>
-                        </div>
-                        <div class="m-l-10 align-self-center">
-                            <h3 class="font-medium"> 10 USD </h3>
-                            <p class="text-warning" style="font-size: 1.5rem">200 CR</p>
-                            <p class="text-info">100,000 word access</p>
-                        </div>
+
+            <div class="card-body shadow shadow-sm animated zoomIn hover card-hover">
+                <div class="">
+
+                    <div class="text-center">
+                        <h3 class="font-medium"> 10 USD </h3>
+                        <p class="text-warning" style="font-size: 0.8rem">200 CR</p>
+                        @*<p class="text-info">100,000 word access</p>*@
+                        <button type="button" class="btn btn-rounded btn-success" onclick="checkOut(10,'paid 10 usd for 200 cowries')"> Pay</button>
                     </div>
                 </div>
-            </a>
+            </div>
+
 
         </div>
     </div>
     <div class="col-lg-3 col-md-3  col-sm-4">
         <div class="card">
-            <a href="#">
-                <div class="card-body ">
-                    <div class="d-flex flex-row">
-                        <div class="round align-self-center round-warning">
-                            <i class="ti-money"></i>
-                        </div>
-                        <div class="m-l-10 align-self-center">
-                            <h3 class="font-medium"> 20 USD </h3>
-                            <p class="text-warning" style="font-size: 1.5rem">400 CR</p>
-                            <p class="text-info">200k word access</p>
-                        </div>
+
+            <div class="card-body shadow shadow-sm animated zoomIn hover card-hover">
+                <div class="">
+
+                    <div class="text-center">
+                        <h3 class="font-medium"> 20 USD </h3>
+                        <p class="text-warning" style="font-size: 0.8rem">400 CR</p>
+                        @*<p class="text-info">200k word access</p>*@
+                        <button type="button" class="btn btn-rounded btn-success" onclick="checkOut(20,'paid 20 usd for 400 cowries')"> Pay</button>
                     </div>
                 </div>
-            </a>
+            </div>
 
         </div>
     </div>
     <div class="col-lg-3 col-md-3  col-sm-4">
         <div class="card">
-            <a href="#">
-                <div class="card-body ">
-                    <div class="d-flex flex-row">
-                        <div class="round align-self-center round-warning">
-                            <i class="ti-money"></i>
-                        </div>
-                        <div class="m-l-10 align-self-center">
-                            <h3 class="font-medium">50 USD </h3>
-                            <p class="text-warning" style="font-size: 1.5rem">1000 CR</p>
-                            <p class="text-info">500k word access</p>
-                        </div>
+
+
+            <div class="card-body shadow shadow-sm animated zoomIn hover card-hover">
+                <div class="">
+
+                    <div class="text-center">
+                        <h3 class="font-medium">50 USD </h3>
+                        <p class="text-warning" style="font-size: 0.8rem">1000 CR</p>
+                        @*<p class="text-info">500k word access</p>*@
+                        <button type="button" class="btn btn-rounded btn-success" onclick="checkOut(50,'paid 50 usd for 1000 cowries')"> Pay</button>
                     </div>
                 </div>
-            </a>
-
+            </div>
         </div>
     </div>
     <div class="col-lg-3 col-md-3  col-sm-4">
         <div class="card">
-            <a href="#">
-                <div class="card-body ">
-                    <div class="d-flex flex-row">
-                        <div class="round align-self-center round-warning">
-                            <i class="ti-money"></i>
-                        </div>
-                        <div class="m-l-10 align-self-center">
-                            <h3 class="font-medium"> 100 USD </h3>
-                            <p class="text-warning" style="font-size: 1.5rem">2000 CR</p>
-                            <p class="text-info">1M+ word access</p>
-                        </div>
+
+
+            <div class="card-body shadow shadow-sm animated zoomIn hover card-hover">
+                <div class="">
+
+                    <div class="text-center">
+                        <h3 class="font-medium"> 100 USD </h3>
+                        <p class="text-warning" style="font-size: 0.8rem">2000 CR</p>
+                        @*<p class="text-info">1M+ word access</p>*@
+
+                        <button type="button" class="btn btn-rounded btn-success" onclick="checkOut(100, 'paid 100 usd for 2000 cowries')"> Pay</button>
                     </div>
                 </div>
-            </a>
-
+            </div>
         </div>
     </div>
     <div class="col-lg-3 col-md-3  col-sm-4">
         <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Custom Fund</h4>
-                <div class="m-t-20">
-                    <p class="text-warning" id="customCr" style="font-size: 1.5rem"></p>
-                    <p class="text-info" id="customWord"></p>
-                    <input id="customFund" type="text" value="0.5" name="demo2" class="col-md-8 form-control">
 
+            <div class="card-body shadow shadow-sm animated zoomIn hover card-hover">
+                <div class="">
+
+                    <div class="text-center">
+                        <h3 class="font-medium"> Custom </h3>
+                        <p class="text-warning" id="customCr" style="font-size: 0.8rem"></p>
+                        <p class="text-info" id="customWord"></p>
+                        <input id="customFund" type="text" value="100" min="100" name="demo2" class="col-md-8 form-control">
+
+                        <button type="button" class="btn btn-rounded btn-success mt-2" id="customPay"> Pay</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+<div id="addPhoneNumberModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Enter Phone Number</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="errorDiv">
+
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber" class="control-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phoneNumber">
+                </div>
+                <button type="button" id="addPhone" onclick="updatePhone()" class="btn btn-success center text-center waves-effect waves-light">Proceed</button>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section css{
+    <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
+    <script src="~/dist/Inter_tel/js/intlTelInput.js"></script>
+    <script src="~/dist/Inter_tel/js/intlTelInput-jquery.js"></script>
+    <script src="~/dist/Inter_tel/js/utils.js"></script>
+    <script src="@Constants.Wave_Base_Script_API_URL"></script>
+    <link href="~/dist/Inter_tel/css/intlTelInput.css" rel="stylesheet" />
+    <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet" />
+    <style>
+        .iti__flag {
+            background-image: url("../dist/Inter_tel/img/flags.png");
+        }
+
+        @@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .iti__flag {
+                background-image: url("../dist/Inter_tel/img//flags@2x.png");
+            }
+        }
+    </style>
+}
 @section Scripts{
     <script src="~/admin/assets/libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
+    <script src="~/dist/Inter_tel/js/intlTelInput.js"></script>
+    <script src="~/dist/Inter_tel/js/intlTelInput-jquery.js"></script>
+    <script src="~/dist/Inter_tel/js/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    <script src="@Constants.Wave_Base_Script_API_URL"></script>
+    <script>
+        /// page varables
+        var currentAmount = '';
+        var currentDes = '';
+
+    </script>
     <script>
 
         $("input[name='demo2']").TouchSpin({
-            min: 0.5,
+            min: 100,
             max: 100000000000000000,
             step: 0.5,
             decimals: 2,
@@ -169,26 +231,146 @@
                 var cowries = usd / 0.05;
                 var words = cowries * 500;
                 $("#customCr").text(cowries + " CR");
-                $("#customWord").text(words + " words access");
+                //  $("#customWord").text(words + " words access");
             });
-
+            $("#customPay").click(function () {
+                var usd = parseFloat($("#customFund").val());
+                var cowries = usd / 0.05;
+                var words = cowries * 500;
+                payWithRave(usd, "Custom Paid " + usd + " for " + cowries);
+            });
         })
     </script>
 
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-    <div id="paystackEmbedContainer"></div>
-    <script> 
-        function pay() {
-            var handler = PaystackPop.setup({
-                key: 'pk_test_8e75de0f0e2bba17ee0b37ed227e176b92b52d0b',
-                email: 'customer@email.com',
-                amount: 10000,
-                container: 'paystackEmbedContainer',
-                currency: 'usd',
-                callback: function (response) {
-                    alert('successfully subscribed. transaction ref is ' + response.reference);
+    <script>
+        var inputPhone = document.querySelector("#phoneNumber");
+        var iti = window.intlTelInput(inputPhone,
+            {
+                initialCountry: "auto",
+                geoIpLookup: function (success, failure) {
+                    $.get("http://ip-api.com/json/", function () { }, "jsonp").always(function (resp) {
+                        var countryCode = (resp && resp.countryCode) ? resp.countryCode : "";
+                        success(countryCode);
+                    });
                 },
+                utilsScript: "../dist/Inter_tel/js/utils.js"
+            });
+
+
+        function updatePhone() {
+            var isValid = false;
+            var number = iti.getNumber();
+            console.log(number);
+            var valid = iti.isValidNumber();
+            if (!valid) {
+                //display error
+                var errorMessage = "Phone number is not Valid"
+                var html = `   <div class="alert alert-error alert-rounded fade show">  ${errorMessage}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                        </div >`;
+            } else {
+                //submit
+                $.ajax("/User/UpdatePhoneNumber/?phoneNumber=" + number,
+                    {
+                        type: "get",
+                        beforeSend: () => {
+                            toastr.info('Updating Phone Number');
+                            $("#addPhone").attr("disabled", "disabled");
+                        },
+                        complete: () => {
+                            $("#addPhone").removeAttr("disabled");
+
+                        },
+                        success: (data) => {
+                            console.log(data);
+                            if (data.status == 200) {
+                                toastr.success(data.message);
+                                $("#addPhoneNumberModal").modal('hide');
+
+                                isValid = true;
+                                payWithRave(currentAmount, currentDes);
+                            } else {
+                                toastr.warning(data.message);
+                            }
+                        }
+                    });
+            }
+            //$("#addPhone").click(function (e) {
+            //    e.preventDefault();
+
+
+            //});
+            return isValid;
+        }
+
+    </script>
+    @{
+        var uid = Guid.NewGuid();
+
+    }
+    <script>
+        const API_publicKey = "@Constants.Wave_test_PublicKey";
+        var email = "@user.Email";
+        var phone = "@user.PhoneNumber";
+        var ref = "@uid";
+        function payWithRave(amount, des) {
+            var x = getpaidSetup({
+                PBFPubKey: API_publicKey,
+                customer_email: email,
+                amount: amount,
+                customer_phone: phone,
+                currency: "USD",
+
+                txref: ref,
+                payment_options: "card,account,ussd,barter,bank transfer",
+                meta: [
+                    {
+                        metaname: "description",
+                        metavalue: des
+                    }
+                ],
+                onclose: function() {
+                    // a function that should tell a subscriber that he was unable to complete a payment
+
+                },
+                callback: function(response) {
+                    var txref = response.tx.txRef; // collect txRef returned and pass to a 					server page to complete status check.
+                    console.log("This is the response returned after a charge", response);
+                    if (
+                        response.tx.chargeResponseCode == "00" ||
+                            response.tx.chargeResponseCode == "0"
+                    ) {
+                        // redirect to a success page
+                        location.href = "/Wallet/VerifyPayAsYouGoPayment/?reference=" + txref ;
+                    } else {
+                        // redirect to a failure page.
+                        location.href = "/Wallet/VerifyPayAsYouGoPayment/?reference=" + txref ;
+                    }
+
+                    x.close(); // use this to close the modal immediately after payment.
+                }
             });
         }
+    </script>
+    <script>
+
+
+        function checkOut(amount,des) {
+            var phone = "@user.PhoneNumber";
+            if (phone == '') {
+
+                currentAmount = amount;
+                currentDes = des;
+                $("#addPhoneNumberModal").modal();
+
+            } else {
+                //var isUpdated = updatePhone();
+                //if (isUpdated) {
+                $("#addPhoneNumberModal").modal('hide');
+                payWithRave(amount, des);
+                //}
+            }
+        }
+
     </script>
 }

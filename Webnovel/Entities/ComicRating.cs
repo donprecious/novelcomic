@@ -29,7 +29,7 @@ namespace Webnovel.Entities
 			get;
 			set;
 		}
-
+        public string Description { get; set; }
 		[ForeignKey("ComicId")]
 		public Comic Comic
 		{
