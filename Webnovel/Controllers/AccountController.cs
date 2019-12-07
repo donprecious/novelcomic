@@ -219,13 +219,19 @@ namespace Webnovel.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null, int? referralId = null)
+        public IActionResult Register(string returnUrl = null, string email = null, int? referralId = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (referralId != null)
             {
                HttpContext.Session.SetString("referralId", referralId.ToString());
                 ViewData["referralId"] = referralId;
+            }
+
+            if (email != null)
+            {
+                HttpContext.Session.SetString("referralEmail", email);
+
             }
             return View();
         }
@@ -253,6 +259,23 @@ namespace Webnovel.Controllers
                             DateRegistered = DateTime.UtcNow
                         });
                        await _referral.Save();
+                    }
+
+                    var referralEmail = HttpContext.Session.GetString("referralEmail");
+                    if (referralEmail != null)
+                    {
+                        // check if user exist 
+                        var referralUser = await _userManager.FindByEmailAsync(referralEmail);
+                        if (referralUser != null)
+                        {
+                            await _referral.AddUniqueNormalBasicReferredUser(new NormalReferredUser()
+                            {
+                                UserId = user.Id,
+                                DateRegistered = DateTime.UtcNow,
+                                ReferredUserId = referralUser.Id
+                            });
+                            await _referral.Save();
+                        }
                     }
                     _logger.LogInformation("User created a new account with password.");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

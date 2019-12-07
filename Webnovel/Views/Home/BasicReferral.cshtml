@@ -1,60 +1,143 @@
-﻿@model object
-
+﻿
 @{
     ViewBag.Title = "My Referrals";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@model IEnumerable<Webnovel.Entities.NormalReferredUser>
 <div class="hero user-hero">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="hero-ct" style="padding-top: 100px">
                     <h1>My Referrals</h1>
-                    
+
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>
 <div class="page-single">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-sm-12 col-xs-12" style="top:-160px">
                 <div class="blog-detail-ct">
-                   
+
                     <div class="cmt-item flex-it">
-                        <div class="author-infor">
+                        <div class="author-infor" style="text-align: center">
                             <h1>My Referral Link</h1>
 
                             <div class="flex-it2 text-center">
+                                @if (ViewBag.ReferralUrl == null)
+                                {
+                                    <h6><a href="#">Opp no link</a></h6> <br />
+                                }
 
-                                <h6><a href="#">Opp no link</a></h6>  <br />
-                                <button class="btn btn-primary"> Generate New Link </button>
+                                <div class="ui action input">
+                                    <input type="text" id="text-basic-link" readonly="readonly" value="@ViewBag.ReferralUrl">
+                                    <button class="ui teal right labeled icon button" id="btn-copy-link" data-clipboard-target="#text-basic-link">
+                                        <i class="copy icon"></i>
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="ui button" id="btn-generate-link"> Generate New Link </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12" style="top:-160px">
+                <div class="blog-detail-ct">
+
+                    <div class="cmt-item flex-it" style="text-align: center">
+                        <div class="author-infor">
+                            <h1>Earnings</h1>
+                            <div class="ui horizontal list">
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="ui sub header" style="color: white"> <h4>This Week Earnings </h4></div>
+                                        <h4> @ViewBag.WeekEarning</h4>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="content" style="color: white">
+                                        <div class="ui sub header"> <h4>This Month Earnings</h4></div>
+                                        <h4>@ViewBag.MonthEarning</h4>
+                                    </div>
+                                </div>
+                                <div class="item">
+
+                                    <div class="content">
+                                        <div class="ui sub header" style="color: white"><h4>Total Referrals </h4></div>
+                                        <h4> @ViewBag.ThisMonthReferral</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-it2 text-center">
+
+                                <table class="ui celled table">
+                                    <thead>
+                                        <tr>
+                                            <th>Email</th>
+                                            <th>Date Registered</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var i in Model)
+                                        {
+                                            <tr>
+                                                <td data-label="email">@i.User.Email</td>
+                                                <td data-label="Date">@i.DateRegistered.ToString("f")</td>
+
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                </table>
                             </div>
 
                         </div>
                     </div>
                 </div>
             </div>
-            
+
+
         </div>
     </div>
 </div>
-<div class="page-single cmt-item" style="padding-top: 5px">
-    <div class="container">
-        <div class="row ipad-width">
-            <div class="col-md-12 col-sm-12 col-xs-12" style="top:-80px">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-header">
-                            <h4 class="title">My Referral Link</h4>
-                            <p>Opp No Link Generate</p>
-                            <button class="btn btn-primary">Generate a new Link</button>                        </div>
-                       
-                    </div>
-                </div>
-                </div>
-            </div>
-        </div>
-    </div>
+@section Css
+    {
+    <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
+
+}
+@section Scripts
+    {
+    <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
+    <script src="~/lib/clipboardjs/dist/clipboard.min.js"></script>
+
+    <script>
+        $(function () { 
+        var clib =    new ClipboardJS('#btn-copy-link');
+            $("#btn-generate-link").click(function () {
+                $.get("/Home/GenerateBasicReferralLink",
+                    function (data) {
+                        toastr.success("Link Generated " + data);
+                        $("#text-basic-link").val(data);
+                        location.reload();
+                    });
+            }); 
+            
+            clib.on('success', function(e) {
+            console.info('Action:', e.action);
+            console.info('Text:', e.text);
+            console.info('Trigger:', e.trigger);
+            toastr.success("Copied");
+
+            e.clearSelection();
+        });
+
+        });
+    </script>
+}

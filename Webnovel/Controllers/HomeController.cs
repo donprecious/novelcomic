@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Webnovel.Entities;
+using Webnovel.Helpers;
 using Webnovel.Models;
 using Webnovel.Repository;
 using Referral = Webnovel.Entities.Referral;
@@ -34,6 +35,10 @@ namespace Webnovel.Controllers
         private IHttpContextAccessor _accessor;
         private readonly IPage _page;
 
+        public async Task<ApplicationUser> GetUser()
+        {
+            return await _userManager.GetUserAsync(User);
+        }
         public HomeController(UserManager<ApplicationUser> userManager, IComic comic, INovel novel, 
             IAnimation animation, IUser user, IReferral referral, 
             SignInManager<ApplicationUser> signInManager, IHttpContextAccessor accessor
@@ -380,9 +385,29 @@ namespace Webnovel.Controllers
             return View(page);
         }
 
+        [Authorize]
         public async Task<IActionResult> BasicReferral()
         {
-            return View();
+            var user = await GetUser();
+            var referrals = await _referral.GetNormalReferredUsersReferredBy(user.Id);
+            var today = DateTime.UtcNow;
+            var thisMonthDateBegins = new DateTime(today.Year, today.Month, 1);
+            var thisWeekBegins = Utilities.GetStartOfWeek(today, today.DayOfWeek);
+            ViewBag.ThisMonthReferral = referrals.Count(a => a.DateRegistered >= thisMonthDateBegins);
+
+            ViewBag.MonthEarning = referrals.Count(a => a.DateRegistered >= thisMonthDateBegins) * 50;
+            ViewBag.WeekEarning =  referrals.Count(a => a.DateRegistered >= thisWeekBegins) * 50;
+
+            ViewBag.ReferralUrl = user.BasicReferralLink;
+            return View(referrals);
+        }
+         
+        [Authorize]
+        public async Task<IActionResult> GenerateBasicReferralLink()
+        {
+            var user = await GetUser();
+            var link = await _referral.GenerateBasicReferralUrl(user.Id);
+            return Ok(link);
         }
     }
 }

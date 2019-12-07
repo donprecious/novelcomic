@@ -1416,6 +1416,8 @@
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
     <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
     <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\clipboardjs\dist\clipboard.js" />
+    <None Include="wwwroot\lib\clipboardjs\dist\clipboard.min.js" />
     <None Include="wwwroot\lib\image-editor\svg\icon-a.svg" />
     <None Include="wwwroot\lib\image-editor\svg\icon-b.svg" />
     <None Include="wwwroot\lib\image-editor\svg\icon-c.svg" />

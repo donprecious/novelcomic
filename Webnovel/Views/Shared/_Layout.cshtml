@@ -32,7 +32,8 @@
     <meta name=viewport content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone-no">
     <!-- CSS files -->
-   
+
+    <link href="~/lib/Semantiui/semantic.css" rel="stylesheet" />
     <link href="~/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/home/css/plugins.css">
     <link rel="stylesheet" href="~/home/css/style.css">
@@ -57,16 +58,13 @@
 
         .slide-it.slick-side.slick-slide {
             width: 185px !important;
-        }
-    </style> 
+        } 
+        .text-center {
+            text-align: center;
+        
+    </style>
     <style>
-        button {
-            padding: 5px;
-            border: none;
-            border-radius: 10px;
-            background-color: #4a6cb8;
-            color: white;
-        }
+     
     </style>
     @RenderSection("Css", required: false)
     <script id="mcjs">!function (c, h, i, m, p) { m = c.createElement(h), p = c.getElementsByTagName(h)[0], m.async = 1, m.src = i, p.parentNode.insertBefore(m, p) }(document, "script", "https://chimpstatic.com/mcjs-connected/js/users/ae16088008f7bd829b19ac53c/4cf9f45ebffbe9d334c1620db.js");</script>
@@ -228,6 +226,7 @@
                                 <li><a asp-action="ComingSoon" asp-controller="Home">Forumn</a></li>
                                 <li><a asp-action="ComingSoon" asp-controller="Home">Blog</a></li>
                                 <li class="it-last"><a asp-action="ReferralSignup" asp-controller="Home">Referral Hub</a></li>
+                                <li class="it-last"><a asp-action="BasicReferral" asp-controller="Home">My Referrals</a></li>
                             </ul>
                         </li>
 
@@ -368,6 +367,7 @@
     <script src="~/home/js/jquery.js"></script>
 
 <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/lib/Semantiui/semantic.js"></script>
 
     <script src="~/home/js/plugins.js"></script>
     <script src="~/home/js/plugins2.js"></script>
