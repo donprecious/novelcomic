@@ -57,7 +57,7 @@
                             }
                         </p>
                     </div><!--end entry-->
-                    <a  style="cursor: pointer" id="reportNovelLink">Report Novel</a>
+                    <a  style="cursor: pointer" class="report-link" id="reportNovelLink">report content</a>
                 </div>
 
 
@@ -175,7 +175,7 @@
             <div class="modal-body">
                 
                 <h3>Unlock content</h3>
-                <h5 class="text-center" style="display: inline-block"> <img src="~/images/cowries.png" width="30" class="img-fluid"/> @userCowries.Cowries Cowries Left </h5> <a href="@Url.Action("FundWallet", "Wallet")" class="ml-5"> <i class="fa fa-plus"></i> Add </a>
+                <h5 class="text-center" style="display: inline-block"> <img src="~/images/cowries.png" width="30" class="img-fluid"/> @userCowries?.Cowries Cowries Left </h5> <a href="@Url.Action("FundWallet", "Wallet")" class="ml-5"> <i class="fa fa-plus"></i> Add </a>
                 <br/>
                 <p>You will spend <b> @ViewBag.CowriesToSpentOnCurrent  cowries</b> to unlock this content</p>
                 <button class="btn btn-rounded btn-primary" id="spendOnCurrent"> Spend @ViewBag.CowriesToSpentOnNext CR </button> <a href="@Url.Action("SubScription", "Wallet")" class=" btn btn-rounded btn-success"> <i class="fa fa-unlock"></i> Unlimited Access </a> 
@@ -198,7 +198,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h3 class="text-center" style="display: inline-block"> <img src="~/images/cowries.png" width="30" class="img-fluid" />  @userCowries.Cowries Cowries Left </h3>    <a href="@Url.Action("FundWallet","Wallet")" class="ml-5"> <i class="fa fa-plus"></i> Add </a>
+                <h3 class="text-center" style="display: inline-block"> <img src="~/images/cowries.png" width="30" class="img-fluid" />  @userCowries?.Cowries Cowries Left </h3>    <a href="@Url.Action("FundWallet","Wallet")" class="ml-5"> <i class="fa fa-plus"></i> Add </a>
                 <br />
                      <p>You will spend <b> @ViewBag.CowriesToSpentOnNext cowries</b> to view this content</p>
                 <button class="btn btn-rounded btn-primary" id="btnSpend"  data-cost ="@ViewBag.CowriesToSpentOnNext"> Spend @ViewBag.CowriesToSpentOnNext CR </button>     <button class="btn btn-rounded btn-default"> Cancel </button>
@@ -246,7 +246,8 @@
                     }
                     <div class="form-group">
                         <label>What do you think?</label>
-                        <textarea class="form-control" id="rateBox"> </textarea>
+                        <label  style="color:red" id="rate-text-error"></label>
+                        <textarea class="form-control" id="rateBox" required> </textarea>
 
                     </div>
                     <button class="btn btn-xs btn-warning" id="btn-submitRate"><i class="fa fa-edit"></i>Submit Rate</button>
@@ -288,7 +289,7 @@
         </div>
     </div>
 </div>
-@section Scripts {-
+@section Scripts {
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @*<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>*@
@@ -446,7 +447,17 @@
             $("#btn-rate").click(function() {
                 $("#rateModal").modal();
             });
-            $("#btn-submitRate").click(function() {
+            $("#btn-submitRate").click(function() { 
+                var description = $("#rateBox").val(); 
+                if (description.trim() == '' || description == null) {
+                    //Swal.fire({
+                    //    icon: "error",
+                    //    message: "Description cannot be empty"
+                    //});
+                    $("#rate-text-error").text("Description cannot be empty");
+                    $("#rateBox").css("border","1px solid red");
+                    return;
+                }
                 $(".rate-here").find(".rate-ctrl");
                 var rateCtrl = $(".rate-here").find(".rate-ctrl");
                 var rate = [];
@@ -462,7 +473,7 @@
                         }
                     );
                 }
-                var description = $("#rateBox").val();
+              
                 $.ajax("/Novel/SaveRating/",
                     {
                         type: "post",
@@ -484,7 +495,9 @@
                                     'Notification',
                                     data.message,
                                     'success'
-                                );
+                                ); 
+                                $("#rate-text-error").text("");
+
                             } else {
                                 Swal.fire(
                                     'Notification',
@@ -546,7 +559,6 @@
                                 'warning'
                             );
                         }
-                          
                     }
                 });
 

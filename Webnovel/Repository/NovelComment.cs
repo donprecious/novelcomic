@@ -49,9 +49,32 @@ namespace Webnovel.Repository
 		}
 
 		public async Task<ICollection<Webnovel.Entities.NovelComment>> List(int novellId)
-		{
-			return await EntityFrameworkQueryableExtensions.ToListAsync<Webnovel.Entities.NovelComment>(((IQueryable<Webnovel.Entities.NovelComment>)_context.NovelComments).Where((Webnovel.Entities.NovelComment a) => a.NovelId == novellId), default(CancellationToken));
-		}
+        {
+            var novelComment = await _context.NovelComments.Where(a => a.NovelId == novellId)
+                //.Include(a => a.Novel)
+                .Include(a=>a.Ratings)
+                .Include(a=>a.User)
+                .Select(a=>new Entities.NovelComment()
+                {
+                    UserId = a.UserId,
+                    Comment = a.Comment,
+                    Id = a.Id,
+                   User = a.User,
+                   DateTime = a.DateTime,
+                   NovelId = a.NovelId,
+                   Ratings = _context.NovelRatings.Where(b=>b.CommentId == a.Id).Select(r=> new NovelRating()
+                   {  
+                       Value = r.Value,
+                       
+                       RatingTypeId = r.RatingTypeId,
+                       RatingType = _context.RatingTypes.Where(t =>t.Id == r.RatingTypeId).FirstOrDefault()
+                   }).ToList()
+                    
+                })
+                .ToListAsync();
+            
+            return novelComment;
+        }
 
 		public async Task<bool> Save()
 		{

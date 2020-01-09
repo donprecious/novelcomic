@@ -23,10 +23,10 @@
                     <div>
                         <div asp-validation-summary="All" class="text-danger"></div>
                         @*<span asp-validation-for="Password" class="text-danger"></span>
-                        <span asp-validation-for="Email" class="text-danger"></span>*@
+                <span asp-validation-for="Email" class="text-danger"></span>*@
 
                     </div>
-                    <span   asp-validation-for="Email"  class="form-text text-danger"></span>
+                    <span asp-validation-for="Email" class="form-text text-danger"></span>
                     <div class="input-group mb-3">
 
                         <div class="input-group-prepend">
@@ -36,8 +36,8 @@
 
                         <input type="text" class="form-control form-control-lg" asp-for="Email" placeholder="email" aria-label="email" aria-describedby="basic-addon1">
                     </div>
-                    
-                    <span   asp-validation-for="Password"  class="form-text text-danger"></span>
+
+                    <span asp-validation-for="Password" class="form-text text-danger"></span>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -60,20 +60,53 @@
                             <button class="btn btn-block btn-lg btn-info" type="submit">Log In</button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-                            <div class="social">
-                                <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip" title="" data-original-title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> </a>
-                                <a href="javascript:void(0)" class="btn btn-googleplus" data-toggle="tooltip" title="" data-original-title="Login with Google"> <i aria-hidden="true" class="fab fa-google"></i> </a>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="form-group m-b-0 m-t-10">
                         <div class="col-sm-12 text-center">
                             Don't have an account? <a asp-action="Register" class="text-info m-l-5"><b>Sign Up</b></a>
                         </div>
                     </div>
+
                 </form>
+                @{
+                    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    if (loginProviders.Count == 0)
+                    {
+                        @*<div>
+                            <p>
+                                There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                for details on setting up this ASP.NET application to support logging in via external services.
+                            </p>
+                        </div>*@
+                    }
+                    else
+                    { <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
+                                <div class="social">
+                                    @{
+                                        var signins = await SignInManager.GetExternalAuthenticationSchemesAsync();
+                                    }
+                                  
+                                    <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" >
+                                        <button class="btn btn-googleplus" name="provider" value="Google" title="Log in using your Google account" data-toggle="tooltip"  data-original-title="Login with Google"> <i aria-hidden="true" class="fab fa-google"></i> </button>
+                                        <button  class="btn  btn-facebook" data-toggle="tooltip"  name="provider" value="Facebook" title="Log in using your Facebook account" title="" data-original-title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> </button>
+
+                                        @*<div>
+                                            <p>
+                                                @foreach (var provider in loginProviders)
+                                                {
+                                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                                                }
+                                            </p>
+                                        </div>*@
+                                    </form>
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    }
+                }
             </div>
         </div>
     </div>
@@ -176,5 +209,19 @@
 </div>*@
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_ValidationScriptsPartial")  
+    
+    <script >
+        //external Signin 
+        function externalSignIn(provider, returnUrl) {
+            $.ajax("/Account/ExternalLogin",
+                {
+                    type: "Post",
+                    data: {
+                        provider: provider,
+                        returnUrl: returnUrl
+                    }
+                });
+        }
+    </script>
 }

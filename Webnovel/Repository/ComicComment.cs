@@ -31,10 +31,21 @@ namespace Webnovel.Repository
 			}));
 		}
 
+        public async Task<Entities.ComicComment> GetComment(int id)
+        {
+            var comment = await _context.ComicComments.Where(a => a.Id == id)
+                .Include(a=>a.User)
+                .Include(a=>a.Comic)
+                .SingleOrDefaultAsync();
+            return comment;
+        }
 		public async Task<ICollection<Webnovel.Entities.ComicComment>> List(int comicId)
-		{
-			return await EntityFrameworkQueryableExtensions.ToListAsync<Webnovel.Entities.ComicComment>(((IQueryable<Webnovel.Entities.ComicComment>)_context.ComicComments).Where((Webnovel.Entities.ComicComment a) => a.ComicId == comicId), default(CancellationToken));
-		}
+        {
+            return await _context.ComicComments.Where(a => a.ComicId == comicId)
+                .Include(a => a.User)
+                .Include(a => a.Comic).ToListAsync();
+
+        }
 
 		public async Task<bool> Save()
 		{

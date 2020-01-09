@@ -179,10 +179,17 @@ namespace Webnovel.Repository
 	
 		public async Task<IOrderedQueryable<Episode>> GetEpisodes(int comicId)
         {
-           return _context.Episodes.AsNoTracking().OrderBy(a=>a.Preference);
+           return _context.Episodes.Where(a=>a.ComicId == comicId).AsNoTracking().OrderBy(a=>a.Preference);
           //  return await _context.Episodes.Where(a=>a.ComicId== comicId).ToListAsync();
         }
-
+        public async Task<IQueryable<Episode>> GetEpisodesAsQuerable(int comicId)
+        {
+            return _context.Episodes
+                .Include(a=>a.Comic)
+                .Include(a=>a.ComicScene)
+                .Where(a=>a.ComicId == comicId).AsNoTracking().OrderBy(a=>a.Preference);
+            //  return await _context.Episodes.Where(a=>a.ComicId== comicId).ToListAsync();
+        }
 		public async Task<Episode> GetEpisode(int episodeId)
 		{
 			return await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Episode>(((IQueryable<Episode>)_context.Episodes).Where((Episode a) => a.Id == episodeId), default(CancellationToken));
@@ -327,6 +334,30 @@ namespace Webnovel.Repository
         public async Task<ICollection<ComicViewer>> GetAuthorNovelViewers(int authorId)
         {
             return await _context.ComicViewer.Where(a=>a.Comic.AuthorId == authorId).Include(a=>a.Comic).ToListAsync();
+        }
+
+        public async Task<ICollection<PaidEpisodeHistory>> GetUserPaidEpisodeHistory(string userId)
+        {
+            return await _context.PaidEpisodeHistories.Where(a => a.UserId == userId).ToListAsync();
+        }
+
+        public async Task<bool> HasPaidForEpisode(string userId, int episodeId)
+        {
+            return await _context.PaidEpisodeHistories.AnyAsync(a => a.UserId == userId && a.EpisodeId == episodeId);
+        }
+        
+        public async Task<bool> AddPaidEpisode(PaidEpisodeHistory episodeHistory)
+        {
+            var hasPaid = await HasPaidForEpisode(episodeHistory.UserId, episodeHistory.EpisodeId);
+            if (hasPaid) return false;;
+
+            await  _context.PaidEpisodeHistories.AddAsync(episodeHistory);
+            return await Save();
+        }
+
+        public async Task AddComicReport(ComicReport report)
+        {
+            await _context.ComicReports.AddAsync(report);
         }
         public async Task<bool> Save()
 		{

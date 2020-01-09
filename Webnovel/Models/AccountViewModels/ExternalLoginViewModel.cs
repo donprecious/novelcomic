@@ -10,6 +10,14 @@ namespace Webnovel.Models.AccountViewModels
     {
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } 
+
+
+        [Required(ErrorMessage = "Password Required")]
+        public  string Password { get; set; } 
+
+        [Required(ErrorMessage = "Confirmation Password Required")]
+        [Compare("Password", ErrorMessage = "Password does not match")]
+        public  string ConfirmPassword { get; set; }
     }
 }

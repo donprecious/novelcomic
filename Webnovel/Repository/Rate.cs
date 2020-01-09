@@ -20,10 +20,27 @@ namespace Webnovel.Repository
 
         public async Task CreateNovelRate(NovelRating rate)
         { 
-            var find = await _context.NovelRatings.Where(a => a.NovelId == rate.NovelId && a.UserId == rate.UserId).FirstOrDefaultAsync();
+            //var find = await _context.NovelRatings.Where(a => a.NovelId == rate.NovelId && a.UserId == rate.UserId).FirstOrDefaultAsync();
+            //if (find == null)
+            //{
+            await _context.NovelRatings.AddAsync(rate);
+        //}
+        //    else
+        //    {
+        //        update it
+        //        find.UserId = rate.UserId;
+        //        find.Value = rate.Value;
+        //        find.Description = rate.Description;
+        //        _context.Entry(find).State = EntityState.Modified;
+               
+        //    }
+}
+        public async Task CreateComicRate(ComicRating rate)
+        { 
+            var find = await _context.ComicRatings.Where(a => a.ComicId == rate.ComicId && a.UserId == rate.UserId).FirstOrDefaultAsync();
             if (find == null)
             {
-            await _context.NovelRatings.AddAsync(rate);
+                await _context.ComicRatings.AddAsync(rate);
             }
             else
             {
@@ -39,6 +56,11 @@ namespace Webnovel.Repository
         public async Task<ICollection<NovelRating>> GetNovelRating(int novelId)
         {
             var list = await _context.NovelRatings.Where(a => a.NovelId == novelId).ToListAsync();
+            return list;
+        }  
+        public async Task<ICollection<ComicRating>> GetComicRating(int comicId)
+        {
+            var list = await _context.ComicRatings.Where(a => a.ComicId == comicId).ToListAsync();
             return list;
         }
 
@@ -67,10 +89,34 @@ namespace Webnovel.Repository
             foreach (var i in rates)
             {
                 totalValue += i.Value;
+            } 
+            var rate = totalValue / rates.Count();
+            if (!rates.Any())
+            {
+                rate = 0.0;
             }
-            return totalValue;
+            return Math.Round(rate,1, MidpointRounding.ToEven);
+           
         }
 
+        public async Task<double> GetComicRateAverage(int comicId)
+        {
+            var rates = await GetComicRating(comicId);
+            var totalValue = 0.0;
+          
+            foreach (var i in rates)
+            {
+                totalValue += i.Value;
+               
+            }
+
+            var rate = totalValue / rates.Count();
+            if (!rates.Any())
+            {
+                rate = 0.0;
+            }
+            return Math.Round(rate,1, MidpointRounding.ToEven);
+        }
         public async Task<ICollection<RatingType>> RatingType()
         {
             return await _context.RatingTypes.ToListAsync();

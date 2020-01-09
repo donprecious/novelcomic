@@ -28,7 +28,12 @@ namespace Webnovel.Entities
 		{
 			get;
 			set;
-		}
+		} 
+
+        public int RatingTypeId { get; set; }
+        [ForeignKey("RatingTypeId")]
+        public RatingType RatingType { get; set; } 
+
         public string Description { get; set; }
 		[ForeignKey("ComicId")]
 		public Comic Comic
@@ -42,6 +47,11 @@ namespace Webnovel.Entities
 		{
 			get;
 			set;
-		}
+		} 
+
+        public int CommentId { get; set; } 
+
+        [ForeignKey("CommentId")]
+        public ComicComment ComicComment { get; set; }
 	}
 }

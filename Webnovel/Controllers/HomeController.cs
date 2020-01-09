@@ -230,7 +230,9 @@ namespace Webnovel.Controllers
 			{
 				return (IActionResult)(object)((Controller)this).View("Error404");
 			}
-
+           ViewBag.PageUrl =    Url.Action("Novel", "Home",
+                new{Id = id},
+                protocol: Request.Scheme);
             if (_signInManager.IsSignedIn(User))
             {
                 userId = _userManager.GetUserId(User);

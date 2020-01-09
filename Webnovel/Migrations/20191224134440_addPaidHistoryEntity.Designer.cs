@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Webnovel.Data;
 
 namespace Webnovel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191224134440_addPaidHistoryEntity")]
+    partial class addPaidHistoryEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -569,11 +571,7 @@ namespace Webnovel.Migrations
 
                     b.Property<int>("ComicId");
 
-                    b.Property<int>("CommentId");
-
                     b.Property<string>("Description");
-
-                    b.Property<int>("RatingTypeId");
 
                     b.Property<string>("UserId");
 
@@ -582,10 +580,6 @@ namespace Webnovel.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ComicId");
-
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("RatingTypeId");
 
                     b.HasIndex("UserId");
 
@@ -905,8 +899,6 @@ namespace Webnovel.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CommentId");
-
                     b.Property<string>("Description");
 
                     b.Property<int>("NovelId");
@@ -918,8 +910,6 @@ namespace Webnovel.Migrations
                     b.Property<double>("Value");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
 
                     b.HasIndex("NovelId");
 
@@ -1654,16 +1644,6 @@ namespace Webnovel.Migrations
                         .HasForeignKey("ComicId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Webnovel.Entities.ComicComment", "ComicComment")
-                        .WithMany("Ratings")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Webnovel.Entities.RatingType", "RatingType")
-                        .WithMany()
-                        .HasForeignKey("RatingTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -1814,11 +1794,6 @@ namespace Webnovel.Migrations
 
             modelBuilder.Entity("Webnovel.Entities.NovelRating", b =>
                 {
-                    b.HasOne("Webnovel.Entities.NovelComment", "Comment")
-                        .WithMany("Ratings")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Webnovel.Entities.Novel", "Novel")
                         .WithMany("NovelRatings")
                         .HasForeignKey("NovelId")

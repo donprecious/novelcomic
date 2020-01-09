@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using Webnovel.Entities;
 using Webnovel.Models;
 using Webnovel.Repository;
+using ComicComment = Webnovel.Entities.ComicComment;
 
 namespace Webnovel.Hubs
 {
@@ -21,20 +22,20 @@ namespace Webnovel.Hubs
         public async Task SendChapterComment(int chapterId, string userId, string message)
         {
           
-                NovelChapterCommentVm chapterCommentVm = new NovelChapterCommentVm()
-                {
-                    UserId =  userId,
-                    Comment = message,
-                    ChapterId = chapterId,
-                    DateTime =  DateTime.UtcNow
-                }; 
+            NovelChapterCommentVm chapterCommentVm = new NovelChapterCommentVm()
+            {
+                UserId =  userId,
+                Comment = message,
+                ChapterId = chapterId,
+                DateTime =  DateTime.UtcNow
+            }; 
              
-                var comment = Mapper.Map<ChapterComment>(chapterCommentVm); 
+            var comment = Mapper.Map<ChapterComment>(chapterCommentVm); 
              
-               await _comment.CreateChapterComment(comment);
-               //var commentSaved = Mapper.Map<NovelCommentVm>(comment);
-             await   _comment.Save();
-             var newComment = await _comment.GetChapterComment(comment.Id);
+            await _comment.CreateChapterComment(comment);
+            //var commentSaved = Mapper.Map<NovelCommentVm>(comment);
+            await   _comment.Save();
+            var newComment = await _comment.GetChapterComment(comment.Id);
             await Clients.All.SendAsync("commentReceived", newComment);
 
             

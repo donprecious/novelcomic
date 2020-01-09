@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Webnovel.Data;
 
 namespace Webnovel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200103151446_addedCommentIdToRates")]
+    partial class addedCommentIdToRates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1655,7 +1657,7 @@ namespace Webnovel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Webnovel.Entities.ComicComment", "ComicComment")
-                        .WithMany("Ratings")
+                        .WithMany()
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -1815,7 +1817,7 @@ namespace Webnovel.Migrations
             modelBuilder.Entity("Webnovel.Entities.NovelRating", b =>
                 {
                     b.HasOne("Webnovel.Entities.NovelComment", "Comment")
-                        .WithMany("Ratings")
+                        .WithMany()
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade);
 

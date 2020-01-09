@@ -38,7 +38,7 @@ namespace Webnovel.Repository
 
         Task<IOrderedQueryable<Episode>> GetEpisodes(int comicId);
 
-
+        Task<IQueryable<Episode>> GetEpisodesAsQuerable(int comicId);
         Task<Episode> GetEpisode(int episodeId);
 
 		Task EditEpisode(EpisodeVm episode);
@@ -76,8 +76,11 @@ namespace Webnovel.Repository
         Task<ICollection<ComicViewer>> GetComicViewer();
         Task<ICollection<ComicViewer>> GetComicViewer(int comicId);
         Task<ICollection<ComicViewer>> GetAuthorNovelViewers(int authorId);
-      
 
+        Task<ICollection<PaidEpisodeHistory>> GetUserPaidEpisodeHistory(string userId);
+        Task<bool> HasPaidForEpisode(string userId, int episodeId);
+        Task<bool> AddPaidEpisode(PaidEpisodeHistory episodeHistory);
+        Task AddComicReport(ComicReport report);
         Task<bool> Save();
     }
 }

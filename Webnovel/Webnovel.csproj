@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Webnovel-74EF9EEF-52D4-47BF-B5AD-872CC63C97A9</UserSecretsId>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <LangVersion>latest</LangVersion>
     <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
+<!--Migration to 2.1-->
+    <CopyRefAssembliesToPublishDirectory>true</CopyRefAssembliesToPublishDirectory> 
+<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -77,6 +80,15 @@
 
 
   <ItemGroup>
+    <!--<PackageReference Include="Microsoft.AspNetCore.App" /> 
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.1.1" /> 
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.2.0" /> 
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions " Version="2.2.0" /> 
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions " Version="2.2.0" />--> 
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+
     <PackageReference Include="AspNetCore.AsyncInitialization" Version="1.1.2" />
     <PackageReference Include="AutoMapper" Version="8.1.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.8.0" />
@@ -84,10 +96,9 @@
     <PackageReference Include="Hangfire.Core" Version="1.7.7" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.7" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" PrivateAssets="All" />
+    <!--<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />-->
+
     <PackageReference Include="refit" Version="4.7.51" />
     <PackageReference Include="ReflectionIT.Mvc.Paging" Version="2.4.0" />
     <PackageReference Include="Sentry.AspNetCore" Version="1.2.0" />
@@ -95,9 +106,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+    <!--<DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />-->
   </ItemGroup>
 
   <ItemGroup>

@@ -1,15 +1,16 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
+using Webnovel.Entities;
 using Webnovel.Models;
 
-namespace Webnovel.Entities
+namespace Webnovel.DtoModels
 {
-    public class NovelComment
+    public class NovelCommentDto
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id
         {
             get;
@@ -22,14 +23,13 @@ namespace Webnovel.Entities
             set;
         }
 
-        [ForeignKey("UserId")]
-        public ApplicationUser User
+     
+        public UserDto User
         {
             get;
             set;
         }
 
-        [Required(ErrorMessage = "Comment Required")]
         public string Comment
         {
             get;
@@ -46,15 +46,11 @@ namespace Webnovel.Entities
             set;
         }
 
-        [ForeignKey("NovelId")]
-        public Novel Novel
-        {
-            get;
-            set;
-        }
+      
         public DateTime? DateTime { get; set; }
 
      
         public ICollection<NovelRating> Ratings { get; set; }
+        public decimal RatingAverage { get; set; }
     }
 }

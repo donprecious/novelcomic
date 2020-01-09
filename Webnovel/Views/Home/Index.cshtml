@@ -10,9 +10,10 @@
 @inject IComic _comic 
 @inject  IAnimation _animation
 @inject ICategory _category
+@inject IRate _rate
 @{
-    var novels = await _novel.GetAllNovels(true,true);
-    var comics = await _comic.GetAllComics(true,true);
+    var novels = await _novel.GetAllNovels(false,true);
+    var comics = await _comic.GetAllComics(false,true);
     var categories = await _category.List();
     var animations = await _animation.GetAllAnimations();
     var tags = await _novel.Tags();
@@ -40,7 +41,7 @@
                 {
                          <div class="movie-item">
                     <div class="mv-img">
-                        <a href="#"><img src="~/home/images/uploads/slider4.jpg" alt="" width="200" height="437"></a>
+                        <a href="#"><img data-src="../home/images/uploads/slider4.jpg" alt="@i.Name" class="lazyload" width="200" height="437"></a>
                     </div>
                     <div class="title-in">
                         <div class="cate">
@@ -101,14 +102,14 @@
                                             <div class="movie-item">
                                                 @*<a data-toggle="popover" data-placement="right" title="@i.Name" data-title="@i.Name" data-content="@i.Title">*@
                                                     <div class="mv-img">
-                                                        <img src="@img" alt="@i.Name" title="@i.Title" width="185" height="284">
+                                                        <img data-src="@img" alt="@i.Name" title="@i.Title" class="lazyload" width="185" height="284">
                                                     </div>
                                                     <div class="hvr-inner">
                                                         <a href="@Url.Action("Novel", new {id = @i.Id})"> Read <i class="ion-android-arrow-dropright"></i> </a>
                                                     </div>
                                                     <div class="title-in">
                                                         <h6><a href="@Url.Action("Novel", new {id = @i.Id})" title="@i.Name" aria-describedby="@i.Title">@StringProcessor.SubString(@i.Name, 0, 20) </a></h6>
-                                                        <p><i class="ion-android-star"></i><span>0</span> /5</p>
+                                                        <p><i class="ion-android-star"></i><span>@await _rate.GetNovelRateAverage(i.Id)</span> /5.0</p>
                                                     </div>
                                                 @*</a>*@
 
@@ -161,14 +162,14 @@
                                             <div class="movie-item">
                                                 <a data-toggle="popover" data-placement="right" title="@i.Title" data-title="@i.Title" data-content="@i.Description">
                                                     <div class="mv-img">
-                                                        <img src="@img" alt="@i.Title" title="@i.Title" width="185" height="284">
+                                                        <img data-src="@img" alt="@i.Title" title="@i.Title" class="lazyload" width="185" height="284">
                                                     </div>
                                                     <div class="hvr-inner">
                                                         <a href="@Url.Action("Comic", new {id = @i.Id})"> Read <i class="ion-android-arrow-dropright"></i> </a>
                                                     </div>
                                                     <div class="title-in">
                                                         <h6><a href="@Url.Action("Comic", new {id = @i.Id})" title="@i.Title" aria-describedby="@i.Title">@StringProcessor.SubString(@i.Title, 0, 20) </a></h6>
-                                                        <p><i class="ion-android-star"></i><span>0</span> /5</p>
+                                                        <p><i class="ion-android-star"></i><span>@await _rate.GetComicRateAverage(i.Id)</span> /5.0</p>
                                                     </div>
                                                 </a>
 
@@ -583,7 +584,7 @@
                                                     </div>
                                                     <div class="title-in">
                                                         <h6><a href="@Url.Action("Animation", new {id = @i.Id})" title="@i.Title" aria-describedby="@i.Title">@StringProcessor.SubString(@i.Title, 0, 20) </a></h6>
-                                                        <p><i class="ion-android-star"></i><span>0</span> /5</p>
+                                                        @*<p><i class="ion-android-star"></i><span>0</span> /5</p>*@
                                                     </div>
                                                 </a>
 

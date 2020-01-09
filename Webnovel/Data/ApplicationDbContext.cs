@@ -183,7 +183,12 @@ namespace Webnovel.Data
 			get;
 			set;
 		}
-
+        
+        public DbSet<PaidEpisodeHistory> PaidEpisodeHistories
+        {
+            get;
+            set;
+        }
 		public DbSet<AuthorEarning> AuthorEarnings
 		{
 			get;
@@ -327,7 +332,9 @@ namespace Webnovel.Data
 
             builder.Entity<NovelChapterHistory>().HasOne(a => a.User);
             builder.Entity<NovelChapterHistory>().HasOne(a => a.Novel);
-            builder.Entity<NovelChapterHistory>().HasOne(a => a.Chapter);
+            builder.Entity<NovelChapterHistory>().HasOne(a => a.Chapter); 
+
+
 
             builder.Entity<ChapterComment>().HasOne(a => a.User);
             builder.Entity<ChapterComment>().HasOne(a => a.Chapter);
@@ -337,6 +344,11 @@ namespace Webnovel.Data
             builder.Entity<ChapterCommentReply>().HasOne(a => a.ChapterComment);
 
             builder.Entity<NovelRating>().HasOne(a => a.RatingType);
+            builder.Entity<NovelRating>().HasOne(a => a.Comment).WithMany(a=>a.Ratings);
+
+            builder.Entity<ComicRating>().HasOne(a => a.ComicComment).WithMany(a=>a.Ratings);
+         
+
             //builder.Entity<NovelComment>().HasOne(a => a.NovelRating);
             builder.Entity<NovelViewer>().HasOne(a => a.Novel);
             builder.Entity<ComicViewer>().HasOne(a => a.Comic);
@@ -364,7 +376,12 @@ namespace Webnovel.Data
 
             builder.Entity<NormalReferredUser>().HasOne(a => a.User);
             builder.Entity<NormalReferredUser>().HasOne(a => a.ReferredUser);
-            
+
+
+            builder.Entity<PaidEpisodeHistory>().HasOne(a => a.User);
+            builder.Entity<PaidEpisodeHistory>().HasOne(a => a.Episode);
+         
+
         }
 	}
 }

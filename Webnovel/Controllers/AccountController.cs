@@ -347,12 +347,63 @@ namespace Webnovel.Controllers
             }
             else
             {
-                // If the user does not have an account, then ask the user to create an account.
-                ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
+                // If the user does not have an account, then ask the user to create an account.  or simple create this user 
+                // find user in local account 
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    //create  user 
+                    ViewData["ReturnUrl"] = returnUrl;
+                    ViewData["LoginProvider"] = info.LoginProvider;
+               
+                    return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+                }
+                else
+                {
+                    // add user to external login
+                  var  addUser = await _userManager.AddLoginAsync(user, info);
+                  if (addUser.Succeeded)
+                  {
+                      var referralId = HttpContext.Session.GetString("referralId");
+                      if ( referralId != null)
+                      {
+                          var referral = Convert.ToInt32(referralId);
+                          await _referral.AddReferred(new Referred()
+                          {
+                              ReferralId = referral,
+                              UserId = user.Id,
+                              DateRegistered = DateTime.UtcNow
+                          });
+                          await _referral.Save();
+                      }
+
+                      var referralEmail = HttpContext.Session.GetString("referralEmail");
+                      if (referralEmail != null)
+                      {
+                          // check if user exist 
+                          var referralUser = await _userManager.FindByEmailAsync(referralEmail);
+                          if (referralUser != null)
+                          {
+                              await _referral.AddUniqueNormalBasicReferredUser(new NormalReferredUser()
+                              {
+                                  UserId = user.Id,
+                                  DateRegistered = DateTime.UtcNow,
+                                  ReferredUserId = referralUser.Id
+                              });
+                              await _referral.Save();
+                          }
+                      }
+                      await _signInManager.SignInAsync(user, isPersistent: false);
+                      _logger.LogInformation("User {Name} Account has been linked.", info.LoginProvider);
+                      return RedirectToLocal(returnUrl);
+                  }
+                  AddErrors(addUser);
+                }
+               
             }
+           
+            return RedirectToAction(nameof(Login));
         }
 
         [HttpPost]
@@ -369,7 +420,7 @@ namespace Webnovel.Controllers
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);

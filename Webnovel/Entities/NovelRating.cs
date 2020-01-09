@@ -48,7 +48,12 @@ namespace Webnovel.Entities
         {
             get;
             set;
-        }
+        } 
+
+        public int CommentId { get; set; } 
+
+        [ForeignKey("CommentId")]
+        public NovelComment Comment { get; set; }
     }
     public class RatingType
     {

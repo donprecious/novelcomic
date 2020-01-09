@@ -10,6 +10,7 @@ namespace Webnovel.Repository
 
 		Task Delete(int Id);
 
+        Task<Entities.ComicComment> GetComment(int id);
 		Task<ICollection<Webnovel.Entities.ComicComment>> List(int novelId);
 
 		Task<bool> Save();

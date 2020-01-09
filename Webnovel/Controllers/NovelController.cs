@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 //using ReflectionIT.Mvc.Paging;
 using Webnovel.Components;
+using Webnovel.DtoModels;
 using Webnovel.Entities;
 using Webnovel.Enum;
 using Webnovel.Helpers;
@@ -33,11 +34,13 @@ namespace Webnovel.Controllers
         private INovelHistory _novelHistory;
         private SignInManager<ApplicationUser> _signInManager;
         private readonly IRate _rate;
+        private readonly INovelComment _comment;
 
         private readonly IPayment _payment;
 
         public NovelController(INovel novel, IAuthor author, UserManager<ApplicationUser> userManager,
             INovelHistory novelHistory, SignInManager<ApplicationUser> signInManager, IRate rate,
+            INovelComment comment,
             IPayment payment
             )
         {
@@ -47,6 +50,7 @@ namespace Webnovel.Controllers
             _novelHistory = novelHistory;
             _signInManager = signInManager;
             _rate = rate;
+            _comment = comment;
             _payment = payment;
         }
 
@@ -536,10 +540,7 @@ namespace Webnovel.Controllers
                 {
                     ViewBag.hasPaid = true;
                 }
-                if (!hasPaid && !hasSubScription)
-                {
-                   // try pay
-                }
+             
                 if (!hasPaid && !hasSubScription)
                 {
                     ViewBag.hasPaid = false;
@@ -552,11 +553,14 @@ namespace Webnovel.Controllers
             {
                 pageNumber += 1; 
                 var nextChapter =  chapters.ToPagedList( pageNumber, 1).FirstOrDefault();
-                var words = StringProcessor.CountWordsWithoutHtml(nextChapter.Content);
+                var nextContent = nextChapter.Content == null ? " " : nextChapter.Content;
+                var words = StringProcessor.CountWordsWithoutHtml(nextContent);
                 var cowriesSpent = AppUtilities.CalculateCowriesToSpendOnWords(words);
                 ViewBag.CowriesToSpentOnNext = cowriesSpent;
             }
-            ViewBag.CowriesToSpentOnCurrent = AppUtilities.CalculateCowriesToSpendOnWords(StringProcessor.CountWordsWithoutHtml(model.FirstOrDefault().Content)) ;;
+
+            var content = model.FirstOrDefault().Content == null ? " " : model.FirstOrDefault().Content;
+            ViewBag.CowriesToSpentOnCurrent = AppUtilities.CalculateCowriesToSpendOnWords(StringProcessor.CountWordsWithoutHtml(content)) ;;
           
             if (chapterId != null)
             {
@@ -705,6 +709,26 @@ namespace Webnovel.Controllers
 			return (IActionResult)(object)((ControllerBase)this).RedirectToAction("Library");
 		}
 
+        public async Task<IActionResult> AddToLibrary(int id)
+        {
+            userId = _userManager.GetUserId(User); 
+      
+            await _novel.AddToLibrary(new NovelLibrary
+            {
+                UserId = userId,
+                NovelId = id,
+
+            });
+            var save = await _novel.Save();
+            if (save)
+            {
+                return Ok("Added to Library");
+            }
+
+            return BadRequest("Something went Wrong");
+
+        }
+
 		public async Task<IActionResult> Detail(int id)
 		{
 			Webnovel.Entities.Novel novel = await _novel.GetNovel(id);
@@ -823,31 +847,36 @@ namespace Webnovel.Controllers
         public async Task<IActionResult> SaveRating(List<NovelRating> rating, string description)
         {
             var rate = rating.FirstOrDefault();
-            foreach (var i in rating)
-            {
-                await _rate.CreateNovelRate(i);
-                await _rate.Save();
-              
-            }
+          
 
             if (rate != null)
             {
                 if (!string.IsNullOrEmpty(description))
                 {
-                    await _novel.AddNovelComment(new Entities.NovelComment()
+                    var comment = new Entities.NovelComment()
                     {
                         UserId = rate.UserId,
                         Comment = description,
                         DateTime = DateTime.UtcNow,
+
                         NovelId = rate.NovelId
+                    };
+                    await _novel.AddNovelComment(comment); 
+                    await _novel.Save();  
+                    foreach (var i in rating)
+                    {
+                        i.CommentId = comment.Id;
+                        await _rate.CreateNovelRate(i);
+                       var s = await _rate.Save();
+                    }
+                   
+                    return Json(new
+                    {
+                        status = 200, message = "Comment / Rating Saved"
                     });
-                    await _novel.Save();
                 }
                
-                return Json(new
-                {
-                    status = 200, message = "Comment / Rating Saved"
-                });
+              
             }
             return Json(new
             {
@@ -872,6 +901,33 @@ namespace Webnovel.Controllers
           {
               status = 200, message = "Complain Sent"
           });
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> GetComment(int novelId, int page =1, int count = 3)
+        {
+            var reviews = await _comment.List(novelId);
+            
+            var mapped = Mapper.Map<IEnumerable<NovelCommentDto> >(reviews);
+            var model = mapped.AsQueryable().ToPagedList(page,count);
+            var pageData = new PaginationModel()
+            {
+                Count = model.Count,
+                FirstItemOnPage = model.FirstItemOnPage,
+                HasNextPage = model.HasNextPage,
+                HasPreviousPage = model.HasPreviousPage,
+                IsFirstPage = model.IsFirstPage,
+                IsLastPage = model.IsLastPage,
+                PageCount = model.PageCount,
+                LastItemOnPage = model.LastItemOnPage,
+                PageNumber = model.PageNumber,
+                PageSize =  model.PageSize,
+            };
+            return Ok(new
+            {
+                data = model,
+                page = pageData
+            });
         }
     }
 }

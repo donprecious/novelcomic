@@ -8,18 +8,25 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Buffers;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Newtonsoft.Json;
 using ReflectionIT.Mvc.Paging;
 using Webnovel.Data;
+using Webnovel.DtoModels;
 using Webnovel.Entities;
 using Webnovel.Filters;
 using Webnovel.Hubs;
 using Webnovel.Models;
 using Webnovel.Repository;
 using Webnovel.Services;
+using ComicComment = Webnovel.Entities.ComicComment;
 using NovelComment = Webnovel.Repository.NovelComment;
 
 namespace Webnovel
@@ -40,6 +47,8 @@ namespace Webnovel
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSession(options =>
@@ -50,6 +59,19 @@ namespace Webnovel
                 // Make the session cookie essential
                 options.Cookie.IsEssential = true;
             });
+            services.AddAuthentication().AddGoogle(o =>
+            {
+                o.ClientId = "473446857855-ea7uf8cjvr9ttmc270pp9f1uqni65vs7.apps.googleusercontent.com";
+                o.ClientSecret = "u322Bps4I7SGj3bvTDk4TX6R";
+              
+            })
+                .AddFacebook(o =>
+                {
+                    o.AppId = "562656214588013";
+                    o.AppSecret = "6f08585198e73a56b8d0a874c1b63a20";
+                })
+                
+                ;
             services.AddIdentity<ApplicationUser, IdentityRole>(o =>
                 {
                     o.Password.RequireDigit = false;
@@ -74,6 +96,7 @@ namespace Webnovel
             services.AddScoped<IComicHistory, Repository.ComicHistory>();
 
             services.AddScoped<INovelComment, NovelComment>();
+            services.AddScoped<IComicComment, Repository.ComicComment>();
             services.AddScoped<IAppConfig, AppConfig>();
             services.AddScoped<IRate, Rate>();
             services.AddScoped<IPayment, Payment>();
@@ -100,8 +123,20 @@ namespace Webnovel
 
             // Add the processing server as IHostedService
             services.AddHangfireServer();
+            //for website optimization 
+            services.AddResponseCompression();
 
-            services.AddMvc(); 
+
+            services.AddMvc(o =>
+            {
+             
+
+            })
+                .AddJsonOptions(options =>
+                 {
+
+                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                 }); ;
             services.AddCors(options => options.AddPolicy("CorsPolicy", 
                 builder => 
                 {
@@ -125,7 +160,7 @@ namespace Webnovel
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -134,7 +169,7 @@ namespace Webnovel
 
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.UseBrowserLink();
+            //app.UseBrowserLink();
             app.UseDeveloperExceptionPage();
             app.UseDatabaseErrorPage();
 
@@ -189,6 +224,8 @@ namespace Webnovel
 
                 map.CreateMap<Subscription, SubscriptionVm>();
                 map.CreateMap<SubscriptionVm,Subscription>();
+                map.CreateMap<ApplicationUser, UserDto>();
+                map.CreateMap<Entities.NovelComment, NovelCommentDto>();
             });
 
             app.UseStaticFiles();
@@ -205,10 +242,14 @@ namespace Webnovel
           backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
           //"0 0/30 0 ? * * *"
           RecurringJob.AddOrUpdate<INovel>(a =>  a.PublishAllChapters(), "*/30 * * * *");
-          //RecurringJob.AddOrUpdate();
+          //RecurringJob.AddOrUpdate(); 
+
+          //   website optimization 
+          app.UseResponseCompression();
           app.UseSignalR(routes => 
           {
               routes.MapHub<NovelCommentHub>("/novelCommentHub");
+              routes.MapHub<ComicCommentHub>("/comicCommentHub");
           });
             app.UseMvc(routes =>
             {

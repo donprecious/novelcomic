@@ -69,7 +69,7 @@ namespace Webnovel.Repository
         public async Task<bool> AddUniqueNormalBasicReferredUser(NormalReferredUser normalReferredUser)
         {
             var refreedUser = await GetNormalReferredUsers(normalReferredUser.UserId);
-            if (refreedUser == null)
+            if (refreedUser != null)
             {
                 //add 
               await  _context.NormalReferredUsers.AddAsync(normalReferredUser);
@@ -91,7 +91,7 @@ namespace Webnovel.Repository
 
         public async Task<ICollection<NormalReferredUser>> GetNormalReferredUsersReferredBy(string refrreedByUserId)
         {
-            return await _context.NormalReferredUsers.Where(a => a.ReferredUserId ==refrreedByUserId).ToListAsync();
+            return await _context.NormalReferredUsers.Where(a => a.ReferredUserId ==refrreedByUserId).Include(a=>a.User).ToListAsync();
 
         }
 

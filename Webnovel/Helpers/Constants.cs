@@ -30,6 +30,13 @@ namespace Webnovel.Helpers
 
         public static string PolicyPage = "/Home/Page/3";
         
-        public static string Terms = "/Home/Page/4";
+        public static string Terms = "/Home/Page/4"; 
+
+    }
+
+    public static class AppConstant
+    {
+        public static double UsdPerCowries = 0.05;
+        public static double UsdPerEpisode = 0.15; 
     }
 }

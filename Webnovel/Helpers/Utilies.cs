@@ -62,9 +62,7 @@ namespace Webnovel.Helpers
         {
             //o.o5 usd = 1 cr 
             //cr = usd/0.05  
-           
             return (cowries * 0.05);
-
         }
 
         public static double CalculateCowriesToSpendOnWords(int words)
@@ -73,6 +71,15 @@ namespace Webnovel.Helpers
             //0.02 cowries = 1 word 
             return  0.02 * words;
         }
-        
+
+        public static double CalculateCowriesToSpendOnEpisodes(int episode)
+        {
+            //10 cowries = 500 words 
+            //0.02 cowries = 1 word  
+            double cowriesCostPerEpisode = AppConstant.UsdPerEpisode / AppConstant.UsdPerCowries;
+
+            return cowriesCostPerEpisode * episode;
+        }
+
     }
 }

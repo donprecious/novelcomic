@@ -11,6 +11,7 @@
 @inject IComic Comic
 @{
     var categories = await Category.List();
+    var isLoggedId = false;
 }
 
 
@@ -23,9 +24,9 @@
     <title>Alkebulania - @ViewData["Title"]</title>
     <meta charset="UTF-8">
     <meta name="description" content="Alkebulania is a startup, geared at promoting African content to the international community and African’s in the diaspora, as a means of changing the African narrative and improving the image of Africa on the international stage with entertainment as the starting point in the form of novels, comics, animations, and gaming">
-    <meta name="keywords" content="alkebulania">
-    <meta name="author" content="">
-    <link rel="profile" href="#">
+    <meta name="keywords" content="Alkebulania, Novels, Comic, Animation, Africa Novel, Global Novel, Africa Readers, Africa Creators">
+    @RenderSection("metaTags", required: false)
+
     <!--Google Font-->
     <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
     <!-- Mobile specific meta -->
@@ -37,6 +38,9 @@
     <link href="~/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/home/css/plugins.css">
     <link rel="stylesheet" href="~/home/css/style.css">
+    <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet" />
+    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
+
     <script>
         !function () {
             var analytics = window.analytics = window.analytics || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else {
@@ -58,13 +62,26 @@
 
         .slide-it.slick-side.slick-slide {
             width: 185px !important;
-        } 
+        }
+
         .text-center {
             text-align: center;
-        
+        }
+
+        h4 {
+            color: white;
+        }
     </style>
     <style>
-     
+        /*header styles */
+        .dropdown-menu {
+            background-color: #27587fc2;
+        }
+
+        header .navbar-default .navbar-nav .dropdown .dropdown-menu.level1 li a {
+            padding: 10px 30px;
+            color: #e2ff46db;
+        }
     </style>
     @RenderSection("Css", required: false)
     <script id="mcjs">!function (c, h, i, m, p) { m = c.createElement(h), p = c.getElementsByTagName(h)[0], m.async = 1, m.src = i, p.parentNode.insertBefore(m, p) }(document, "script", "https://chimpstatic.com/mcjs-connected/js/users/ae16088008f7bd829b19ac53c/4cf9f45ebffbe9d334c1620db.js");</script>
@@ -72,7 +89,7 @@
 <body>
     <!--preloading-->
     <div id="preloader">
-        <img class="logo" src="~/images/logo_gold.png" alt=""  height="58">
+        <img class="logo" src="~/images/logo_gold.png" alt="" height="58">
         <div id="status">
             <span></span>
             <span></span>
@@ -184,7 +201,7 @@
                                 @foreach (var i in categories)
                                 {
 
-                                <li><a href="@Url.Action("Novels","Home", new{categoryId = i.Id})" title="@i.Name">@i.Name</a></li>
+                                    <li><a href="@Url.Action("Novels","Home", new{categoryId = i.Id})" title="@i.Name">@i.Name</a></li>
                                 }
 
 
@@ -200,7 +217,7 @@
                                 @foreach (var i in categories)
                                 {
 
-                                <li><a href="@Url.Action("Comics","Home", new{categoryId = i.Id})" title="@i.Name">@i.Name</a></li>
+                                    <li><a href="@Url.Action("Comics","Home", new{categoryId = i.Id})" title="@i.Name">@i.Name</a></li>
                                 }
 
                             </ul>
@@ -214,7 +231,7 @@
                                 @foreach (var i in categories)
                                 {
 
-                                <li><a href="@Url.Action("Animations","Home", new{categoryId = i.Id})" title="@i.Name">@i.Name</a></li>
+                                    <li><a href="@Url.Action("Animations","Home", new{categoryId = i.Id})" title="@i.Name">@i.Name</a></li>
                                 }
                             </ul>
                         </li>
@@ -233,7 +250,7 @@
                     </ul>
                     <ul class="nav navbar-nav flex-child-menu menu-right">
                         <li><a href="@Url.Action("CreateContent","User")" class="first">Create</a></li>
-                        <li><a href="@Url.Action("Barn","Home")" title ="Barn - My Favorite Novels, comics and Animations" class="first">My Barn</a></li>
+                        <li><a href="@Url.Action("Barn","Home")" title="Barn - My Favorite Novels, comics and Animations" class="first">My Barn</a></li>
 
                         <li class="dropdown first">
                             <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
@@ -241,21 +258,24 @@
                             </a>
                             @if (User.Identity.IsAuthenticated)
                             {
-                            <ul class="dropdown-menu level1">
-                                <li> <a asp-controller="User" asp-action="Switch">Select Account</a></li>
-                                <li>
-                                    <a asp-controller="User" asp-action="">My Profile</a>
-                                </li>
-                                <li>
-                                    <a asp-controller="Account" asp-action="SignOut" class="it-last">Logout</a>
-                                </li>
-                            </ul>
-                        }else{
-                            <ul class="dropdown-menu level1">
-                                <li><a href="@Url.Action("Login","Account")">Log In</a></li>
-                                <li class="it-last"><a href="@Url.Action("Register","Account")">Sign up</a></li>
-                            </ul>
-                        }
+                                isLoggedId = true;
+                                <ul class="dropdown-menu level1">
+                                    <li> <a asp-controller="User" asp-action="Switch">Select Account</a></li>
+                                    <li>
+                                        <a asp-controller="User" asp-action="">My Profile</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Account" asp-action="SignOut" class="it-last">Logout</a>
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="dropdown-menu level1">
+                                    <li><a href="@Url.Action("Login","Account")">Log In</a></li>
+                                    <li class="it-last"><a href="@Url.Action("Register","Account")">Sign up</a></li>
+                                </ul>
+                            }
 
                         </li>
 
@@ -281,102 +301,116 @@
     @RenderBody()
 
     <!-- footer section-->
-    <footer class="ht-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    
-                    <div class="title-hd">
-                        <h4 class="text-white">About us</h4>
-                    </div>
-                 
-                    <p>
-                        Alkebulania is a startup, geared at promoting African content to the international community and African’s in the diaspora, as a means of changing the African narrative and improving the image of Africa on the international stage with entertainment as the starting point in the form of novels, comics, animations, and gaming. We are an online platform designed to promote and commercialize these content while achieving two (2) major things;
-                    </p>
-                    <ul style="list-style-type: circle">
-                        <li>
-                            <p> Provision of steady substantial means of income for the continents content providers; </p>
-                        </li>
-                        <li>
-                            <p> Projection of a new positive narrative about Africa as a continent and its people to both Africans, especially those who have lost hope in our motherland and the international community at large through provided content.
-                        </li>
-                    </ul>
+<footer class="ht-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
 
-                    <p> Our tagline <b><em>“Stories from the Origin”</em></b> perfectly sums up who we are</p>
-
-
+                <div class="title-hd">
+                    <h4 class="text-white">About us</h4>
                 </div>
-            </div>
-            <div class="flex-parent-ft">
-                <div class="flex-child-ft">
+
+                <p>
+                    Alkebulania is a startup, geared at promoting African content to the international community and African’s in the diaspora, as a means of changing the African narrative and improving the image of Africa on the international stage with entertainment as the starting point in the form of novels, comics, animations, and gaming. We are an online platform designed to promote and commercialize these content while achieving two (2) major things;
+                </p>
+                <ul style="list-style-type: circle">
+                    <li>
+                        <p> Provision of steady substantial means of income for the continents content providers; </p>
+                    </li>
+                    <li>
+                        <p> Projection of a new positive narrative about Africa as a continent and its people to both Africans, especially those who have lost hope in our motherland and the international community at large through provided content.
+                    </li>
+                </ul>
+
+                <p> Our tagline <b><em>“Stories from the Origin”</em></b> perfectly sums up who we are</p>
 
 
-                </div>
-                <div class="flex-child-ft">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Forums</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Become a content creator</a></li>
-                        <li><a href="#">Translator and Editors</a></li>
-                        <li><a href="#">Co-creator</a></li>
-                    </ul>
-                </div>
-                <div class="flex-child-ft">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="@PageUrls.Terms">Terms of Use</a></li>
-                        <li><a href="@PageUrls.PolicyPage">Privacy Policy</a></li>
-                        <li><a href="#">Copyright Policy</a></li>
-                    </ul>
-                </div>
-                <div class="flex-child-ft item4">
-                    <h4></h4>
-                    <ul>
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">My Barn</a></li>
-                        <li><a href="#">Collections</a></li>
-                        <li><a href="@PageUrls.PolicyPage">Frequently Asked question</a></li>
-                        <li><a href="#">Adverts</a></li>
-                        <li><a href="#">Partners</a></li>
-                    </ul>
-                </div>
-                <div class="flex-child-ft item5">
-                    <h4>Newsletter</h4>
-                    <p>Subscribe to our newsletter system now <br> to get latest news from us.</p>
-                    <form action="#">
-                        <input type="text" placeholder="Enter your email...">
-                    </form>
-                    <a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
-                </div>
             </div>
         </div>
-        <div class="ft-copyright">
-            <div class="ft-left">
-                <p>© @DateTime.UtcNow.Year Alkebulania. All Rights Reserved.</p>
+        <div class="flex-parent-ft">
+            <div class="flex-child-ft">
+
+
             </div>
-            <div class="backtotop">
-                <p><a href="#" id="back-to-top">Back to top  <i class="ion-ios-arrow-thin-up"></i></a></p>
+            <div class="flex-child-ft">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Forums</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Become a content creator</a></li>
+                    <li><a href="#">Translator and Editors</a></li>
+                    <li><a href="#">Co-creator</a></li>
+                </ul>
+            </div>
+            <div class="flex-child-ft">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="@PageUrls.Terms">Terms of Use</a></li>
+                    <li><a href="@PageUrls.PolicyPage">Privacy Policy</a></li>
+                    <li><a href="#">Copyright Policy</a></li>
+                </ul>
+            </div>
+            <div class="flex-child-ft item4">
+                <h4></h4>
+                <ul>
+                    <li><a href="#">My Account</a></li>
+                    <li><a href="#">My Barn</a></li>
+                    <li><a href="#">Collections</a></li>
+                    <li><a href="@PageUrls.PolicyPage">Frequently Asked question</a></li>
+                    <li><a href="#">Adverts</a></li>
+                    <li><a href="#">Partners</a></li>
+                </ul>
+            </div>
+            <div class="flex-child-ft item5">
+                <h4>Newsletter</h4>
+                <p>Subscribe to our newsletter system now <br> to get latest news from us.</p>
+                <form action="#">
+                    <input type="text" placeholder="Enter your email...">
+                </form>
+                <a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
             </div>
         </div>
-    </footer>
+    </div>
+    <div class="ft-copyright">
+        <div class="ft-left">
+            <p>© @DateTime.UtcNow.Year Alkebulania. All Rights Reserved.</p>
+        </div>
+        <div class="backtotop">
+            <p><a href="#" id="back-to-top">Back to top  <i class="ion-ios-arrow-thin-up"></i></a></p>
+        </div>
+    </div>
+</footer>
+<input type="hidden" id="isLogin" value="@isLoggedId.ToString()" />
     <!-- end of footer section-->
+
     <script src="~/home/js/jquery.js"></script>
 
-<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="~/lib/Semantiui/semantic.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/image-lazy-loading/lazyimage.js"></script>
+    <script src="~/lib/Semantiui/semantic.js"></script>
 
     <script src="~/home/js/plugins.js"></script>
     <script src="~/home/js/plugins2.js"></script>
-<script src="~/home/js/custom.js"></script> 
-<script src="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.js"></script>
+    <script src="~/home/js/custom.js"></script>
+   
+<script src="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.js"></script> 
+<script type='text/javascript' src='~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js'></script>
+<script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
+    <script>
+        $(function () {
+            $('a[data-toggle="popover"]').webuiPopover({ trigger: 'hover' });
+        })
+    </script> 
 <script>
-    $(function () {
-        $('a[data-toggle="popover"]').webuiPopover({trigger: 'hover'});
-    })
+    //constants script 
+  
+    var isLogin = false;
+    if ($("#isLogin").val() == "True") {
+        isLogin = true;
+    } 
 </script>
 @RenderSection("Scripts", required: false)
 

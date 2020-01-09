@@ -1,31 +1,104 @@
 ﻿@model ExternalLoginViewModel
 @{
-    ViewData["Title"] = "Register";
+
+    ViewData["Title"] = "Connect your Social Account";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
 
-<h2>@ViewData["Title"]</h2>
-<h4>Associate your @ViewData["LoginProvider"] account.</h4>
-<hr />
 
-<p class="text-info">
-    You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
+<div class="auth-box" style="background: #e5e5e59e">
+    <div id="loginform">
+        <div class="logo">
+            <span class="db"><img src="~/images/logo_black.png" width="150" alt="logo" /></span>
+            <h3>You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.</h3>
+            <h4 class="font-medium m-b-20">Connect your Social Account to your Account</h4>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <!-- Form -->
+        <div class="row">
+            <div class="col-md-12">
+                @*<form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-default">Register</button>
+                </form>*@
+                <form class="form-horizontal m-t-20"  asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        @*<span asp-validation-for="Password" class="text-danger"></span>
+                            <span asp-validation-for="Email" class="text-danger"></span>*@
+
+                    </div>
+                    <span asp-validation-for="Email" class="form-text text-danger"></span>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" asp-for="Email" id="basic-addon1"><i class="ti-email"></i></span>
+                        </div>
+                        <input type="text" class="form-control form-control-lg" asp-for="Email" value="@Model.Email"  placeholder="email" aria-label="email" aria-describedby="basic-addon1">
+                    </div>
+
+                    <span asp-validation-for="Password" class="form-text text-danger"></span>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2"><i class="ti-key"></i></span>
+                        </div>
+                        <input type="password" class="form-control form-control-lg" asp-for="Password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                    </div>
+                   
+                    <span asp-validation-for="ConfirmPassword" class="form-text text-danger"></span>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3"><i class="ti-key"></i></span>
+                        </div>
+                        <input type="password" class="form-control form-control-lg" asp-for="ConfirmPassword" placeholder="Connfirm Password" aria-label="Confirm Password" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-xs-12 p-b-20">
+                            <button class="btn btn-block btn-lg btn-info" type="submit">Connect </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-b-0 m-t-10">
+                        <div class="col-sm-12 text-center">
+                            Don't have an account? <a asp-action="Register" class="text-info m-l-5"><b>Sign Up</b></a>
+                        </div>
+                    </div>
+
+                </form>
+                
             </div>
-            <button type="submit" class="btn btn-default">Register</button>
-        </form>
+        </div>
     </div>
+    @*<div id="recoverform">
+            <div class="logo">
+                <span class="db"><img src="assets/images/logo-icon.png" alt="logo" /></span>
+                <h5 class="font-medium m-b-20">Recover Password</h5>
+                <span>Enter your Email and instructions will be sent to you!</span>
+            </div>
+            <div class="row m-t-20">
+                <!-- Form -->
+                <form class="col-12" action="#">
+                    <!-- email -->
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input class="form-control form-control-lg" type="email" required="" placeholder="Username">
+                        </div>
+                    </div>
+                    <!-- pwd -->
+                    <div class="row m-t-20">
+                        <div class="col-12">
+                            <button class="btn btn-block btn-lg btn-danger" type="submit" name="action">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>*@
 </div>
+
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
