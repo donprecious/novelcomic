@@ -226,6 +226,7 @@ namespace Webnovel
                 map.CreateMap<SubscriptionVm,Subscription>();
                 map.CreateMap<ApplicationUser, UserDto>();
                 map.CreateMap<Entities.NovelComment, NovelCommentDto>();
+                map.CreateMap<Entities.ComicComment, ComicCommentDto>();
             });
 
             app.UseStaticFiles();

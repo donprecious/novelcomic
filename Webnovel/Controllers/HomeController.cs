@@ -12,6 +12,7 @@ using Webnovel.Entities;
 using Webnovel.Helpers;
 using Webnovel.Models;
 using Webnovel.Repository;
+using X.PagedList;
 using Referral = Webnovel.Entities.Referral;
 
 namespace Webnovel.Controllers
@@ -59,6 +60,7 @@ namespace Webnovel.Controllers
 
 		public IActionResult Index()
         {
+   
             return View();
         }
 
@@ -117,7 +119,10 @@ namespace Webnovel.Controllers
 			if (comic == null)
 			{
 				return (IActionResult)(object)((Controller)this).View("Error404");
-			}
+			} 
+            ViewBag.PageUrl =    Url.Action("Novel", "Home",
+                new{Id = id},
+                protocol: Request.Scheme);
             if (_signInManager.IsSignedIn(User))
             {
                 userId = _userManager.GetUserId(User);
@@ -261,16 +266,18 @@ namespace Webnovel.Controllers
 			return (IActionResult)(object)((Controller)this).View((object)novel);
 		}
 
-		public async Task<IActionResult> Novels(int? categoryId = null)
+		public async Task<IActionResult> Novels(int page =1, int pageCount = 20, int? categoryId = null)
 		{
-			List<Webnovel.Entities.Novel> source = await _novel.GetAllNovels(true,true);
+			List<Webnovel.Entities.Novel> source = await _novel.GetAllNovels(false,true);
+            var model = source.AsQueryable().ToPagedList(page, pageCount);
 			if (categoryId.HasValue)
 			{
 				source = source.Where((Webnovel.Entities.Novel a) => a.CategoryId == categoryId).ToList();
-				return (IActionResult)(object)((Controller)this).View((object)source.Where((Webnovel.Entities.Novel a) => a.CoverPageImageUrl != null).ToList());
-			}
-			return (IActionResult)(object)((Controller)this).View((object)source.Where((Webnovel.Entities.Novel a) => a.CoverPageImageUrl != null).ToList());
-		}
+                return View(model);
+            }
+
+            return View(model);
+        }
 
 		[Authorize]
 		public async Task<IActionResult> SaveNovel(int NovelId)
@@ -376,9 +383,22 @@ namespace Webnovel.Controllers
         }
 
         [Authorize]
-        public IActionResult Barn()
+        public async Task<IActionResult> Barn(int page =1)
         {
-            return View();
+            var user = await GetUser();
+           
+            var userId = user.Id;
+            var libary = ( await _novel.GetLibraries(userId));
+            var novelLib = libary.AsQueryable().ToPagedList(page, 20);
+            var comics = await _comic.GetLibrary(userId);
+            var comicLib = comics.AsQueryable().ToPagedList(page, 20);
+
+            var barn = new BarnVm
+            {
+                Comics = comicLib,
+                Novels = novelLib
+            };
+            return View(barn);
         }
 
         public async Task<IActionResult> Page(int id)
@@ -410,6 +430,12 @@ namespace Webnovel.Controllers
             var user = await GetUser();
             var link = await _referral.GenerateBasicReferralUrl(user.Id);
             return Ok(link);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            return View();
         }
     }
 }

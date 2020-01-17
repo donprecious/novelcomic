@@ -56,6 +56,7 @@ namespace Webnovel.Repository
 		Task<IEnumerable<NovelSaved>> SavedNovel(string userId);
 
 		Task AddToLibrary(NovelLibrary comicLibrary);
+        Task AddUpdateToLibrary(NovelLibrary comicLibrary);
 
 		Task UpdateLibraryLastViewed(int id, int chapterId);
 

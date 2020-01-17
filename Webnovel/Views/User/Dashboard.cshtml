@@ -405,24 +405,25 @@
                         if (data != null) {
                             //update Total Viewers
                             console.log(data);
-                            var thisMonth = data.thisMonthViewers;
-                            var lastMonth = data.lastMonthViewers;
+                            var thisMonth = parseFloat(data.thisMonthViewers);
+                            var lastMonth = parseFloat(data.lastMonthViewers);
                             var margin = thisMonth - lastMonth;
                             var absMargin = Math.abs(margin);
 
                             var total = thisMonth + lastMonth;
 
                             var percentage = (absMargin / total) * 100;
+                            percentage = percentage.toFixed(2);
 
                             var sign = Math.sign(margin);
 
                             var tviewer = "";
                             var bar = "";
-                            $("#txtTotalViewer").text(total);
+                            $("#txtTotalViewer").text( LargeNumberFormatter(total));
                             if (sign > 0) {
                                 // positive value 
                                 tviewer = `  <div class="col-md-6 col-sm-12">
-                        <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> ${lastMonth}</h4>
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> ${ LargeNumberFormatter(lastMonth)}</h4>
                         <h6 class="font-light m-b-0">last month</h6>
 
                     </div>
@@ -463,24 +464,24 @@
                         if (data != null) {
                             //update Total Viewers
                             console.log(data);
-                            var thisMonth = data.thisMonthViewers;
-                            var lastMonth = data.lastMonthViewers;
+                            var thisMonth = parseFloat(data.thisMonthViewers);
+                            var lastMonth = parseFloat(data.lastMonthViewers);
                             var margin = thisMonth - lastMonth;
                             var absMargin = Math.abs(margin);
 
                             var total = thisMonth + lastMonth;
 
                             var percentage = (absMargin / total) * 100;
-
+                            percentage = percentage.toFixed(2);
                             var sign = Math.sign(margin);
 
                             var tviewer = "";
                             var bar = "";
-                            $("#txtUViewer").text(total);
+                            $("#txtUViewer").text(LargeNumberFormatter(total));
                             if (sign > 0) {
                                 // positive value 
                                 tviewer = `  <div class="col-md-6 col-sm-12">
-                        <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> ${lastMonth}</h4>
+                        <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> ${LargeNumberFormatter(lastMonth)}</h4>
                         <h6 class="font-light m-b-0">last month</h6>
 
                     </div>

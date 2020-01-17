@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="~/home/css/style.css">
     <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet" />
     <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
-
+    <link href="~/lib/pace-1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet" /> 
     <script>
         !function () {
             var analytics = window.analytics = window.analytics || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else {
@@ -68,8 +68,18 @@
             text-align: center;
         }
 
-        h4 {
+        h4,h5,h3 {
             color: white;
+        } 
+        h6 {
+            color: wheat;
+        }
+
+        .profile-figure-box {
+            margin: 10px;
+        }
+        .profile-figure-box  h3,h6{
+            padding: 5px;
         }
     </style>
     <style>
@@ -81,6 +91,27 @@
         header .navbar-default .navbar-nav .dropdown .dropdown-menu.level1 li a {
             padding: 10px 30px;
             color: #e2ff46db;
+        }
+    </style>
+    <style>
+        @@media (max-width: 400px) {
+            .padding-reset {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+        }
+     
+        @@media (max-width: 394px) {
+            .center-to-30 {
+                left: 20%;
+                width: 100%;
+
+            }
+        }
+
+        .movie-item-style-1 .hvr-inner {
+            /*left: calc(100% - 170px);*/
+
         }
     </style>
     @RenderSection("Css", required: false)
@@ -260,9 +291,9 @@
                             {
                                 isLoggedId = true;
                                 <ul class="dropdown-menu level1">
-                                    <li> <a asp-controller="User" asp-action="Switch">Select Account</a></li>
+                                    <li> <a asp-controller="User" asp-action="Dashboard">Dashboard</a></li>
                                     <li>
-                                        <a asp-controller="User" asp-action="">My Profile</a>
+                                        <a asp-controller="Home" asp-action="Profile">My Profile</a>
                                     </li>
                                     <li>
                                         <a asp-controller="Account" asp-action="SignOut" class="it-last">Logout</a>
@@ -387,15 +418,16 @@
     <!-- end of footer section-->
 
     <script src="~/home/js/jquery.js"></script>
+<script src="~/admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/image-lazy-loading/lazyimage.js"></script>
     <script src="~/lib/Semantiui/semantic.js"></script>
 
     <script src="~/home/js/plugins.js"></script>
     <script src="~/home/js/plugins2.js"></script>
     <script src="~/home/js/custom.js"></script>
-   
+<script  src="~/lib/pace-1.0.2/pace.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.js"></script> 
 <script type='text/javascript' src='~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js'></script>
 <script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
@@ -403,6 +435,7 @@
         $(function () {
             $('a[data-toggle="popover"]').webuiPopover({ trigger: 'hover' });
         })
+        $(document).ajaxStart(function () { Pace.restart(); });
     </script> 
 <script>
     //constants script 

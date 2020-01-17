@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ReflectionIT.Mvc.Paging;
 using Webnovel.Components;
+using Webnovel.DtoModels;
 using Webnovel.Entities;
 using Webnovel.Helpers;
 using Webnovel.Models;
@@ -649,5 +650,68 @@ namespace Webnovel.Controllers
             });
         }
 
+        public async Task<IActionResult> AddToLibrary(int id)
+        {
+            userId = _userManager.GetUserId(User); 
+      
+            await _comic.AddUpdateToLibrary(new ComicLibrary
+            {
+                UserId = userId,
+                ComicId = id,
+
+            });
+            var save = await _comic.Save();
+            if (save)
+            {
+                return Ok("Added to Library");
+            }
+
+            return BadRequest("Something went Wrong");
+
+        }
+
+        public async Task<IActionResult> DeleteFromLibrary(int id)
+        {
+            userId = _userManager.GetUserId(User);
+
+            await _comic.RemoveFromLibrary(id, userId);
+            var save = await _comic.Save();
+            if (save)
+            {
+                return Ok( new {status=200, message="Removed Successfully"});
+
+            }
+            return Ok( new {status=500, message="Something went wrong"});
+
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> GetComment(int id, int page =1, int count = 3)
+        {
+            var reviews = await _comment.List(id);
+            
+            var mapped = Mapper.Map<IEnumerable<ComicCommentDto> >(reviews);
+            var model = mapped.AsQueryable().ToPagedList(page,count);
+            var pageData = new PaginationModel()
+            {
+                Count = model.Count,
+                FirstItemOnPage = model.FirstItemOnPage,
+                HasNextPage = model.HasNextPage,
+                HasPreviousPage = model.HasPreviousPage,
+                IsFirstPage = model.IsFirstPage,
+                IsLastPage = model.IsLastPage,
+                PageCount = model.PageCount,
+                LastItemOnPage = model.LastItemOnPage,
+                PageNumber = model.PageNumber,
+                PageSize =  model.PageSize,
+            };
+            return Ok(new
+            {
+                data = model,
+                page = pageData
+            });
+        }    
+
+   
     }
 }

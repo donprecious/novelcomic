@@ -1,12 +1,23 @@
 ﻿@using CloudinaryDotNet
+@using Webnovel.Helpers
 @using Webnovel.Repository
 @using Webnovel.Services
 @model Webnovel.Entities.Comic
 @inject IComic Comic
+@inject IRate _Rate
+@inject IComicComment _ComicComment
 
 @{
     ViewBag.Title = "Comic - " + Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var pageLink = @ViewBag.PageUrl;
+
+    var rates = await _Rate.GetComicRating(Model.Id);
+    var rateAverage = await _Rate.GetComicRateAverage(Model.Id);
+    var review = await _ComicComment.List(Model.Id);
+
+
 
     var cloudinary = new Cloudinary(new Account()
     {
@@ -18,10 +29,24 @@
         Transform(new Transformation()
             .Height(500).Width(500).Crop("fill")).BuildUrl(Model.CoverPageImageUrl);
 
+    var thumbnailImage = cloudinary.Api.UrlImgFetch.
+        Transform(new Transformation()
+            .Height(200).Width(300).Crop("fill")).BuildUrl(img);
+    
     var comic = await Comic.GetAllComics(true, true);
 
 }
 
+@section metaTags
+    {
+    <meta name="twitter:card" content="summary" />
+    <meta name="description" content="@StringProcessor.SubString(Model.Description, 0, 150)">
+    <meta property="og:title" content="@StringProcessor.SubString(Model.Title, 0, 30)" />
+    <meta property="og:url" content="@ViewBag.PageUrl" />
+    <meta property="og:description" content="@StringProcessor.SubString(Model.Description, 0, 65)">
+    <meta property="og:image" content="@thumbnailImage">
+    <meta property="og:type" content="article" />
+}
 <div class="hero sr-single-hero sr-single">
     <div class="container">
         <div class="row">
@@ -46,10 +71,7 @@
                             <div><a href="@Url.Action("ReadComic", "Comic", new {id = Model.Id})" class="item item-1 redbtn"> <i class="ion-ios-book"></i> Read Now</a></div>
                             <div><a href="@Url.Action("ReadComic", "Comic", new {id = Model.Id})" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-ios-book"></i> Read Now</a></div>
                         </div>
-                        <div class="btn-transform transform-vertical">
-                            <div><a href="#" class="item item-1 yellowbtn"> <i class="ion-card"></i> Save</a></div>
-                            <div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div>
-                        </div>
+                     
                     </div>
                 </div>
             </div>
@@ -58,14 +80,16 @@
                     <h1 class="bd-hd">@Model.Title <span style="text-transform: capitalize;">- @Model.Category.Name</span></h1>
 
                     <div class="social-btn">
-                        <a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>
+                        <a href="#" id="addToFavorite" class="parent-btn "><i class="ion-heart"></i> Add to Favorite</a>
                         <div class="hover-bnt">
                             <a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>share</a>
                             <div class="hvr-item">
-                                <a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
-                                <a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
-                                <a href="#" class="hvr-grow"><i class="ion-social-whatsapp"></i></a>
-
+                                <a href="https://www.facebook.com/sharer.php?u=@pageLink" class="hvr-grow"><i class="ion-social-facebook"></i></a>
+                                <a href="https://twitter.com/share?url=@pageLink&text=@Model.Title&hashtags=#Alkebulania
+" class="hvr-grow"><i class="ion-social-twitter"></i></a>
+                                <a href="https://wa.me/?text=@Model.Title @pageLink
+" class="hvr-grow"><i class="ion-social-whatsapp"></i></a>
+                                <a href="#" id="shareAll" class="hvr-grow"><i class="ion-share"></i></a>
                             </div>
                         </div>
                     </div>
@@ -73,8 +97,8 @@
                         <div class="rate">
                             <i class="ion-android-star"></i>
                             <p>
-                                <span>0</span> /5<br>
-                                <span class="rv">0 Reviews</span>
+                                <span> @rateAverage</span> /5<br>
+                                <span class="rv">@review.Count() Reviews</span>
                             </p>
                         </div>
                         <div class="rate-star">
@@ -87,12 +111,32 @@
                                 <i class="ion-ios-star"></i>
                                 <i class="ion-ios-star"></i>
                                 <i class="ion-ios-star"></i>*@
-                            <i class="ion-ios-star-outline"></i>
-                            <i class="ion-ios-star-outline"></i>
-                            <i class="ion-ios-star-outline"></i>
-                            <i class="ion-ios-star-outline"></i>
-                            <i class="ion-ios-star-outline"></i>
+                            @{
+                                var fullStar = (int)rateAverage;
+                                var halfStar = rateAverage - fullStar;
+                                if (halfStar > 0)
+                                {
+                                    halfStar = 1;
+                                }
+                                else
+                                {
+                                    halfStar = 0;
+                                }
+                                var emptyStar = 5 - (fullStar + halfStar);
+                            }
+                            @for (int i = 0; i < fullStar; i++)
+                            {
+                                <i class="ion-ios-star"></i>
+                            }
+                            @if (halfStar > 0)
+                            {
+                                <i class="ion-ios-star-half"></i>
+                            }
+                            @for (var i = 0; i < emptyStar; i++)
+                            {
 
+                                <i class="ion-ios-star-outline"></i>
+                            }
                         </div>
                     </div>
                     <div class="movie-tabs">
@@ -103,7 +147,7 @@
                                 <li><a href="#cast">  Episodes </a></li>
                                 <li><a href="#media">Authors</a></li>
                                 @*<li><a href="#season"> Season</a></li>*@
-                                <li><a href="#moviesrelated"> Related Shows</a></li>
+                                <li><a href="#moviesrelated"> Related </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div id="overview" class="tab active">
@@ -116,16 +160,26 @@
                                             </div>
                                             <!-- movie cast -->
                                             <div class="mvcast-item">
-                                                <div class="cast-it">
+                                                <div class="">
                                                     <div class="cast-left series-it">
-                                                        <div>
-                                                            <p><b>Audience :</b> @Model.AudienceAge </p>
-                                                            <p><b>Leading Gender :</b> @Model.LeadingGender </p>
-
-                                                            <p><b>Language :</b> @Model.Language </p>
-
-                                                            <p><b>Warning :</b> @Model.WariningNotice </p>
+                                                        <div class="sb-it">
+                                                            <h6>Audience : </h6>
+                                                            <p><a href="#">@Model.AudienceAge </a> @*<a href="#">Stan Lee</a>*@</p>
                                                         </div>
+
+                                                        <div class="sb-it">
+                                                            <h6>Leading Gender : </h6>
+                                                            <p><a href="#">@Model.LeadingGender </a> @*<a href="#">Stan Lee</a>*@</p>
+                                                        </div>
+                                                        <div class="sb-it">
+                                                            <h6>Language : </h6>
+                                                            <p><a href="#"> @Model.Language </a> @*<a href="#">Stan Lee</a>*@</p>
+                                                        </div>
+                                                        <div class="sb-it">
+                                                            <h6>Warning : </h6>
+                                                            <p><a href="#"> @Model.WariningNotice </a> @*<a href="#">Stan Lee</a>*@</p>
+                                                        </div>
+
 
                                                     </div>
                                                 </div>
@@ -139,8 +193,6 @@
                                                         @foreach (var i in Model.Tags)
                                                         {
                                                             <li><a href="#">@i.Tag.Name</a></li>
-
-
                                                         }
 
                                                     </ul>
@@ -292,167 +344,35 @@
                                 </div>
                                 <div id="reviews" class="tab review">
                                     <div class="row">
-                                        @*<div class="rv-hd">
-                                                <div class="div">
-                                                    <h3>Related Movies To</h3>
-                                                    <h2>Skyfall: Quantum of Spectre</h2>
-                                                </div>
-                                                <a href="#" class="redbtn">Write Review</a>
-                                            </div>
-                                            <div class="topbar-filter">
-                                                <p>Found <span>56 reviews</span> in total</p>
-                                                <label>Filter by:</label>
+                                        <div class="rv-hd">
+                                            @*<div class="div">
+                                                <h3>Related Movies To</h3>
+                                                <h2>Skyfall: Quantum of Spectre</h2>
+                                            </div>*@
+                                            @*<a href="#" class="redbtn">Write Review</a>*@
+                                        </div>
+                                        <div class="topbar-filter">
+                                            <p>Found <span>@review.Count()  reviews</span> in total</p>
+                                            @*<label>Filter by:</label>
                                                 <select>
                                                     <option value="range">-- Choose option --</option>
                                                     <option value="saab">-- Choose option 2--</option>
-                                                </select>
+                                                </select>*@
+                                        </div>
+                                        <div id="review-List">
+
+                                        </div>
+
+                                        <div class="topbar-filter">
+                                            <label>Reviews per page:</label>
+                                            <select>
+                                                <option value="10">10 Reviews</option>
+                                                <option value="20">20 Reviews</option>
+                                            </select>
+                                            <div id="paginationLink">
+
                                             </div>
-                                            <div class="mv-user-review-item">
-                                                <div class="user-infor">
-                                                    <img src="images/uploads/userava1.jpg" alt="">
-                                                    <div>
-                                                        <h3>Best Marvel movie in my opinion</h3>
-                                                        <div class="no-star">
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                        </div>
-                                                        <p class="time">
-                                                            17 December 2016 by <a href="#"> hawaiipierson</a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p>This is by far one of my favorite movies from the MCU. The introduction of new Characters both good and bad also makes the movie more exciting. giving the characters more of a back story can also help audiences relate more to different characters better, and it connects a bond between the audience and actors or characters. Having seen the movie three times does not bother me here as it is as thrilling and exciting every time I am watching it. In other words, the movie is by far better than previous movies (and I do love everything Marvel), the plotting is splendid (they really do out do themselves in each film, there are no problems watching it more than once.</p>
-                                            </div>
-                                            <div class="mv-user-review-item">
-                                                <div class="user-infor">
-                                                    <img src="images/uploads/userava2.jpg" alt="">
-                                                    <div>
-                                                        <h3>Just about as good as the first one!</h3>
-                                                        <div class="no-star">
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                        </div>
-                                                        <p class="time">
-                                                            17 December 2016 by <a href="#"> hawaiipierson</a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p>Avengers Age of Ultron is an excellent sequel and a worthy MCU title! There are a lot of good and one thing that feels off in my opinion. </p>
-
-                                                <p>THE GOOD:</p>
-
-                                                <p>First off the action in this movie is amazing, to buildings crumbling, to evil blue eyed robots tearing stuff up, this movie has the action perfectly handled. And with that action comes visuals. The visuals are really good, even though you can see clearly where they are through the movie, but that doesn't detract from the experience. While all the CGI glory is taking place, there are lovable characters that are in the mix. First off the original characters, Iron Man, Captain America, Thor, Hulk, Black Widow, and Hawkeye, are just as brilliant as they are always. And Joss Whedon fixed my main problem in the first Avengers by putting in more Hawkeye and him more fleshed out. Then there is the new Avengers, Quicksilver, Scarletwich, and Vision, they are pretty cool in my opinion. Vision in particular is pretty amazing in all his scenes.</p>
-
-                                                <p>THE BAD:</p>
-
-                                                <p>The beginning of the film it's fine until towards the second act and there is when it starts to feel a little rushed. Also I do feel like there are scenes missing but there was talk of an extended version on Blu-Ray so that's cool.</p>
-                                            </div>
-                                            <div class="mv-user-review-item">
-                                                <div class="user-infor">
-                                                    <img src="images/uploads/userava3.jpg" alt="">
-                                                    <div>
-                                                        <h3>One of the most boring exepirences from watching a movie</h3>
-                                                        <div class="no-star">
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                        </div>
-                                                        <p class="time">
-                                                            26 March 2017 by<a href="#"> christopherfreeman</a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p>I can't right much... it's just so forgettable...Okay, from what I remember, I remember just sitting down on my seat and waiting for the movie to begin. 5 minutes into the movie, boring scene of Tony Stark just talking to his "dead" friends saying it's his fault. 10 minutes in: Boring scene of Ultron and Jarvis having robot space battles(I dunno:/). 15 minutes in: I leave the theatre.2nd attempt at watching it: I fall asleep. What woke me up is the next movie on Netflix when the movie was over.</p>
-
-                                                <p>Bottemline: It's boring...</p>
-
-                                                <p>10/10 because I'm a Marvel Fanboy</p>
-                                            </div>
-                                            <div class="mv-user-review-item ">
-                                                <div class="user-infor">
-                                                    <img src="images/uploads/userava4.jpg" alt="">
-                                                    <div>
-                                                        <h3>That spirit of fun</h3>
-                                                        <div class="no-star">
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                        </div>
-                                                        <p class="time">
-                                                            26 March 2017 by <a href="#"> juliawest</a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p>If there were not an audience for Marvel comic heroes than clearly these films would not be made, to answer one other reviewer although I sympathize with him somewhat. The world is indeed an infinitely more complex place than the world of Marvel comics with clearly identifiable heroes and villains. But I get the feeling that from Robert Downey, Jr. on down the organizer and prime mover as Iron Man behind the Avengers these players do love doing these roles because it's a lot of fun. If they didn't show that spirit of fun to the audience than these films would never be made.</p>
-
-                                                <p>So in that spirit of fun Avengers: Age Of Ultron comes before us and everyone looks like they're having a good time saving the world. A computer program got loose and took form in this dimension named Ultron and James Spader who is completely unrecognizable is running amuck in the earth. No doubt Star Trek fans took notice that this guy's mission is to cleanse the earth much like that old earth probe NOMAD which got its programming mixed up in that classic Star Trek prime story. Wouldst Captain James T. Kirk of the Enterprise had a crew like Downey has at his command.</p>
-                                                <p>My favorite is always Chris Evans because of the whole cast he best gets into the spirit of being a superhero. Of all of them, he's already played two superheroes, Captain America and Johnny Storm the Human Torch. I'll be before he's done Evans will play a couple of more as long as the money's good and he enjoys it.</p>
-
-                                                <p>Pretend you're a kid again and enjoy, don't take it so seriously.</p>
-                                            </div>
-                                            <div class="mv-user-review-item last">
-                                                <div class="user-infor">
-                                                    <img src="images/uploads/userava5.jpg" alt="">
-                                                    <div>
-                                                        <h3>Impressive Special Effects and Cast</h3>
-                                                        <div class="no-star">
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                            <i class="ion-android-star last"></i>
-                                                        </div>
-                                                        <p class="time">
-                                                            26 March 2017 by <a href="#"> johnnylee</a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p>The Avengers raid a Hydra base in Sokovia commanded by Strucker and they retrieve Loki's scepter. They also discover that Strucker had been conducting experiments with the orphan twins Pietro Maximoff (Aaron Taylor-Johnson), who has super speed, and Wanda Maximoff (Elizabeth Olsen), who can control minds and project energy. Tony Stark (Robert Downey Jr.) discovers an Artificial Intelligence in the scepter and convinces Bruce Banner (Mark Ruffalo) to secretly help him to transfer the A.I. to his Ultron defense system. However, the Ultron understands that is necessary to annihilate mankind to save the planet, attacks the Avengers and flees to Sokovia with the scepter. He builds an armature for self-protection and robots for his army and teams up with the twins. The Avengers go to Clinton Barton's house to recover, but out of the blue, Nick Fury (Samuel L. Jackson) arrives and convinces them to fight against Ultron. Will they succeed? </p>
-
-                                                <p>"Avengers: Age of Ultron" is an entertaining adventure with impressive special effects and cast. The storyline might be better, since most of the characters do not show any chemistry. However, it is worthwhile watching this film since the amazing special effects are not possible to be described in words. Why Pietro has to die is also not possible to be explained. My vote is eight.</p>
-                                            </div>
-                                            <div class="topbar-filter">
-                                                <label>Reviews per page:</label>
-                                                <select>
-                                                    <option value="range">5 Reviews</option>
-                                                    <option value="saab">10 Reviews</option>
-                                                </select>
-                                                <div class="pagination2">
+                                            @*<div class="pagination2">
                                                     <span>Page 1 of 6:</span>
                                                     <a class="active" href="#">1</a>
                                                     <a href="#">2</a>
@@ -461,8 +381,8 @@
                                                     <a href="#">5</a>
                                                     <a href="#">6</a>
                                                     <a href="#"><i class="ion-arrow-right-b"></i></a>
-                                                </div>
-                                            </div>*@
+                                                </div>*@
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="cast" class="tab">
@@ -471,22 +391,22 @@
 
                                         <!-- //== -->
                                         @*<div class="title-hd-sm">
-                                            <h4>Directors & Credit Writers</h4>
-                                        </div>*@
-                                        @foreach (var i in Model.Episodes)
-                                        {
+                                                <h4>Directors & Credit Writers</h4>
+                                            </div>*@
+                                        <!--   @foreach (var i in Model.Episodes)
+                                           {
 
-                                            <div class="mvcast-item">
-                                                <div class="cast-it">
-                                                    <div class="cast-left">
-                                                        @*<h4>JW</h4>*@
-                                                        <a href="#">@i.Name</a>
-                                                    </div>
-                                                    @*<p>...  Director</p>*@
-                                                </div>
-                                            </div>
-                                        }
-
+                                               <div class="mvcast-item">
+                                                   <div class="cast-it">
+                                                       <div class="cast-left">
+                                                           @*<h4>JW</h4>*@
+                                                           <a href="#">@i.Name</a>
+                                                       </div>
+                                                       @*<p>...  Director</p>*@
+                                                   </div>
+                                               </div>
+                                           }
+                                           -->
                                     </div>
                                 </div>
                                 <div id="media" class="tab">
@@ -707,3 +627,151 @@
 </div>
 
 
+@section Scripts
+    {
+    <script>
+        $("#shareAll").click(function() {
+            if (navigator.share) {
+                navigator.share({
+                        title: "@Model.Title",
+                        text: "@Model.Description",
+                        url: '@pageLink'
+                    })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => alert('Error sharing', error));
+            }
+        })
+    </script>
+    <script>
+        $("#addToFavorite").click(function(event) {
+            event.preventDefault();
+            if (isLogin == false) {
+                toastr.info("Please Login to continue");
+            } else {
+                //process add
+                $.ajax("/Comic/AddToLibrary/" + @Model.Id,
+                    {
+                        type: "get",
+                        success: function(m) {
+                            toastr.success(m);
+
+                        },
+                        error: function(err) {
+                            toastr.error("Something went wrong");
+
+                            console.log(err);
+                        }
+                    });
+            }
+        })
+    </script>
+
+    <script>
+        //reviews
+        var pageSize = 10;
+        $(function() {
+            //load review
+
+            loadReviews(@Model.Id, 1, pageSize);
+        });
+
+        function loadReviews(novelId, page, count) {
+            $.ajax(`/Comic/GetComment/?id=${novelId}&page=${page}&count=${count}`,
+                {
+                    type: "get",
+                    before: function() {
+
+                    },
+                    complete: function() {
+
+                    },
+                    success: function(data) {
+                        var html = '';
+                        if (data.data != null) {
+                            for (var i of data.data) {
+                                html += ` <div class="mv-user-review-item">
+                                                <div class="user-infor">
+                                                    <img src="${i.user.profileImage}" height= "150" alt="">
+                                                    <div class="row" style="width: 100%;">
+                                                       ${displayRating(i.ratings)}
+                                                        <p class="time">
+                                                            ${i.dateTime} by <a href="#"> ${i.user.displayName}</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <p>${i.comment}</p>
+                                            </div>`;
+                            }
+                            $("#review-List").html(html);
+                           var pager = buildPagination(data.page.pageCount, data.page.pageNumber);
+                            $("#paginationLink").html(pager);
+                        }
+                    }
+
+                });
+        }
+
+        function displayRating(rating) {
+            var html = "";
+            for (var i of rating) {
+                var rateValue = i.value;
+                var stars = renderStars(rateValue);
+                html += `  <div class="col-xs-6 rate-box">
+                                                        <h3>${i.ratingType.name}</h3>
+                                                        <div class="no-star">
+                                                            ${stars}
+                                                        </div>
+                        </div>
+    `;
+            }
+            return html;
+        }
+
+        function renderStars(rateValue) {
+            var stars = '';
+            var fullStar = parseInt(rateValue);
+            var halfStar = rateValue - fullStar;
+            if (halfStar > 0) {
+                halfStar = 1;
+            } else {
+                halfStar = 0;
+            }
+            var emptyStar = 5 - (fullStar + halfStar);
+            for (var s = 0; s < fullStar; s++) {
+                stars += '<i class="ion-ios-star"></i>';
+            }
+
+            if (halfStar > 0) {
+                stars += '<i class="ion-ios-star-half"></i>';
+            }
+            for (var i = 0; i < emptyStar; i++) {
+                stars += '<i class="ion-ios-star-outline"></i>';
+            }
+
+            return stars;
+        }
+
+        function buildPagination(pageCount, currentPage) {
+
+            var pageItem = "";
+            for (var i = 1; i <= pageCount; i++) {
+                if (i == currentPage) {
+                    pageItem += `<a  class="active" href="#" onclick="loadReviews(@Model.Id, ${i}, ${pageSize})">${i
+                        }</a>`;
+                } else {
+                    pageItem += `<a href="#" onclick="loadReviews(@Model.Id, ${i}, ${pageSize})"> ${i}</a>`;
+                }
+            }
+            if (pageCount > 0) {
+                pageItem += `       <a href="#"><i class="ion-arrow-right-b"></i></a>`;
+            }
+            var html = `   <div class="pagination2">
+                                                    <span>Page ${currentPage} of  ${pageCount}:</span>
+                                                   ${pageItem}
+                                                </div>`;
+            return html;
+        }
+
+    </script>
+
+}

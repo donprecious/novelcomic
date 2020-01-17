@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Webnovel.Entities;
+using Webnovel.Enum;
 using Webnovel.Models;
 using Webnovel.Repository;
+using Category = Webnovel.Entities.Category;
 
 namespace Webnovel.Areas.Admin.Controllers
 {
@@ -39,10 +41,65 @@ namespace Webnovel.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Categories()
         {
-             var categories =     _category.List();
+             var categories = await    _category.List();
             return View(categories);
+        } 
+
+        public async Task<IActionResult> EditCategory(int id)
+        {
+            var category = await _category.GetCategory(id);
+            return View(category);
+        } 
+
+        [HttpPost]
+        public async Task<IActionResult> EditCategory( Category category)
+        {
+             await _category.Edit(category);
+             await _category.Save();
+             return RedirectToAction("Categories");
         }
 
+
+
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            var hasBeenUsed = await _category.HasBeenUsed(id);
+            if (hasBeenUsed)
+            {
+               await _category.EditStatusCategory(id, EntityVisibilityStatus.Hidden);
+                return Json(new {status = 200, message = "Cant Delete this Category, But has Been Hidden from Users"});
+
+            }
+            else
+            {
+            await _category.Delete(id);
+                if (await _category.Save())
+                {
+                    return Json(new {status = 200, message = "Deleted Successfully!"});
+
+                }
+                else
+                {
+                    return Json(new {status = 500, message = "Cant DeleteSomething went wrong"});
+
+                }
+
+
+            }
+        } 
+        public async Task<IActionResult> UnHideCategory(int id)
+        {
+           
+             var v =    await _category.EditStatusCategory(id, EntityVisibilityStatus.Visible);
+             if (v)
+             {
+                 return Json(new {status = 200, message = "Category Visible to users now"});
+
+             }
+
+                return Json(new {status = 500, message = "Something went Wrong"});
+
+        }
         public async Task<IActionResult> Subscriptions()
         {
             var sub = await _payment.GetSubcriptions();

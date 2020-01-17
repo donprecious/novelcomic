@@ -9,26 +9,33 @@
     <meta charset="utf-8">
     <title> Dashboard</title>
     @*<meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta content="A premium admin dashboard template by Mannatthemes" name="description">
-    <meta content="Mannatthemes" name="author">*@<!-- App favicon -->
+        <meta content="A premium admin dashboard template by Mannatthemes" name="description">
+        <meta content="Mannatthemes" name="author">*@<!-- App favicon -->
     <link rel="shortcut icon" href="~/light/assets/images/favicon.ico">
     <link href="~/light/assets/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"><!-- App css -->
     <link href="~/light/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="~/light/assets/css/icons.css" rel="stylesheet" type="text/css">
     <link href="~/light/assets/css/metisMenu.min.css" rel="stylesheet" type="text/css">
-    <link href="~/light/assets/css/style.css" rel="stylesheet" type="text/css"> 
+    <link href="~/light/assets/css/style.css" rel="stylesheet" type="text/css">
+    <link href="~/admin/assets/libs/toastr/build/toastr.min.css" rel="stylesheet" />
+    <link href="~/admin/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/pace-1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet" /> 
+
     <script>
-        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
-            analytics.load("gRP8d200MDDD7Y5E0hzIDkk4u0TZmGbx");
-            analytics.page();
-        }}();
+        !function () {
+            var analytics = window.analytics = window.analytics || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else {
+                analytics.invoked = !0; analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "once", "off", "on"]; analytics.factory = function (t) { return function () { var e = Array.prototype.slice.call(arguments); e.unshift(t); analytics.push(e); return analytics } }; for (var t = 0; t < analytics.methods.length; t++) { var e = analytics.methods[t]; analytics[e] = analytics.factory(e) } analytics.load = function (t, e) { var n = document.createElement("script"); n.type = "text/javascript"; n.async = !0; n.src = "https://cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js"; var a = document.getElementsByTagName("script")[0]; a.parentNode.insertBefore(n, a); analytics._loadOptions = e }; analytics.SNIPPET_VERSION = "4.1.0";
+                analytics.load("gRP8d200MDDD7Y5E0hzIDkk4u0TZmGbx");
+                analytics.page();
+            }
+        }();
     </script>
     <style>
         .topbar .topbar-left {
             margin-left: 0 !important;
         }
     </style>
-    
+
     @RenderSection("css", required: false)
 
 </head>
@@ -628,19 +635,24 @@
             &copy; @DateTime.Now.Year
 
         </footer><!--end footer-->
-    </div><!-- end page-wrapper --><!-- jQuery  -->
+ <!-- end page-wrapper --><!-- jQuery  -->
     <script src="~/light/assets/js/jquery.min.js"></script>
     <script src="~/light/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/light/assets/js/metisMenu.min.js"></script>
     <script src="~/light/assets/js/waves.min.js"></script>
     <script src="~/light/assets/js/jquery.slimscroll.min.js"></script>
     <script src="~/light/assets/plugins/moment/moment.js"></script>
-    <script src="~/light/assets/plugins/apexcharts/apexcharts.min.js"></script>
+    <script src="~/light/assets/plugins/apexcharts/apexcharts.min.js"></script>0
     <script src="~/light/assets/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
     <script src="~/light/assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <script src="~/light/assets/pages/jquery.crm_dashboard.init.js"></script><!-- App js -->
 <script src="~/light/assets/js/app.js"></script> 
-
+<script src="~/lib/pace-1.0.2/pace.min.js"></script>
+<script type='text/javascript' src='~/admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js'></script>
+<script src="~/admin/assets/libs/toastr/build/toastr.min.js"></script>
+<script>
+    $(document).ajaxStart(function () { Pace.restart(); });
+</script>
 @RenderSection("Scripts", required: false)
 
 </body>

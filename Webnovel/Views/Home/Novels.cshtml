@@ -1,12 +1,13 @@
-﻿@model System.Collections.Generic.List<Webnovel.Entities.Novel>
+﻿@model X.PagedList.IPagedList<Webnovel.Entities.Novel>
 
 @using CloudinaryDotNet
 @using Webnovel.Helpers
 @using Webnovel.Repository
 @using Webnovel.Services
+@using X.PagedList.Mvc.Core
 @inject INovel _novel
 @inject ICategory _category
-
+@inject IRate _rate
 
 @{
     ViewBag.Title = "Latest Novels";
@@ -40,71 +41,121 @@
         </div>
     </div>
 </div>
-<div class="page-single">
+<div class="page-single" style="padding-top: 0px">
     <div class="container">
         <div class="row ipad-width">
             <div class="col-md-8 col-sm-12 col-xs-12">
                 <div class="topbar-filter">
-                    @*<p>Found <span>1,608 movies</span> in total</p>*@
+                    <p>Found <span>@Model.TotalItemCount Content</span> in total</p>
                     <label>Sort by:</label>
                     <select>
-                        <option value="popularity">Popularity Descending</option>
-                        <option value="popularity">Popularity Ascending</option>
-                        <option value="rating">Rating Descending</option>
-                        <option value="rating">Rating Ascending</option>
-                        <option value="date">Release date Descending</option>
-                        <option value="date">Release date Ascending</option>
+                        <option value="popularity">Popularity</option>
+                       
+                        <option value="rating">Rating</option>
+                        
+                        <option value="date">Latest Release</option>
+                        
                     </select>
-                    @*<a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
-                    <a href="moviegrid.html" class="grid"><i class="ion-grid active"></i></a>*@
+              
                 </div>
-            <div class="flex-wrap-movielist">
-            @foreach (var i in Model)
-            { 
-                var img = i.CoverPageImageUrl;
-                if (img != null)
-                {
-                    img = cloudinary.Api.UrlImgFetch.
-                        Transform(new Transformation()
-                             .Height(244).Width(152).Crop("fill")).BuildUrl(i.CoverPageImageUrl);
+                <div class="row">
+                    @foreach (var i in Model)
+                    {
+                        var img = i.CoverPageImageUrl;
+                        if (img != null)
+                        {
+                            img = cloudinary.Api.UrlImgFetch.
+                                Transform(new Transformation()
+                                     .Height(244).Width(152).Crop("fill")).BuildUrl(i.CoverPageImageUrl);
 
-                }
-                else
-                {
-                    img = cloudinary.Api.UrlImgFetch.
-                        Transform(new Transformation()
-                            .Height(128).Width(284).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
+                        }
+                        else
+                        {
+                            img = cloudinary.Api.UrlImgFetch.
+                                Transform(new Transformation()
+                                    .Height(128).Width(284).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
 
-                }
+                        }
+                        <div class="col-md-3 col-sm-6 col-xs-6 padding-reset center-to-30">
+                            <div class="movie-item-style-2 movie-item-style-1">
+                                <img src="@img" alt="">
+                                <div class="hvr-inner">
+                                    <a href="@Url.Action("Novel", new{id = i.Id})"> Read <i class="ion-android-arrow-dropright"></i> </a>
+                                </div>
+                                <div class="mv-item-infor">
+                                    <h6><a href="@Url.Action("Novel", new{id = i.Id})"> @StringProcessor.SubString(i.Name, 0, 20)</a></h6>
+                                    <p class="rate"><i class="ion-android-star"></i><span>@await _rate.GetNovelRateAverage(i.Id)</span> /5</p>
+                                </div>
+                            </div>
+                        </div>
+                      
+                    }
 
-                <div class="movie-item-style-2 movie-item-style-1">
-                    <img src="@img" alt="">
-                    <div class="hvr-inner">
-                        <a href="@Url.Action("Novel", new{id = i.Id})"> Read <i class="ion-android-arrow-dropright"></i> </a>
-                    </div>
-                    <div class="mv-item-infor">
-                        <h6><a href="@Url.Action("Novel", new{id = i.Id})"> @StringProcessor.SubString(i.Name, 0, 20)</a></h6>
-                        <p class="rate"><i class="ion-android-star"></i><span>0</span> /5</p>
-                    </div>
+
                 </div>
-            }
-         
-       
-            </div>
                 <div class="topbar-filter">
-                    <label>Novels per page:</label>
-                
+                    <label>Novels per page: 20</label>
+                  
+                    <div class="pagination2">
+                        <span>Page @Model.PageNumber of @Model.PageCount:</span>
+                     
+                        @{
+                            var total = Model.TotalItemCount;
+                            var pageNumber = Model.PageNumber;
+                            var rangeNo = (int)((pageNumber - 1) / 20);
+                            var lower = 1 + rangeNo * 20;
+                            var upper = lower + rangeNo - 1;
+                            if (pageNumber == Model.LastItemOnPage)
+                            {
+                                for (var i = lower; i <= pageNumber; i++)
+                                {
+                                    if (i == Model.PageNumber)
+                                    {
+                                        <a class="active" href="#">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Novels", new{page = i})">@i</a>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (lower > 1)
+                                {
+                                    <a href="@Url.Action("Novels", new{page = lower+1})"><<</a>
+                                }
+                                for (var i = lower; i <= upper; i++)
+                                {
+                                    if (i == Model.PageNumber)
+                                    {
+                                        <a class="active" href="#">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Novels", new{page = i})">@i</a>
+                                    }
+                                }
+                                if (upper > 0)
+                                {
+                                    <a href="@Url.Action("Novels", new{page = upper+1})">>></a>
+                                }
+                              
+                            }
 
-                    @*<div class="pagination2">
-                        <span>Page 1 of 2:</span>
-                        <a class="active" href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">...</a>
-                        <a href="#">78</a>
-                        <a href="#">79</a>
-                        <a href="#"><i class="ion-arrow-right-b"></i></a>
-                    </div>*@
+                        }
+                        @*@for (var i = 1; i <= 200; i++)
+        {
+            <a href="#">@i</a>
+        }*@
+                        @*<a class="active" href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">...</a>
+        <a href="#">78</a>
+        <a href="#">79</a>
+        <a href="#"><i class="ion-arrow-right-b"></i></a>*@
+                    </div>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12 col-xs-12">
@@ -114,7 +165,7 @@
                         <ul>
                             @foreach (var i in categories)
                             {
-                            <li><a href="#">@i.Name</a></li>
+                                <li><a href="#">@i.Name</a></li>
 
                             }
 
@@ -132,7 +183,7 @@
                         <ul class="tag-items">
                             @foreach (var i in tags)
                             {
-                            <li><a href="#">@i.Name</a></li>
+                                <li><a href="#">@i.Name</a></li>
                             }
 
                         </ul>

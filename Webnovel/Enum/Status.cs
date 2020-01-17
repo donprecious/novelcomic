@@ -6,6 +6,10 @@ namespace Webnovel.Enum
         Completed, UnderReview, Developing, Hide, 
     }
 
+    public enum EntityVisibilityStatus
+    {
+        Hidden, Visible
+    }
     public enum ChapterStatus
     {
         Published, Draft

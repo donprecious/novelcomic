@@ -363,6 +363,8 @@ namespace Webnovel.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("Status");
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -1331,6 +1333,8 @@ namespace Webnovel.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<int>("CountryId");
+
                     b.Property<DateTime?>("DateOfBirth");
 
                     b.Property<string>("DisplayName");
@@ -1343,6 +1347,10 @@ namespace Webnovel.Migrations
                     b.Property<string>("FirstName");
 
                     b.Property<string>("Gender");
+
+                    b.Property<bool>("HasEditedBirthDate");
+
+                    b.Property<bool>("HasEditedCountry");
 
                     b.Property<string>("LastName");
 
@@ -1372,6 +1380,8 @@ namespace Webnovel.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -1997,6 +2007,14 @@ namespace Webnovel.Migrations
                     b.HasOne("Webnovel.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Webnovel.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Webnovel.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

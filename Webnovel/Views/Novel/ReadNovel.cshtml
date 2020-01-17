@@ -6,7 +6,7 @@
 @inject INovel _Novel
 @{
     ViewData["Title"] = "Read Novel";
-    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
 
     var comicScene = await _Novel.GetNovelSections(Model.Id);
 

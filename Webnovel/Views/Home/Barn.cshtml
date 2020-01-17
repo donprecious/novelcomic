@@ -2,12 +2,17 @@
 @using Webnovel.Helpers
 @using Webnovel.Repository
 @using Webnovel.Services
+@using X.PagedList
+
+@model BarnVm
 @inject UserManager<ApplicationUser> UserManager
 @inject INovel novel
 @{
     ViewBag.Title = "Barn - My Favorite Content";
-    var userId = UserManager.GetUserId(User);
-    var libary = await novel.GetLibraries(userId); 
+    //var userId = UserManager.GetUserId(User);
+    //var page = Convert.ToInt32(ViewBag.Page);
+    //var libary = ( await novel.GetLibraries(userId));
+    //var comicLib = await novel.GetLibraries(userId);
     var cloudinary = new Cloudinary(new Account()
     {
         ApiKey = CloudinaryUpload.apiKey,
@@ -34,33 +39,36 @@
         </div>
     </div>
 </div>
-<div class="page-single">
+<div class="page-single" style="padding-top: 0px">
     <div class="container">
         <div class="row ipad-width">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                @*<div class="topbar-filter">
-                    <p>Found <span>1,608 movies</span> in total</p>
-                    <label>Sort by:</label>
+               
+                <div class="topbar-filter">
+                    <p>Found
+                        <span>
+                            @Model.Novels.TotalItemCount
+                            Content</span> in total</p>
+                    <label> Novel Sorted by:</label>
                     <select>
-                        <option value="popularity">Popularity Descending</option>
-                        <option value="popularity">Popularity Ascending</option>
-                        <option value="rating">Rating Descending</option>
-                        <option value="rating">Rating Ascending</option>
-                        <option value="date">Release date Descending</option>
-                        <option value="date">Release date Ascending</option>
+                        <option value="recentlyAdded">Recently Added</option>
+                        <option value="lastOpened">Last Opened</option>
+
+
                     </select>
-                    <a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
-                        <a href="moviegrid.html" class="grid"><i class="ion-grid active"></i></a>
-                </div>*@
-                <div class="flex-wrap-movielist">
-                    @foreach (var i in libary)
+                    @*<a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
+                        <a href="moviegrid.html" class="grid"><i class="ion-grid active"></i></a>*@
+                </div>
+                
+                <div class="row">
+                    @foreach (var i in @Model.Novels)
                     {
                         var img = i.Novel.CoverPageImageUrl;
                         if (img != null)
                         {
                             img = cloudinary.Api.UrlImgFetch.
                                 Transform(new Transformation()
-                                     .Height(244).Width(152).Crop("fill")).BuildUrl(i.Novel.CoverPageImageUrl);
+                                    .Height(244).Width(152).Crop("fill")).BuildUrl(i.Novel.CoverPageImageUrl);
 
                         }
                         else
@@ -70,38 +78,239 @@
                                     .Height(128).Width(284).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
 
                         }
+                        <div class="col-md-2 col-sm-6 col-xs-6 padding-reset center-to-30">
+                            <div class="movie-item-style-2 movie-item-style-1">
+                                <img src="@img" alt="">
+                                <div class="hvr-inner">
+                                    <a href="@Url.Action("Novel", new {id = i.NovelId})"> Read <i class="ion-android-arrow-dropright"></i> </a> 
+                            
+                                </div>
+                                <div class="mv-item-infor">
+                                    <h6>
+                                        <a href="@Url.Action("Novel", new {id = i.NovelId})"> @StringProcessor.SubString(i.Novel.Name, 0, 20)</a>
 
-                        <div class="movie-item-style-2 movie-item-style-1">
-                            <img src="@img" alt="">
-                            <div class="hvr-inner">
-                                <a href="@Url.Action("Novel", new{id = i.Id})"> Read <i class="ion-android-arrow-dropright"></i> </a>
-                            </div>
-                            <div class="mv-item-infor">
-                                <h6><a href="@Url.Action("Novel", new{id = i.Id})"> @StringProcessor.SubString(i.Novel.Name, 0, 20)</a></h6>
-                                <p class="rate"><i class="ion-android-star"></i><span>0</span> /5</p>
+                                    </h6>
+                               
+                                    <button type="button" data-id="@i.NovelId"  class="ui fluid orange basic button remove-fav"> Remove <i class="ion-android-delete"></i> </button>
+                                    @*<p class="rate"><i class="ion-android-star"></i><span>@await _rate.GetNovelRateAverage(i.Id)</span> /5</p>*@
+                                </div>
                             </div>
                         </div>
+                        
                     }
 
 
                 </div>
                 <div class="topbar-filter">
-                    <label>Novels per page:</label>
+                    @*<label>Novels per page:</label>*@
 
 
-                    @*<div class="pagination2">
-                            <span>Page 1 of 2:</span>
-                            <a class="active" href="#">1</a>
+                    <div class="pagination2">
+                        <span>Page @Model.Novels.PageNumber of @Model.Novels.PageCount:</span>
+                        @for (var i = 1; i <= Model.Novels.PageCount; i++)
+                        {
+                            if (Model.Novels.PageNumber == i)
+                            {
+                                <a class="active">@i</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Barn", new {page = i})">@i</a>
+                            }
+                        }
+                        @*<a class="active" href="#">1</a>
                             <a href="#">2</a>
                             <a href="#">3</a>
                             <a href="#">...</a>
                             <a href="#">78</a>
                             <a href="#">79</a>
-                            <a href="#"><i class="ion-arrow-right-b"></i></a>
-                        </div>*@
+                            <a href="#"><i class="ion-arrow-right-b"></i></a>*@
+                    </div>
                 </div>
             </div>
           
         </div>
     </div>
 </div>
+
+<div class="page-single" style="padding-top: 10px">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="topbar-filter">
+                    <p>
+                        Found
+                        <span>
+                            @Model.Comics.TotalItemCount
+                            Content
+                        </span> in total
+                    </p>
+                    <label> Comics Sorted by:</label>
+                    <select>
+                        <option value="recentlyAdded">Recently Added</option>
+                        <option value="lastOpened">Last Opened</option>
+
+
+                    </select>
+                    @*<a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
+                        <a href="moviegrid.html" class="grid"><i class="ion-grid active"></i></a>*@
+                </div>
+
+                <div class="row">
+                    @foreach (var i in @Model.Comics)
+                    {
+                        var img = i.Comic.CoverPageImageUrl;
+                        if (img != null)
+                        {
+                            img = cloudinary.Api.UrlImgFetch.
+                                Transform(new Transformation()
+                                    .Height(244).Width(152).Crop("fill")).BuildUrl(i.Comic.CoverPageImageUrl);
+
+                        }
+                        else
+                        {
+                            img = cloudinary.Api.UrlImgFetch.
+                                Transform(new Transformation()
+                                    .Height(128).Width(284).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
+
+                        }
+                        <div class="col-md-2 col-sm-6 col-xs-6 padding-reset center-to-30">
+                            <div class="movie-item-style-2 movie-item-style-1">
+                                <img src="@img" alt="">
+                                <div class="hvr-inner">
+                                    <a href="@Url.Action("Novel", new {id = i.ComicId})"> Read <i class="ion-android-arrow-dropright"></i> </a>
+
+                                </div>
+                                <div class="mv-item-infor">
+                                    <h6>
+                                        <a href="@Url.Action("Novel", new {id = i.ComicId})"> @StringProcessor.SubString(i.Comic.Title, 0, 20)</a>
+
+                                    </h6>
+
+                                    <button type="button" data-id="@i.ComicId" class="ui fluid orange basic button remove-fav-comic"> Remove <i class="ion-android-delete"></i> </button>
+                                    @*<p class="rate"><i class="ion-android-star"></i><span>@await _rate.GetNovelRateAverage(i.Id)</span> /5</p>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+
+                </div>
+                <div class="topbar-filter">
+                    @*<label>Novels per page:</label>*@
+
+
+                    <div class="pagination2">
+                        <span>Page @Model.Comics.PageNumber of @Model.Comics.PageCount:</span>
+                        @for (var i = 1; i <= Model.Novels.PageCount; i++)
+                        {
+                            if (Model.Novels.PageNumber == i)
+                            {
+                                <a class="active">@i</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Barn", new {page = i})">@i</a>
+                            }
+                        }
+                        @*<a class="active" href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">...</a>
+                            <a href="#">78</a>
+                            <a href="#">79</a>
+                            <a href="#"><i class="ion-arrow-right-b"></i></a>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(function() {
+            $(".remove-fav").click(function(event) {
+                event.preventDefault();
+                var id = $(this).attr("data-id"); 
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, remove it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax("/Novel/DeleteFromLibrary/" + id,
+                            {
+                                type: "get",
+                                success: function(data) {
+                                    if (data.status == 200) {
+                                        Swal.fire({
+                                            title: "info",
+                                            text: data.message,
+                                            type: "success"
+                                        });
+                                        location.reload();
+
+                                    } else {
+                                        Swal.fire({
+                                            title: "info",
+                                            text: data.message,
+                                            icon: "error"
+                                        });
+                                    }
+                                }
+                            });
+                    }
+                })
+               
+            }); 
+
+            $(".remove-fav-comic").click(function(event) {
+                event.preventDefault();
+                var id = $(this).attr("data-id"); 
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, remove it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax("/Comic/DeleteFromLibrary/" + id,
+                            {
+                                type: "get",
+                                success: function(data) {
+                                    if (data.status == 200) {
+                                        Swal.fire({
+                                            title: "info",
+                                            text: data.message,
+                                            type: "success"
+                                        });
+                                        location.reload();
+
+                                    } else {
+                                        Swal.fire({
+                                            title: "info",
+                                            text: data.message,
+                                            icon: "error"
+                                        });
+                                    }
+                                }
+                            });
+                    }
+                })
+               
+            });
+        })
+    </script>
+}

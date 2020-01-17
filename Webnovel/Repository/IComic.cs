@@ -54,7 +54,7 @@ namespace Webnovel.Repository
 		Task<IEnumerable<ComicLibrary>> GetLibrary(string userId);
 
 		Task AddToLibrary(ComicLibrary comicLibrary);
-
+        Task AddUpdateToLibrary(ComicLibrary comicLibrary);
 		Task UpdateLibraryLastViewed(int id, int episodeId);
 
 		Task RemoveFromLibrary(int id, string userid);

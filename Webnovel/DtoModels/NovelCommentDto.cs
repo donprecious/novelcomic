@@ -53,4 +53,49 @@ namespace Webnovel.DtoModels
         public ICollection<NovelRating> Ratings { get; set; }
         public decimal RatingAverage { get; set; }
     }
+
+    public class ComicCommentDto
+    {
+        public int Id
+        {
+            get;
+            set;
+        }
+
+        public string UserId
+        {
+            get;
+            set;
+        }
+
+     
+        public UserDto User
+        {
+            get;
+            set;
+        }
+
+        public string Comment
+        {
+            get;
+            set;
+        }
+
+        //public int RateId { get; set; }
+
+        //[ForeignKey("RateId")]
+        //public NovelRating NovelRating { get; set; }
+        public int CommentId
+        {
+            get;
+            set;
+        }
+
+      
+        public DateTime? DateTime { get; set; }
+
+     
+        public ICollection<ComicRating> Ratings { get; set; }
+        public decimal RatingAverage { get; set; }
+    }
 }

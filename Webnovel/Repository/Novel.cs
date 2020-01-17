@@ -230,7 +230,18 @@ namespace Webnovel.Repository
 		//	novelLibrary.LastViewedChapterId = chapterId;
             _context.Entry<NovelLibrary>(novelLibrary).State = EntityState.Modified;
         }
-
+        //public async Task AddUpdateToLibrary(NovelLibrary lib)
+        //{
+        //    var nlib = await _context.NovelLibraries.Where(a => a.UserId == lib.UserId && a.NovelId == lib.NovelId).FirstOrDefaultAsync());
+        //    if (nlib == null)
+        //    {
+        //        _context.NovelLibraries.Add(lib);
+        //    }
+        //    else
+        //    {
+        //        comicLibrary2.LastViewedId = comicLibrary.LastViewedId;
+        //    }
+        //}
 		public async Task RemoveFromLibrary(int id, string userid)
 		{
 			List<NovelLibrary> list = await EntityFrameworkQueryableExtensions.ToListAsync<NovelLibrary>(((IQueryable<NovelLibrary>)_context.NovelLibraries).Where((NovelLibrary a) => a.UserId == userid && a.NovelId == id), default(CancellationToken));

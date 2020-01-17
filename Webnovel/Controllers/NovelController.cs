@@ -702,18 +702,31 @@ namespace Webnovel.Controllers
 			});
 		}
 
-		public async Task<IActionResult> RemoveFromLibrary(int id)
-		{
-			userId = _userManager.GetUserId(User);
-			await _novel.RemoveFromLibrary(id, userId);
-			return (IActionResult)(object)((ControllerBase)this).RedirectToAction("Library");
-		}
+        public async Task<IActionResult> RemoveFromLibrary(int id)
+        {
+            userId = _userManager.GetUserId(User);
+            await _novel.RemoveFromLibrary(id, userId);
+            return (IActionResult)(object)((ControllerBase)this).RedirectToAction("Library");
+        }
 
+        public async Task<IActionResult> DeleteFromLibrary(int id)
+        {
+            userId = _userManager.GetUserId(User);
+            await _novel.RemoveFromLibrary(id, userId);
+            var save = await _novel.Save();
+            if (save)
+            {
+                return Ok( new {status=200, message="Removed Successfully"});
+
+            }
+            return Ok( new {status=500, message="Something went wrong"});
+
+        }
         public async Task<IActionResult> AddToLibrary(int id)
         {
             userId = _userManager.GetUserId(User); 
       
-            await _novel.AddToLibrary(new NovelLibrary
+            await _novel.AddUpdateToLibrary(new NovelLibrary
             {
                 UserId = userId,
                 NovelId = id,
@@ -728,6 +741,7 @@ namespace Webnovel.Controllers
             return BadRequest("Something went Wrong");
 
         }
+    
 
 		public async Task<IActionResult> Detail(int id)
 		{
@@ -929,5 +943,8 @@ namespace Webnovel.Controllers
                 page = pageData
             });
         }
+
+    
+
     }
 }

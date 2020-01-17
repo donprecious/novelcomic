@@ -1,8 +1,8 @@
 ﻿@model Webnovel.Entities.Novel
 
 @{
-    ViewBag.Title = Model.Name +" - " + "Detail" ;
-    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+    ViewBag.Title = Model.Name + " - " + "Detail";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 <div class="row">
     <div class="col-lg-12">
@@ -11,7 +11,7 @@
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a asp-controller="Reader" asp-action="Index" > Overview</a></li>
+                        <li class="breadcrumb-item"><a asp-controller="Reader" asp-action="Index"> Overview</a></li>
                         <li class="breadcrumb-item active"><a asp-controller="Reader" asp-action="Index"> Overview</a></li>
                     </ol>
                 </nav>
@@ -19,3 +19,86 @@
         </div>
     </div>
 </div>
+
+<h4 class="card-title m-t-40">This Month Viewers</h4>
+
+<div class="card-group">
+  
+    <!-- Column -->
+    <!-- Column -->
+    <div class="card">
+        <div class="card-body text-center">
+            <h4 class="text-center text-info">Unique Viewers</h4>
+            <h2 id="txtUViewer">0</h2>
+            <div class="row p-t-10 p-b-10">
+                <!-- Column -->
+                <div class="col text-center align-self-center" id="thisUMonthBar">
+                    <div data-label="100%" class="css-bar m-b-0 css-bar-primary css-bar-100"><i class="display-6 mdi mdi-account-circle"></i></div>
+                </div>
+            </div>
+            <div class="row" id="thisUMonthStat">
+
+                <div class="col-md-6 col-sm-12">
+                    <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> 0</h4>
+                    <h6 class="font-light m-b-0">last month</h6>
+
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> 0</h4>
+                    <h6 class="font-light m-b-0">Rate</h6>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Column -->
+    <!-- Column -->
+    <div class="card">
+        <div class="card-body text-center">
+            <h4 class="text-center text-cyan">Amount Earned</h4>
+            <h2>0</h2>
+            <div class="row p-t-10 p-b-10">
+                <!-- Column -->
+                <div class="col text-center align-self-center">
+                    <div data-label="20%" class="css-bar m-b-0 css-bar-success css-bar-20"><i class="display-6 mdi mdi-briefcase-check"></i></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> <br> 0</h4>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> <br> 0</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column --> 
+ 
+
+</div>
+
+<div class="ui relaxed horizontal divided list">
+    <div class="item">
+        <i class="ui avatar image mdi mdi-thumb-down" > </i>
+        <div class="content">
+            <div class="header">Poor</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/images/avatar/small/christian.jpg">
+        <div class="content">
+            <div class="header">Christian</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
+        <div class="content">
+            <div class="header">Daniel</div>
+        </div>
+    </div>
+</div>
+

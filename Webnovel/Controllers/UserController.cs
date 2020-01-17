@@ -110,6 +110,19 @@ namespace Webnovel.Controllers
             findUser.FirstName = user.FirstName;
             findUser.LastName = user.LastName;
             findUser.PhoneNumber = user.Phone;
+            findUser.DisplayName = user.DisplayName;
+            if (!findUser.HasEditedBirthDate)
+            {
+                findUser.DateOfBirth = user.DateOfBirth;
+                findUser.HasEditedBirthDate = true;
+            }
+
+            if (!findUser.HasEditedCountry)
+            {
+                findUser.CountryId = user.CountryId;
+                findUser.HasEditedCountry = true;
+            }
+            findUser.Gender = user.Gender;
             _context.Entry(findUser).State = EntityState.Modified;
             _context.SaveChanges();
             //check author 

@@ -42,8 +42,26 @@ namespace Webnovel.Repository
 		public async Task<ICollection<Webnovel.Entities.ComicComment>> List(int comicId)
         {
             return await _context.ComicComments.Where(a => a.ComicId == comicId)
-                .Include(a => a.User)
-                .Include(a => a.Comic).ToListAsync();
+                .Include(a=>a.Ratings)
+                .Include(a=>a.User)
+                .Select(a=>new Entities.ComicComment()
+                {
+                    UserId = a.UserId,
+                    Comment = a.Comment,
+                    Id = a.Id,
+                    User = a.User,
+                    DateCreated = a.DateCreated,
+                    ComicId = a.ComicId,
+                    Ratings = _context.ComicRatings.Where(b=>b.CommentId == a.Id).Select(r=> new ComicRating()
+                    {  
+                        Value = r.Value,
+                       
+                        RatingTypeId = r.RatingTypeId,
+                        RatingType = _context.RatingTypes.Where(t =>t.Id == r.RatingTypeId).FirstOrDefault()
+                    }).ToList()
+                    
+                })
+                .ToListAsync();
 
         }
 

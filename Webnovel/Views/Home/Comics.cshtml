@@ -39,7 +39,7 @@
         </div>
     </div>
 </div>
-<div class="page-single">
+<div class="page-single"  style="padding-top: 0px">
     <div class="container">
         <div class="row ipad-width">
             <div class="col-md-8 col-sm-12 col-xs-12">
@@ -57,7 +57,7 @@
                     @*<a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
                         <a href="moviegrid.html" class="grid"><i class="ion-grid active"></i></a>*@
                 </div>
-                <div class="flex-wrap-movielist">
+                <div class="row">
                     @foreach (var i in Model)
                     {
                         var img = i.CoverPageImageUrl;
@@ -75,15 +75,16 @@
                                     .Height(128).Width(284).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1562332529/NO_COVER_PAGE_1.png");
 
                         }
-
-                        <div class="movie-item-style-2 movie-item-style-1">
-                            <img src="@img" alt="">
-                            <div class="hvr-inner">
-                                <a href="@Url.Action("Comic", new{id = i.Id})"> Read <i class="ion-android-arrow-dropright"></i> </a>
-                            </div>
-                            <div class="mv-item-infor">
-                                <h6><a href="@Url.Action("Comic", new{id = i.Id})"> @StringProcessor.SubString(i.Title, 0, 20)</a></h6>
-                                <p class="rate"><i class="ion-android-star"></i><span>0</span> /5</p>
+                        <div class="col-md-3 col-sm-6 col-xs-6 padding-reset center-to-30">
+                            <div class="movie-item-style-2 movie-item-style-1">
+                                <img src="@img" alt="">
+                                <div class="hvr-inner">
+                                    <a href="@Url.Action("Comic", new{id = i.Id})"> Read <i class="ion-android-arrow-dropright"></i> </a>
+                                </div>
+                                <div class="mv-item-infor">
+                                    <h6><a href="@Url.Action("Comic", new{id = i.Id})"> @StringProcessor.SubString(i.Title, 0, 20)</a></h6>
+                                    <p class="rate"><i class="ion-android-star"></i><span>0</span> /5</p>
+                                </div>
                             </div>
                         </div>
                     }
@@ -91,7 +92,7 @@
 
                 </div>
                 <div class="topbar-filter">
-                    <label>Movies per page:</label>
+                    <label>Comics per page:</label>
                     <select>
                         <option value="range">20 Movies</option>
                         <option value="saab">10 Movies</option>

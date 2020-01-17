@@ -1,0 +1,390 @@
+﻿@using CloudinaryDotNet
+@using Webnovel.Helpers
+@using Webnovel.Repository
+@using Webnovel.Services
+
+@inject IAuthor Author
+@inject UserManager<ApplicationUser> UserManager
+@inject IPayment _payment
+@inject IUser _User;
+@*@inject IReferral _Referral*@
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = await UserManager.GetUserAsync(User);
+
+    var userId = user.Id;
+    //var author = await Author.Get(Model.Id);
+    var hasWallet = await _payment.HasWallet(userId);
+    var getWallet = await _payment.GetUserWallet(userId);
+    var userSubscription = await _payment.GetUserSubscription(userId);
+    var userCowries = await _payment.GetUserCowries(userId);
+    var countries = await _User.Countries();
+
+
+
+    var img = "";
+
+    var cloudinary = new Cloudinary(new Account()
+    {
+        ApiKey = CloudinaryUpload.apiKey,
+        ApiSecret = CloudinaryUpload.apiSecret,
+        Cloud = CloudinaryUpload.cloud,
+    });
+    if (user.ProfileImage != null)
+    {
+        img = cloudinary.Api.UrlImgFetch.
+            Transform(new Transformation()
+                .Height(200).Width(200).Crop("fill")).BuildUrl(user.ProfileImage);
+    }
+    else
+    {
+        img = cloudinary.Api.UrlImgFetch.
+            Transform(new Transformation()
+                .Height(200).Width(200).Crop("fill")).BuildUrl("https://ui-avatars.com/api/?name=" + user.Email);
+
+    }
+
+}
+
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct text-center">
+                    <h6 class="text-center">My Profile</h6>
+                    <h1 class="text-center">@user.FirstName, @user.LastName</h1>
+                    <h3>@user.DisplayName</h3>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single" style="padding-top:5px">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="user-information">
+                    <div class="user-img">
+                        <a href="#"><img onclick="changePicture()" src="@img" id="profile-pic" alt=""><br></a>
+                        <a href="#" onclick="changePicture()" class="redbtn">Change Picture</a>
+                    </div>
+                    <div class="user-fav">
+                        <p>Account Details</p>
+                        <div class="">
+
+                        </div>
+                        @*<ul>
+                                <li class="active"><a href="userprofile.html">Profile</a></li>
+                                <li><a href="userfavoritelist.html">Favorite movies</a></li>
+                                <li><a href="userrate.html">Rated movies</a></li>
+                            </ul>*@
+                    </div>
+                    <div class="user-fav">
+                        <p>Others</p>
+                        <ul>
+                            <li><a href="#">Change password</a></li>
+                            <li><a href="@Url.Action("BasicReferral")">My Referrals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+
+                <div class="form-style-1 user-pro" action="#">
+                    <div action="#" class="user">
+                        <div class="row">
+                            <div class="col-sm-4 form-it">
+                                <div class="ui card">
+
+                                    <div class="content">
+                                        <div class="header">
+                                            <img src="~/images/cowries.png" class="ui avatar image" />
+                                            @if (userCowries != null)
+                                            {
+                                                @userCowries.Cowries
+
+                                            }
+                                            else
+                                            {
+                                            <span> 0.00</span> 
+                                            }
+                                        </div>
+                                        <div class="description">
+                                            Cowries
+                                        </div>
+                                    </div>
+                                    <div class="ui one bottom attached buttons">
+                                        <a href="@Url.Action("FundWallet","Wallet")" class="ui orange button">
+                                            Add
+                                        </a>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4 form-it">
+                                <div class="ui card">
+                                    <div class="content">
+                                        <div class="header">
+                                            <img src="~/images/Cowries-1.png" class="ui avatar image" />
+                                            @if (userSubscription != null)
+                                            {
+                                                <span>  @Utilities.CalculateDaysRemainingFromToday(userSubscription.DueDate) Days Left</span>
+                                            }
+                                            else
+                                            {
+                                                <span>No Subscription</span>
+                                            }
+
+                                        </div>
+                                        <div class="description">
+                                            Subscription 
+                                        </div>
+                                    </div>
+                                    <div class="ui one bottom attached buttons">
+                                        <a href="@Url.Action("SubScription","Wallet")" class="ui  orange  button">
+                                            Renew
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-it">
+                                <div class="ui card">
+                                    <div class="content">
+                                        <div class="header">
+                                            <i class="fa fa-bank ui avatar image"></i>
+                                            @if (hasWallet)
+                                            {
+                                                @getWallet.Amount
+                                            }
+                                            else
+                                            {
+                                            <span> 0.0</span>
+                                            }
+                                          
+                                        </div>
+                                        <div class="description">
+                                            Wallet
+                                        </div>
+                                    </div>
+                                    <div class="ui one bottom attached buttons">
+                                        <a href="#" class="ui  orange  button">
+                                            Withdraw
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4>01. Profile details</h4>
+                        <button id="btnEnableEdit" class="ui primary button">
+                            <i class="icon edit"></i>
+                            edit
+                        </button>
+                        <div class="row">
+                            <div class="col-md-12 form-it">
+                                <label>Display Name</label>
+                                <input type="text" id="txtDisplayName" readonly="readonly" value="@user.DisplayName"  required  placeholder="Display Name">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>First Name</label>
+                                <input type="text" id="txtFirstName" readonly="readonly"  value="@user.FirstName"   required placeholder="First Name ">
+                            </div>
+                            <div class="col-md-6 form-it">
+                                <label>Last Name</label>
+                                <input type="text" id="txtLastName" readonly="readonly"  value="@user.LastName"   required placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Country  <i class="fa fa-info" readonly="readonly" data-toggle="tooltip" data-placement="right" title="Warning Can only be changed once" data-original-title="Warning Can only be changed once"></i></label>
+                                <select id="txtCountry" readonly="readonly">
+                                    @foreach (var i in countries.OrderByDescending(a => a.name))
+                                    {
+                                        if (user.CountryId == i.Id)
+                                        {
+                                            <option selected="selected" value="@i.Id">@i.name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@i.Id">@i.name</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-it">
+                                <label>Phone Number</label>
+                                <input type="tel" placeholder="Phone Number" readonly="readonly"  value="@user.PhoneNumber"   id="txtPhone" required="required">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-it">
+                                <label>Date of Birth  <i class="fa fa-info" data-toggle="tooltip" data-placement="right" title="Warning Can only be changed once" data-original-title="Warning Can only be changed once"></i></label>
+                                <input type="date"  value="@user.DateOfBirth" readonly="readonly"   placeholder="Date of Birth" id="txtDateOfBirth">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input class="submit" type="button" id="btnSave" value="save changes">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section css{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+    
+    <style>
+
+        input.form-control.input.valid, input[disabled], input#Email {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: url(../images/uploads/drop-icon.png) no-repeat right 20px center;
+            background-color: #233a50;
+        }
+
+        span.form-text.text-danger.field-validation-error {
+            color: #e67373;
+        }
+    </style>
+
+}
+@section Scripts
+    {
+
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        $("#txtDateOfBirth").flatpickr({
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d"
+        });
+
+    </script>
+    <script>
+        var cloudName = "@CloudinaryUpload.cloud";
+        var apiKey = "@CloudinaryUpload.apiKey";
+        var widget = cloudinary.createUploadWidget({
+                cloudName: cloudName,
+                cloudName: cloudName,
+                apiKey: apiKey,
+                uploadPreset: "unsignedUpload",
+                folder: "webnovel",
+                maxFiles: 1,
+                resourceType: "image",
+                maxFileSize: 21000000
+            },
+            (error, result) => {
+                if (result && result.event === "success") {
+                    // do something
+                    // $("#uploadedUrl").val(result.info.secure_url);
+                    $("#profile-pic").attr("src", result.info.secure_url);
+                    $.ajax("/User/ChangeProfilePicture/",
+                        {
+                            type: "post",
+                            data: { "picture": result.info.secure_url },
+                            success: function(res) {
+                                if (res.status == 200) {
+                                    toastr.success(res.message);
+                                    $("#profile-pic").attr("src", result.info.secure_url);
+                                } else {
+                                    toastr.error(res.message);
+
+                                }
+
+
+                            }
+                        });
+                }
+                console.log(result);
+            });
+
+
+        $(document.body).on("mouseover",".img-link",
+            function() {
+                $(this).find(".img-back").show();
+            }).on("mouseout", ".img-link",
+            function () {
+                $(this).find(".img-back").hide();
+            });
+
+        function changePicture() {
+            widget.open();
+        }
+        $(".img-link ").click(function() {
+            widget.open();
+        });
+    </script> 
+    <script>
+        function enableEdit() {
+            $("input[type='text']").removeAttr("readonly");
+            $("input[type='date']").removeAttr("readonly");
+            $("input[type='tel']").removeAttr("readonly");
+            $("select").removeAttr("readonly");
+        }
+        function cancelEdit() {
+            $("input[type='text']").attr("readonly");
+            $("input[type='date']").attr("readonly");
+            $("input[type='tel']").attr("readonly");
+            $("select").attr("readonly");
+        }
+
+     
+            $("#btnEnableEdit").click( function(event)
+            {
+                event.preventDefault();
+                if ($(this).text() == "edit") {
+                    enableEdit();
+                    $(this).text("cancel");
+                } else {
+                    cancelEdit();
+                    $(this).text("edit");
+                }
+            });
+            $("#btnSave").click(function(event) {
+                event.preventDefault();
+                saveChanges();
+            });
+            function saveChanges() {
+                var data = {
+                    firstName : $("#txtFirstName").val(),
+                    lastName: $("#txtLastName").val(),
+                    displayName: $("#txtDisplayName").val(),
+                    dateOfBirth: $("#txtDateOfBirth").val(),
+                    countryId: $("#txtCountry").val(),
+                    phone: $("#txtPhone").val(),
+                    userId: "@user.Id"
+                }
+                $.ajax("/User/EditAuthorProfile",
+                    {
+                        type: "post",
+                        data: data,
+                        success: function(res) {
+                            if (res.status == 200) {
+                                toastr.success(res.message);
+                                cancelEdit();
+                            } else {
+                                toastr.warning(res.message);
+                            }
+                        }
+                    });
+            }
+
+      
+    </script>
+}

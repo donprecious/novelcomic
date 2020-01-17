@@ -97,6 +97,7 @@
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.7" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <!--<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />-->
 
     <PackageReference Include="refit" Version="4.7.51" />
@@ -106,128 +107,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />-->
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Entities\NewFolder\" />
     <Folder Include="Pages\Components\" />
-    <Folder Include="wwwroot\main\video-category\games\page\2\" />
-    <Folder Include="wwwroot\main\video-category\hockey\" />
-    <Folder Include="wwwroot\main\video\1-0n-1-it-is-a-tough-group\" />
-    <Folder Include="wwwroot\main\video\aladdin\" />
-    <Folder Include="wwwroot\main\video\an-unforgettable-world-cup\" />
-    <Folder Include="wwwroot\main\video\angry-moments\" />
-    <Folder Include="wwwroot\main\video\assassins-creed\" />
-    <Folder Include="wwwroot\main\video\athletic-fielding-in-cricket\" />
-    <Folder Include="wwwroot\main\video\atp-tennis-the-funniest-moments\" />
-    <Folder Include="wwwroot\main\video\attack-on-titan-2\" />
-    <Folder Include="wwwroot\main\video\battlefield-1\" />
-    <Folder Include="wwwroot\main\video\biggest-fight-in-cricket-history\" />
-    <Folder Include="wwwroot\main\video\bike-racing-games\" />
-    <Folder Include="wwwroot\main\video\candy-crush-saga\" />
-    <Folder Include="wwwroot\main\video\clash-of-clans\" />
-    <Folder Include="wwwroot\main\video\croatia-v-england-2018-fifa-world-cup-russia\" />
-    <Folder Include="wwwroot\main\video\destined-to-ride\" />
-    <Folder Include="wwwroot\main\video\dhoni-india-seal-tense-odi-series-win\" />
-    <Folder Include="wwwroot\main\video\fans-energy-before-events\" />
-    <Folder Include="wwwroot\main\video\fast-furious-presents-hobbs-shaw\" />
-    <Folder Include="wwwroot\main\video\federer-cruises-kyrgios-makes-match-point-magic\" />
-    <Folder Include="wwwroot\main\video\fifa-world-cup-final\" />
-    <Folder Include="wwwroot\main\video\first-over-first-ball-six-in-cricket\" />
-    <Folder Include="wwwroot\main\video\frozen-ii\" />
-    <Folder Include="wwwroot\main\video\god-of-war\" />
-    <Folder Include="wwwroot\main\video\gta-5-epic-ragdolls-flooded-los-santos-ep-5\" />
-    <Folder Include="wwwroot\main\video\hidden-agenda\" />
-    <Folder Include="wwwroot\main\video\hilarious-cricket-fails\" />
-    <Folder Include="wwwroot\main\video\impossible-things-that-happened-in-tennis\" />
-    <Folder Include="wwwroot\main\video\inside-gameplay-walkthrough\" />
-    <Folder Include="wwwroot\main\video\manchester-city-vs-chelsea\" />
-    <Folder Include="wwwroot\main\video\missed-chances\" />
-    <Folder Include="wwwroot\main\video\most-unorthodox-tennis-match\" />
-    <Folder Include="wwwroot\main\video\neymar-vs-bolivia\" />
-    <Folder Include="wwwroot\main\video\nidahas-trophy-2018-final-match-final-over-india-vs-bangladesh\" />
-    <Folder Include="wwwroot\main\video\pakistan-vs-australia-2018-3rd-t20i\" />
-    <Folder Include="wwwroot\main\video\reactions-of-players-when-they-cant-handle-novak-djokovics-brilliance\" />
-    <Folder Include="wwwroot\main\video\robot-car\" />
-    <Folder Include="wwwroot\main\video\sehwag-219-runs\" />
-    <Folder Include="wwwroot\main\video\serenas-power\" />
-    <Folder Include="wwwroot\main\video\shadow-fight\" />
-    <Folder Include="wwwroot\main\video\shark-attack\" />
-    <Folder Include="wwwroot\main\video\shazam\" />
-    <Folder Include="wwwroot\main\video\steelers-vs-patriots-afc-championship-game-highlights\" />
-    <Folder Include="wwwroot\main\video\subway-surfers\" />
-    <Folder Include="wwwroot\main\video\temple-run\" />
-    <Folder Include="wwwroot\main\video\tennis-hitting-the-opponent\" />
-    <Folder Include="wwwroot\main\video\tennis-points-that-shocked-the-world\" />
-    <Folder Include="wwwroot\main\video\the-last-of-us\" />
-    <Folder Include="wwwroot\main\video\the-seceret-life-of-pets-2\" />
-    <Folder Include="wwwroot\main\video\top-10-goals\" />
-    <Folder Include="wwwroot\main\video\toy-story-4\" />
-    <Folder Include="wwwroot\main\video\urguvay-defeat-egypt-1-0\" />
-    <Folder Include="wwwroot\main\video\vivo-ipl-player-auction-2019\" />
-    <Folder Include="wwwroot\main\video\watched-world-cup\" />
-    <Folder Include="wwwroot\main\video\world-record-score-chase\" />
-    <Folder Include="wwwroot\main\video\yuvraj-sixes\" />
-    <Folder Include="wwwroot\main\video\zombie-hunters-city-of-the-dead\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\contact-form-7\includes\css\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\countdown-timer-ultimate\assets\css\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\jetpack\css\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\active-videos\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\banner-with-section-tv-shows\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\blog-grid-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\blog-grid-with-list-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\blog-list-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\blog-tab-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\comingsoon-launch-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\episodes-with-featured-episode\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\faq-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\featured-blog-with-blog-grid-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\featured-movies-carousel\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\hot-premieres-block\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\landing-featured-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\landing-featured-video\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\landing-features-list\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\landing-hero-banner\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\landing-movies-carousel\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\landing-tabs-features\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\landing-viewcounts-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\movie-section-aside-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\movies-list\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\movies-slider\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\recent-comments\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-coming-soon-videos\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-event-category-list\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-featured-movie\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-featured-post\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-featured-tv-show\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-full-width-banner\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-live-videos\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-movies-carousel-aside-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-movies-carousel-flex-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-movies-carousel-nav-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-playlist-carousel\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-tv-episodes-carousel-aside-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-tv-episodes-carousel-flex-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-tv-shows-carousel-nav-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-videos-carousel-aside-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-videos-carousel-flex-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\section-videos-carousel-nav-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\slider-movies\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\tv-show-section-aside-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\tv-show-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\tv-shows-slider\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\video-section-aside-header\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\video-section\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\videos-slider\" />
-    <Folder Include="wwwroot\main\wp-content\plugins\vodi-extensions\assets\css\gutenberg-blocks\videos-with-featured-video\" />
-    <Folder Include="wwwroot\main\wp-content\themes\vodi\assets\css\colors\" />
-    <Folder Include="wwwroot\main\wp-content\themes\vodi\assets\fonts\" />
-    <Folder Include="wwwroot\main\wp-includes\css\dist\block-library\" />
-    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1445,6 +1327,20 @@
     <None Include="wwwroot\lib\jquery\dist\jquery.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\pace-1.0.2\.gitignore" />
+    <None Include="wwwroot\lib\pace-1.0.2\.hsdoc" />
+    <None Include="wwwroot\lib\pace-1.0.2\docs\intro.md" />
+    <None Include="wwwroot\lib\pace-1.0.2\docs\lib\color.js" />
+    <None Include="wwwroot\lib\pace-1.0.2\docs\lib\themes.coffee" />
+    <None Include="wwwroot\lib\pace-1.0.2\docs\lib\themes.js" />
+    <None Include="wwwroot\lib\pace-1.0.2\docs\resources\templates\index.jade" />
+    <None Include="wwwroot\lib\pace-1.0.2\docs\resources\templates\page.jade" />
+    <None Include="wwwroot\lib\pace-1.0.2\Gruntfile.coffee" />
+    <None Include="wwwroot\lib\pace-1.0.2\LICENSE" />
+    <None Include="wwwroot\lib\pace-1.0.2\pace.coffee" />
+    <None Include="wwwroot\lib\pace-1.0.2\pace.js" />
+    <None Include="wwwroot\lib\pace-1.0.2\pace.min.js" />
+    <None Include="wwwroot\lib\pace-1.0.2\README.md" />
     <None Include="wwwroot\lib\Semantiui\.versions" />
     <None Include="wwwroot\lib\Semantiui\components\accordion.js" />
     <None Include="wwwroot\lib\Semantiui\components\accordion.min.js" />
@@ -1955,52 +1851,6 @@
     <None Include="wwwroot\light\projects\projects-task.html" />
     <None Include="wwwroot\light\projects\projects-team.html" />
     <None Include="wwwroot\light\projects\projects-users.html" />
-    <None Include="wwwroot\main\s0.wp.com\wp-content\js\devicepx-jetpack9794.js" />
-    <None Include="wwwroot\main\stats.wp.com\e-201922.js" />
-    <None Include="wwwroot\main\wp-content\cache\min\2\01300db3ba4599229dcabe5c1675ca9f.js" />
-    <None Include="wwwroot\main\wp-content\cache\min\2\538196bee459cadcf521d7876085e11a.js" />
-    <None Include="wwwroot\main\wp-content\cache\min\2\62a4b0f209049a97f3c75e7574ed9d4a.js" />
-    <None Include="wwwroot\main\wp-content\cache\min\2\6cf84988f35ec0c3ab7b8fa26efcc63a.js" />
-    <None Include="wwwroot\main\wp-content\cache\min\2\6f1cda7e02dfeb11bc212e70ec06a496.js" />
-    <None Include="wwwroot\main\wp-content\plugins\contact-form-7\includes\js\scriptsbdeb.js" />
-    <None Include="wwwroot\main\wp-content\plugins\masvideos\assets\js\frontend\gallery-flip.min0ba6.js" />
-    <None Include="wwwroot\main\wp-content\plugins\masvideos\assets\js\frontend\playlist-movie.min0ba6.js" />
-    <None Include="wwwroot\main\wp-content\plugins\masvideos\assets\js\frontend\playlist-tv-show.min0ba6.js" />
-    <None Include="wwwroot\main\wp-content\plugins\masvideos\assets\js\frontend\playlist-video.min0ba6.js" />
-    <None Include="wwwroot\main\wp-content\plugins\wp-rocket\assets\js\lazyload\11.0.6\lazyload.min.js" />
-    <None Include="wwwroot\main\wp-content\plugins\wp-ulike\assets\js\wp-ulike.minaf6c.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\images\arrow-right.svg" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\images\post-quote-icon.svg" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\bootstrap.bundle.min4b68.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\jquery.easing.min4b68.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\jquery.waypoints.min4b68.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\readmore.min6e0e.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\scrollup.min4b68.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\simplebar.min4b68.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\slick.min4b68.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\vodi-slick.min4b68.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\js\vodi.min4b68.js" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\webfonts\fa-brands-400.svg" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\webfonts\fa-regular-400.svg" />
-    <None Include="wwwroot\main\wp-content\themes\vodi\assets\webfonts\fa-solid-900.svg" />
-    <None Include="wwwroot\main\wp-includes\js\jquery\jquery-migrate.min330a.js" />
-    <None Include="wwwroot\main\wp-includes\js\jquery\jquery4a5f.js" />
-    <None Include="wwwroot\main\wp-includes\js\wp-embed.min7752.js" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed16e4" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed3582" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed3fab" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed49ed" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed5d26" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed6043" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed6048" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed8a06" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embed9492" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embeda40d" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embedb52c" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embedd2b2" />
-    <None Include="wwwroot\main\wp-json\oembed\1.0\embede7a6" />
-    <None Include="wwwroot\main\xmlrpc.php" />
-    <None Include="wwwroot\main\xmlrpc0db0.php" />
     <None Include="wwwroot\novelist\wp-content\plugins\contact-form-7\includes\js\jquery.form.mind03d.js" />
     <None Include="wwwroot\novelist\wp-content\plugins\contact-form-7\includes\js\scripts1c9b.js" />
     <None Include="wwwroot\novelist\wp-content\plugins\zoom_box\zoom_box199e.js" />

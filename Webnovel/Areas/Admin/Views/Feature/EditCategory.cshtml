@@ -1,0 +1,137 @@
+﻿@using CloudinaryDotNet
+@using Webnovel.Services
+@model Webnovel.Entities.Category
+@{
+    ViewData["Title"] = "Edit "+Model.Name;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+
+    var cloudinary = new Cloudinary(new Account()
+    {
+        ApiKey = CloudinaryUpload.apiKey,
+        ApiSecret = CloudinaryUpload.apiSecret,
+        Cloud = CloudinaryUpload.cloud,
+
+    });
+
+    var img = Model.ImageUrl;
+    if (img != null)
+    {
+        img = cloudinary.Api.UrlImgFetch.
+            Transform(new Transformation()
+                .Height(100).Width(140).Crop("fill")).BuildUrl(Model.ImageUrl);
+
+    }
+    else
+    {
+        img = cloudinary.Api.UrlImgFetch.
+            Transform(new Transformation()
+                .Height(100).Width(140).Crop("fill")).BuildUrl("https://res.cloudinary.com/votel/image/upload/v1578761180/webnovel/noImageUploaded.png");
+
+    }
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a asp-area="Admin" asp-controller="Feature" asp-action="Categories">Categories</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0);">Edit @Model.Name</a>
+                            </li>
+                        </ol>
+                    </div>
+
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div><!--end row--><!-- end page title end breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-body">
+                    <h4 class="card-title">Edit Categories</h4>
+
+                    <form class="form-horizontal m-t-30" method="post" asp-action="EditCategory">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(a => a.Id)
+                       
+                        <input name="ImageUrl" type="hidden" id="imgUrl" value="@Model.ImageUrl" class="form-control">
+
+                        <div class="form-group">
+                            <label>Name <span class="help"></span></label>
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <input asp-for="Name" type="text" value="@Model.Name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Description <span class="help"> </span></label>
+                            <textarea asp-for="Description" value="@Model.Description" type="text" class="form-control"> </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Choose Image <span class="help" id="uploadMessage"> </span></label> 
+                            <br />
+                            <img class="img-fluid img-thumbnail" width="100" id="img-toUpload" src="@img" />
+                            <br />
+                            <button type="button" id="beginUpload" class="btn btn-sm btn-soft-info">Upload image</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card card-body">
+                    <h4 class="card-title">Categories</h4>
+                    @await Component.InvokeAsync("Category")
+
+                </div>
+            </div>
+        </div>
+    </div><!-- container -->
+
+</div>
+@section Scripts
+{
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript">
+    </script>
+
+
+
+    <script>
+        var cloudName = "@CloudinaryUpload.cloud";
+        var apiKey = "@CloudinaryUpload.apiKey";
+        var widget = cloudinary.createUploadWidget({
+                cloudName: cloudName,
+                apiKey: apiKey,
+                uploadPreset: "unsignedUpload",
+                folder: "webnovel",
+                maxFiles: 1,
+                resourceType: "image",
+                maxFileSize: 21000000
+            },
+            (error, result) => {
+                if (result && result.event === "success") {
+                    // do something
+                    $("#imgUrl").val(result.info.secure_url);
+                    $("#img-toUpload").attr("src", result.info.secure_url);
+                    $("#uploadMessage").html("Uploaded Successfully");
+                }
+                console.log(result);
+            });
+
+        $("#beginUpload").click(function(event) {
+            event.preventDefault();
+            widget.open();
+        });
+    </script>
+}
